@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/berkas', function () {
-    return view('berkas');
+    return view('panitia.berkas');
 })->name('berkas');
 
 Route::get('/profile', function () {

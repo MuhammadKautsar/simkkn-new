@@ -16,11 +16,10 @@
                 <div class="d-flex flex-center flex-lg-start flex-column">
                     <!--begin::Logo-->
                     <a href="index.html" class="mb-7">
-                        <img alt="Logo" src="assets/media/logos/custom-3.svg" />
+                        <img alt="Logo" src="assets/media/logos/logo.png" class="h-200px h-lg-300px"/>
                     </a>
                     <!--end::Logo-->
                     <!--begin::Title-->
-                    <h2 class="text-white fw-normal m-0">Kuliah Kerja Nyata</h2>
                     <!--end::Title-->
                 </div>
                 <!--begin::Aside-->
@@ -33,7 +32,7 @@
                     <!--begin::Wrapper-->
                     <div class="d-flex flex-center flex-column flex-column-fluid px-lg-10 pb-15 pb-lg-10">
                         <!--begin::Form-->
-                        <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" method="POST" action="{{ route('sign-in') }}">
+                        <form class="form w-100" novalidate="novalidate" method="POST" action="{{ route('sign-in') }}">
                             @csrf
                             <!--begin::Heading-->
                             <div class="text-center mb-11">
@@ -45,13 +44,20 @@
                                 <!--end::Subtitle=-->
                             </div>
                             <!--end::Heading-->
+                            <!-- begin::Error message -->
+                            @if(session('error'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('error') }}
+                            </div>
+                            @endif
+                            <!-- end::Error message -->
                             <!--begin::Input group=-->
                             <div class="fv-row mb-8">
                                 <!--begin::Level-->
-                                <select name="role" id="role" class="form-select bg-transparent">
+                                <select name="level" id="level" class="form-select bg-transparent">
                                     <option disabled selected>Login sebagai:</option>
-                                    <option value="1">Mahasiswa USK</option>
-                                    <option value="2">Dosen (DPL/Korcam)</option>
+                                    <option value="mahasiswa">Mahasiswa USK</option>
+                                    <option value="dosen">Dosen (DPL/Korcam)</option>
                                     <option value="mhs_non_usk">Mahasiswa Non USK</option>
                                 </select>
                                 <!--end::Level-->
@@ -60,7 +66,7 @@
                             <!--begin::Input group=-->
                             <div class="fv-row mb-8">
                                 <!--begin::Email-->
-                                <input type="number" placeholder="NPM / NIP" name="nim" autocomplete="off" class="form-control bg-transparent" />
+                                <input type="number" placeholder="NPM / NIP" name="username" autocomplete="off" class="form-control bg-transparent" />
                                 <!--end::Email-->
                             </div>
                             <!--end::Input group=-->

@@ -10,7 +10,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::paginate(10);
-        return view('users-management', compact('users'));
+        return view('panitia.users-management', compact('users'));
     }
 
     public function store(Request $request)

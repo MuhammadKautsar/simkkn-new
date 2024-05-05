@@ -12,13 +12,13 @@ class KknController extends Controller
     public function index()
     {
         $kkns = Periode::orderBy('id', 'desc')->paginate(10);
-        return view('dashboard', compact('kkns'));
+        return view('panitia.dashboard', compact('kkns'));
     }
 
     public function jenis_kkn()
     {
         $jenis_kkns = JenisKkn::all();
-        return view('jenis-kkn', compact('jenis_kkns'));
+        return view('panitia.jenis-kkn', compact('jenis_kkns'));
     }
 
     public function create()

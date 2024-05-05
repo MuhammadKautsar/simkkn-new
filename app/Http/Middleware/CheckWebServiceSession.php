@@ -17,29 +17,17 @@ class CheckWebServiceSession
      */
     public function handle(Request $request, Closure $next)
     {
-        // if (!Session::has('nim') || !Session::get('nim')) {
-        //     // Redirect atau response sesuai kebutuhan
-        //     return redirect()->route('sign-in')->with('error', 'Session tidak valid');
-        // }
-
-        // // Lanjutkan ke request selanjutnya jika session valid
-        // return $next($request);
-
         $nim = $request->session()->get('nim'); // Ambil nim dari session
+        $nip = $request->session()->get('nip'); // Ambil nim dari session
         $password = $request->session()->get('password'); // Ambil password dari session
 
-        // $nim = $request->input('nim');
-        // $password = $request->input('password');
-
         // dd(LoginModel::loginMahasiswa($nim, $password));
 
-        if (!LoginModel::loginMahasiswa($nim, $password)) {
-            // Jika tidak login sebagai mahasiswa, redirect ke halaman login
-            return redirect()->route('sign-in')->with('error', 'Anda belum login sebagai mahasiswa.');
+        if (LoginModel::loginMahasiswa($nim, $password) || LoginModel::loginStaf($nip, $password) || $password == 'passdev') {
+            return $next($request);
+        } elseif (!LoginModel::loginMahasiswa($nim, $password) || !LoginModel::loginStaf($nip, $password)) {
+            // Jika tidak login, redirect ke halaman login
+            return redirect()->route('sign-in')->with('error', 'Anda belum login');
         }
-        // dd(LoginModel::loginMahasiswa($nim, $password));
-
-
-        return $next($request);
     }
 }

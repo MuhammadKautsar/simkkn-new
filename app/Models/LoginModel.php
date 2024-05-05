@@ -89,6 +89,29 @@ class LoginModel extends Model
         return false; // Login gagal
     }
 
+    public static function loginStaf($nip, $password)
+    {
+        $url = 'http://ws.usk.ac.id/webservice/mahasiswa/cmahasiswa/login';
+
+        $data = [
+            'nip' => $nip,
+            'password' => $password
+        ];
+
+        // Lakukan request ke Web Service dengan HTTP Client Laravel
+        $response = Http::asForm()->post($url, $data);
+
+        // Handle response
+        if ($response->successful()) {
+            $result = self::parseXmlResponse($response->body());
+            if ($result && isset($result->status_info_login) && $result->status_info_login == 2) {
+                return true; // Login berhasil
+            }
+        }
+
+        return false; // Login gagal
+    }
+
     // Fungsi untuk mem-parsing response XML
     private static function parseXmlResponse($xmlString)
     {
@@ -96,21 +119,6 @@ class LoginModel extends Model
         $json = json_encode($xml);
         $data = json_decode($json);
         return $data;
-    }
-
-    public function loginStaf($nip, $password)
-    {
-        $response = Http::post('http://ws.usk.ac.id/webservice/dosen/cdosen/loginstaf', [
-            'nip' => $nip,
-            'password' => $password,
-        ]);
-
-        if ($response->successful()) {
-            $result = $response->json();
-            return $result['status_info_login'] == 2; // 2 adalah kode status untuk login berhasil
-        }
-
-        return false;
     }
 
     public function getAkun($nip)

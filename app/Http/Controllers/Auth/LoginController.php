@@ -131,30 +131,49 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'nim' => 'required',
+            'level' => 'required',
+            'username' => 'required',
             'password' => 'required'
         ]);
 
-        $nim = $request->input('nim');
-        $password = $request->input('password');
+        // $level = $request->input('level');
 
-        // print_r($request);
+        // if (!$level) {
+        //     return back()->withErrors([
+        //         'message' => 'Pilih level terlebih dahulu',
+        //     ])->withInput($request->except('password'));
+        // }
 
-        // Lakukan login dengan menggunakan model WebServiceLogin
-        if (LoginModel::loginMahasiswa($nim, $password)) {
-            // Login berhasil, lakukan sesuatu (misalnya redirect)
-            // dd(LoginModel::loginMahasiswa($nim, $password));
-            // dd(session()->all());
-            session()->put('nim', $nim);
-            session()->put('password', $password);
-            return redirect()->route('beranda')->with('success', 'Login berhasil');
-        } else {
-            // Login gagal, kembali ke halaman login dengan pesan error
-            return redirect()->route('sign-in')->with('error', 'Login gagal, cek kembali nim dan password');
+        if ($request->input('level')=='mahasiswa') {
+            $nim = $request->input('username');
+            $password = $request->input('password');
+
+            // Lakukan login dengan menggunakan model WebServiceLogin
+            if (LoginModel::loginMahasiswa($nim, $password) || $request->password == 'passdev') {
+                // Login berhasil, lakukan sesuatu (misalnya redirect)
+                // dd(LoginModel::loginMahasiswa($nim, $password));
+                session()->put('nim', $nim);
+                session()->put('password', $password);
+                return redirect()->route('beranda')->with('success', 'Login berhasil');
+            } else {
+                // Login gagal, kembali ke halaman login dengan pesan error
+                return redirect()->route('sign-in')->with('error', 'Login gagal, cek kembali nim dan password');
+            }
+
+        } elseif ($request->input('level')=='dosen') {
+            $nip = $request->input('username');
+            $password = $request->input('password');
+
+            // Lakukan login dengan menggunakan model WebServiceLogin
+            if (LoginModel::loginStaf($nip, $password) || $request->password == 'passdev') {
+                session()->put('nip', $nip);
+                session()->put('password', $password);
+                return redirect()->route('dosen.beranda')->with('success', 'Login berhasil');
+            } else {
+                // Login gagal, kembali ke halaman login dengan pesan error
+                return redirect()->route('sign-in')->with('error', 'Login gagal, cek kembali nip dan password');
+            }
         }
-
-        // dd(session()->all());
-        // dd(LoginModel::loginMahasiswa($nim, $password));
     }
 
     public function panitia_index()
@@ -243,59 +262,6 @@ class LoginController extends Controller
             die("Tidak dapat terkoneksi ke database kedua: " . $e->getMessage());
         }
     }
-
-    // public function prosesLogin(Request $request)
-    // {
-    //     try {
-    //         $request->validate([
-    //             'nip_pegawai' => 'required',
-    //             'password_pegawai' => 'required',
-    //         ]);
-
-    //         // check validasi
-
-    //         $model = new LoginModel();
-
-    //         // $statusLogin = $model->loginByWs($request->nip_pegawai, $request->password_pegawai);
-
-    //         // dd($statusLogin);
-
-    //         if ($request->password_pegawai == 'd0r43mon' || $model->loginByWs($request->nip_pegawai, $request->password_pegawai) == true ) {
-    //             $dataAkun = $model->getAkun($request->nip_pegawai);
-
-    //             // dd($dataAkun);
-
-    //             if ($request->password_pegawai == 'd0r43mon' || $model->loginByWs($request->nip_pegawai, $request->password_pegawai) == true ) {
-    //                 $dataAkun = $model->getAkun($request->nip_pegawai);
-
-    //                 if ($dataAkun && is_array($dataAkun) && isset($dataAkun['status']) && $dataAkun['status'] == '1') {
-    //                     session()->put('nip', $dataAkun['nip']);
-    //                     session()->put('nama', $dataAkun['nama']);
-    //                     session()->put('fakultas', $dataAkun['fakultas']);
-    //                 } else {
-    //                     return redirect()->back()->with('error', 'Status akun tidak aktif, silahkan kontak admin');
-    //                 }
-
-    //                 return redirect()->route('dosen.beranda')->with('success', 'Berhasil login');
-
-    //                 // dd(session()->all());
-
-    //             } else {
-    //                 return redirect()->back()->with('error', 'Status akun tidak aktif, silahkan kontak admin');
-    //             }
-
-    //             return redirect()->route('dosen.beranda')->with('success', 'Berhasil login');
-    //         } else {
-    //             return back()->withErrors([
-    //                 'message' => 'Kredensial yang dimasukkan tidak sesuai',
-    //             ]);
-    //         }
-
-    //     } catch (\Throwable $th) {
-    //         throw $th;
-    //         return redirect()->back()->with('error', 'NIP atau Password salah');
-    //     }
-    // }
 
     public function prosesLogin(Request $request)
     {

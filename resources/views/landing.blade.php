@@ -36,7 +36,7 @@ License: For each use you must have a valid license purchased only from above li
 	</head>
 	<!--end::Head-->
 	<!--begin::Body-->
-	<body id="kt_body" data-bs-spy="scroll" data-bs-target="#kt_landing_menu" class="bg-body position-relative app-blank">
+	<body id="beranda" data-bs-spy="scroll" data-bs-target="#kt_landing_menu" class="bg-body position-relative app-blank">
 		<!--begin::Theme mode setup on page load-->
 		<script>var defaultThemeMode = "light"; var themeMode; if ( document.documentElement ) { if ( document.documentElement.hasAttribute("data-bs-theme-mode")) { themeMode = document.documentElement.getAttribute("data-bs-theme-mode"); } else { if ( localStorage.getItem("data-bs-theme") !== null ) { themeMode = localStorage.getItem("data-bs-theme"); } else { themeMode = defaultThemeMode; } } if (themeMode === "system") { themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } document.documentElement.setAttribute("data-bs-theme", themeMode); }</script>
 		<!--end::Theme mode setup on page load-->
@@ -72,20 +72,20 @@ License: For each use you must have a valid license purchased only from above li
 								<!--end::Logo-->
 								<!--begin::Menu wrapper-->
 								<div class="d-lg-block" id="kt_header_nav_wrapper">
-									<div class="d-lg-block p-5 p-lg-0" data-kt-drawer="true" data-kt-drawer-name="landing-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="200px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_landing_menu_toggle" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav_wrapper'}">
+									<div class="d-lg-block p-5 p-lg-0" data-kt-drawer="true" data-kt-drawer-name="landing-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="200px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_landing_menu_toggle" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#beranda', lg: '#kt_header_nav_wrapper'}">
 										<!--begin::Menu-->
 										<div class="menu menu-column flex-nowrap menu-rounded menu-lg-row menu-title-gray-600 menu-state-title-primary nav nav-flush fs-5 fw-semibold" id="kt_landing_menu">
 											<!--begin::Menu item-->
 											<div class="menu-item">
 												<!--begin::Menu link-->
-												<a class="menu-link nav-link active py-3 px-4 px-xxl-6" href="#kt_body" data-kt-scroll-toggle="true" data-kt-drawer-dismiss="true">Beranda</a>
+												<a class="menu-link nav-link active py-3 px-4 px-xxl-6" href="#beranda" data-kt-scroll-toggle="true" data-kt-drawer-dismiss="true">Beranda</a>
 												<!--end::Menu link-->
 											</div>
 											<!--end::Menu item-->
 											<!--begin::Menu item-->
 											<div class="menu-item">
 												<!--begin::Menu link-->
-												<a class="menu-link nav-link py-3 px-4 px-xxl-6" href="#how-it-works" data-kt-scroll-toggle="true" data-kt-drawer-dismiss="true">Informasi Pendaftaran</a>
+												<a class="menu-link nav-link py-3 px-4 px-xxl-6" href="#informasi_pendaftaran" data-kt-scroll-toggle="true" data-kt-drawer-dismiss="true">Informasi Pendaftaran</a>
 												<!--end::Menu link-->
 											</div>
 											<!--end::Menu item-->
@@ -132,14 +132,14 @@ License: For each use you must have a valid license purchased only from above li
 				<!--end::Curve bottom-->
 			</div>
 			<!--end::Header Section-->
-			<!--begin::How It Works Section-->
+			<!--begin::Informasi Pendaftaran Section-->
 			<div class="mb-n10 mb-lg-n20 z-index-2">
 				<!--begin::Container-->
 				<div class="container">
 					<!--begin::Heading-->
 					<div class="text-center mb-17">
 						<!--begin::Title-->
-						<h3 class="fs-2hx text-gray-900 mb-5" id="how-it-works" data-kt-scroll-offset="{default: 100, lg: 150}">Tahapan Pengisian Formulir</h3>
+						<h3 class="fs-2hx text-gray-900 mb-5" id="informasi_pendaftaran" data-kt-scroll-offset="{default: 100, lg: 150}">Tahapan Pengisian Formulir</h3>
 						<!--end::Title-->
 						<!--begin::Text-->
 						<div class="fs-5 text-muted fw-bold">Untuk dapat melengkapi formulir registrasi online anda silahkan mengisi tahapan berikut.</div>
@@ -265,7 +265,7 @@ License: For each use you must have a valid license purchased only from above li
 				</div>
 				<!--end::Container-->
 			</div>
-			<!--end::How It Works Section-->
+			<!--end::Informasi Pendaftaran Section-->
 			<!--end::Statistics Section-->
 			<!--begin::Pricing Section-->
 			<div class="mt-sm-n20">

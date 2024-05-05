@@ -20,7 +20,6 @@
                     </a>
                     <!--end::Logo-->
                     <!--begin::Title-->
-                    <h1 class="text-white text-center fw-normal m-0">Kuliah Kerja Nyata</h1>
                     <!--end::Title-->
                 </div>
                 <!--begin::Aside-->
