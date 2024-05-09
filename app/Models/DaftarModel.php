@@ -11,7 +11,7 @@ class DaftarModel extends Model
 
     // protected static $key = 'd4ftar_u5k';
 
-    public function get_mhs($nim13, $field){
+    public static function get_mhs($nim13, $fields){
 		// The URL of the web service
 		$url = "http://ws.usk.ac.id/webservice/pustaka/mahasiswa/cmahasiswa/mhs/npm/".$nim13."/key/lp2m23mola/";
 
@@ -36,8 +36,43 @@ class DaftarModel extends Model
 		// Convert the XML data to JSON
 		$simpleXml = simplexml_load_string($xml);
 		$mhs = json_decode($simpleXml, true);
-		$data = (string) $simpleXml->$field;
+
+		// Initialize an array to store the data
+        $data = [];
+
+        // Loop through the specified fields and add them to the data array
+        foreach ($fields as $field) {
+            $data[$field] = (string) $simpleXml->$field;
+        }
 
 		return $data;
 	}
+
+    public static function getJumlahSKS($nim)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://krs.usk.ac.id/api/krs/jumlah-sks-kkn',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array('nim' => $nim),
+            CURLOPT_HTTPHEADER => array(
+                'x-token: dRgUkXp2s5v8y/B?E(G+KbPeShVmYq'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $arr = json_decode($response, true);
+        $jumlah_sks = $arr["data"]["jumlah_sks"];
+
+        return $jumlah_sks;
+    }
 }

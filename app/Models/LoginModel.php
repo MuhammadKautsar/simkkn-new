@@ -50,22 +50,6 @@ class LoginModel extends Model
     //     return false;
     // }
 
-    // public function loginMahasiswa($nim, $password)
-    // {
-    //     $response = Http::post('http://ws.usk.ac.id/webservice/mahasiswa/cmahasiswa/login', [
-    //         'nim' => $nim,
-    //         'password' => $password,
-    //     ]);
-    //     print_r($response);
-
-    //     if ($response->successful()) {
-    //         $result = $response->json();
-    //         return $result['status_info_login'] == 2; // 2 adalah kode status untuk login berhasil
-    //     }
-
-    //     return false;
-    // }
-
     public static function loginMahasiswa($nim, $password)
     {
         $url = 'http://ws.usk.ac.id/webservice/mahasiswa/cmahasiswa/login';

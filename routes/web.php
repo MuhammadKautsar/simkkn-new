@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\DaftarKknController;
 
 Route::get('/', function () {
     return view('landing');
@@ -23,9 +24,6 @@ Route::get('/profile', function () {
     return view('account-pages.profile');
 })->name('profile')->middleware('auth');
 
-Route::get('/tes', [LoginController::class, 'testConnection'])
-    ->middleware('guest');
-
 Route::get('/sign-in', [LoginController::class, 'index'])
     ->middleware('guest')
     ->name('sign-in');
@@ -36,16 +34,15 @@ Route::post('/sign-in', [LoginController::class, 'login'])
 // Route::post('/sign-in', [LoginController::class, 'prosesLogin'])
 //     ->middleware('guest');
 
-Route::get('/logout', [LoginController::class, 'destroy'])
+Route::get('/logout', [LoginController::class, 'logout'])
     ->name('logout');
 
 Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::get('/beranda', [MahasiswaController::class, 'index'])->name('beranda');
-    Route::get('/daftar', [MahasiswaController::class, 'create'])->name('daftar');
+    Route::get('/daftarkkn', [DaftarKknController::class, 'daftar'])->name('daftar');
 });
 
 Route::prefix('dosen')->middleware(['checkWebServiceSession'])->group(function () {
-// Route::prefix('dosen')->group(function () {
     Route::get('beranda', [DosenController::class, 'index'])->name('dosen.beranda');
     Route::get('detail', [DosenController::class, 'create'])->name('detail');
 });
@@ -57,9 +54,7 @@ Route::get('panitia/sign-in', [LoginController::class, 'panitia_index'])
 Route::post('panitia/sign-in', [LoginController::class, 'panitia_login'])
     ->middleware('guest');
 
-// Route::group(['middleware' => 'auth'], function () {
-Route::group([], function () {
-    // Route::get('/dashboard', [KknController::class, 'index'])->name('dashboard')->middleware('auth:web,puksi');
+Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::get('/dashboard', [KknController::class, 'index'])->name('dashboard');
     Route::get('/kkn/create', [KknController::class, 'create'])->name('kkn.create');
     Route::post('/kkn', [KknController::class, 'store'])->name('kkn.store');

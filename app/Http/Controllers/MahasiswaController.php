@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DaftarModel;
 use App\Models\Kkn;
 use App\Models\Periode;
 use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // dd(session()->all());
-        $kkns = Periode::where('status', '1')->orderBy('id', 'desc')->get();
-        return view('mahasiswa.beranda', compact('kkns'));
-    }
+        $nim = $request->session()->get('nim');
 
-    public function create()
-    {
-        return view('mahasiswa.daftar-kkn');
+        $jumlah_sks = DaftarModel::getJumlahSKS($nim);
+
+        $kkns = Periode::where('status', '1')->orderBy('id', 'desc')->get();
+        return view('mahasiswa.beranda', compact('kkns', 'jumlah_sks'));
     }
 
     public function store(Request $request)
@@ -41,6 +40,6 @@ class MahasiswaController extends Controller
         $kkn->save();
 
         // Redirect dengan pesan sukses
-        return redirect()->route('dashboard')->with('success', 'KKN baru berhasil ditambahkan.');
+        return redirect()->route('beranda')->with('success', 'Berhasil daftar KKN.');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kkn;
 use App\Models\Periode;
 use App\Models\JenisKkn;
+use App\Models\DaftarModel;
 use Illuminate\Http\Request;
 
 class DaftarKknController extends Controller
@@ -21,10 +22,15 @@ class DaftarKknController extends Controller
         return view('jenis-kkn', compact('jenis_kkns'));
     }
 
-    public function create()
+    public function daftar(Request $request)
     {
-        $jenis_kkns = JenisKkn::all();
-        return view('panitia.kkn-baru', compact('jenis_kkns'));
+        $nim = $request->session()->get('nim');
+
+        $fields = ['npm', 'nama', 'tempat_lahir', 'tanggal_lahir', 'email', 'alamat', 'no_tlp_mhs'];
+
+        $mahasiswa = DaftarModel::get_mhs($nim, $fields);
+
+        return view('mahasiswa.daftar-kkn', compact('mahasiswa'));
     }
 
     public function buat()

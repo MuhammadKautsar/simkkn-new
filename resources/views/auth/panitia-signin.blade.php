@@ -44,6 +44,13 @@
                                 <!--end::Subtitle=-->
                             </div>
                             <!--end::Heading-->
+                            <!-- begin::Error message -->
+                            @if(session('error'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('error') }}
+                            </div>
+                            @endif
+                            <!-- end::Error message -->
                             <!--begin::Input group=-->
                             <div class="fv-row mb-8">
                                 <!--begin::Level-->
@@ -58,7 +65,7 @@
                             <!--begin::Input group=-->
                             <div class="fv-row mb-8">
                                 <!--begin::Email-->
-                                <input type="number" placeholder="NPM / NIP" name="nip" autocomplete="off" class="form-control bg-transparent" />
+                                <input type="number" placeholder="NIP" name="username" autocomplete="off" class="form-control bg-transparent" />
                                 <!--end::Email-->
                             </div>
                             <!--end::Input group=-->
@@ -78,14 +85,8 @@
                             <!--end::Wrapper-->
                             <!--begin::Submit button-->
                             <div class="d-grid mb-10">
-                                <button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
-                                    <!--begin::Indicator label-->
-                                    <span class="indicator-label">Login</span>
-                                    <!--end::Indicator label-->
-                                    <!--begin::Indicator progress-->
-                                    <span class="indicator-progress">Please wait...
-                                    <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                    <!--end::Indicator progress-->
+                                <button type="submit"  class="btn btn-primary">
+                                    Login
                                 </button>
                             </div>
                             <!--end::Submit button-->
