@@ -33,8 +33,8 @@
                                             <div class="card-header pt-7 pb-7">
                                                 <!--begin::Title-->
                                                 <h3 class="card-title align-items-start flex-column">
-                                                    <span class="text-gray-500 mt-1 fw-semibold fs-5">Sekarang anda memiliki {{ $jumlah_sks }} SKS</span>
-                                                    <span class="text-gray-500 mt-1 fw-semibold fs-5">Anda belum mendaftar kegiatan KKN. Silahkan mendaftar kegiatan KKN yang sedang dibuka dibawah ini.</span>
+                                                    <span class="text-gray-500 mt-1 fw-semibold fs-4">Sekarang anda memiliki {{ $jumlah_sks }} SKS</span>
+                                                    <span class="text-gray-500 mt-1 fw-semibold fs-4">Anda belum mendaftar kegiatan KKN. Silahkan mendaftar kegiatan KKN yang sedang dibuka dibawah ini.</span>
                                                 </h3>
                                                 <!--end::Title-->
                                             </div>
@@ -65,16 +65,16 @@
                                                 <!--begin::Table container-->
                                                 <div class="table-responsive">
                                                     <!--begin::Table-->
-                                                    <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                                                    <table class="table align-middle gs-0 gy-4">
                                                         <!--begin::Table head-->
                                                         <thead class="bg-gray-100">
                                                             <tr>
-                                                                <th class="text-center text-secondary text-xs font-weight-semibold opacity-7">Nama / Periode</th>
-                                                                <th class="text-center text-secondary text-xs font-weight-semibold opacity-7 ps-2">Jenis</th>
-                                                                <th class="text-center text-secondary text-xs font-weight-semibold opacity-7 ps-2">Lokasi</th>
-                                                                <th class="text-center text-secondary text-xs font-weight-semibold opacity-7 ps-2">Masa Kegiatan</th>
-                                                                <th class="text-center text-secondary text-xs font-weight-semibold opacity-7 ps-2">Status</th>
-                                                                <th class="text-center text-secondary text-xs font-weight-semibold opacity-7 ps-2">Aksi</th>
+                                                                <th class="text-center min-w-125px">Nama / Periode</th>
+                                                                <th class="text-center min-w-125px">Jenis</th>
+                                                                <th class="text-center min-w-125px">Lokasi</th>
+                                                                <th class="text-center min-w-125px">Masa Kegiatan</th>
+                                                                <th class="text-center min-w-125px">Status</th>
+                                                                <th class="text-center min-w-125px">Aksi</th>
                                                             </tr>
                                                         </thead>
                                                         <!--end::Table head-->
@@ -82,15 +82,15 @@
                                                         <tbody>
                                                             @foreach ($kkns as $kkn)
                                                             <tr>
-                                                                <td class="mb-0 text-sm">{{ $kkn->masa_periode }}</td>
-                                                                <td class="text-center mb-0 text-sm">{{ $kkn->jenisKkn->kategori }}</td>
-                                                                <td class="text-center mb-0 text-sm">{{ $kkn->lokasi }}</td>
-                                                                <td class="mb-0 text-sm">{{ $kkn->ket }}</td>
+                                                                <td class="text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->masa_periode }}</td>
+                                                                <td class="text-center text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->jenisKkn->kategori }}</td>
+                                                                <td class="text-center text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->lokasi }}</td>
+                                                                <td class="text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->ket }}</td>
                                                                 {{-- <td class="mb-0 text-sm">{{ $kkn->status }}</td> --}}
                                                                 @if($kkn->status === 1)
-                                                                    <td><span class="badge badge-primary">Aktif</span></td>
+                                                                    <td class="text-center"><span class="badge badge-primary">Aktif</span></td>
                                                                 @endif
-                                                                <td>
+                                                                <td class="text-center">
                                                                     <a href="{{ route('daftar') }}" class="btn btn-primary px-3 mb-0">Daftar</a>
                                                                 </td>
                                                             </tr>

@@ -100,7 +100,7 @@
                                                     </div>
                                                     <div class="row p-2">
                                                         <label for="kode_kkn">jumlah sks:</label>
-                                                        <input type="text" name="kode_kkn" id="kode_kkn" placeholder="" class="form-control" required>
+                                                        <input disabled type="text" name="kode_kkn" id="kode_kkn" placeholder="" class="form-control" required value="{{ $jumlah_sks }}">
                                                         @error('kode_kkn')
                                                             <span class="text-danger text-sm">{{ $message }}</span>
                                                         @enderror

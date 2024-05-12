@@ -14,9 +14,11 @@ class MahasiswaController extends Controller
         $nim = $request->session()->get('nim');
 
         $jumlah_sks = DaftarModel::getJumlahSKS($nim);
+        $fields = ['npm', 'nama'];
+        $mahasiswa = DaftarModel::get_mhs($nim, $fields);
 
         $kkns = Periode::where('status', '1')->orderBy('id', 'desc')->get();
-        return view('mahasiswa.beranda', compact('kkns', 'jumlah_sks'));
+        return view('mahasiswa.beranda', compact('kkns', 'jumlah_sks', 'mahasiswa'));
     }
 
     public function store(Request $request)

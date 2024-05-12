@@ -15,7 +15,7 @@
                 <!--begin::Aside-->
                 <div class="d-flex flex-center flex-lg-start flex-column">
                     <!--begin::Logo-->
-                    <a href="index.html" class="mb-7">
+                    <a href="/" class="mb-7">
                         <img alt="Logo" src="{{ asset('assets/media/logos/logokkn.png') }}" />
                     </a>
                     <!--end::Logo-->

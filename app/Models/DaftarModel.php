@@ -53,7 +53,8 @@ class DaftarModel extends Model
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://krs.usk.ac.id/api/krs/jumlah-sks-kkn',
+            // CURLOPT_URL => 'https://krs.usk.ac.id/api/krs/jumlah-sks-kkn',
+            CURLOPT_URL => 'http://10.44.0.180/api/krs/jumlah-sks-kkn',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

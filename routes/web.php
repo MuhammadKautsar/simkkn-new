@@ -7,10 +7,8 @@ use App\Http\Controllers\DosenController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\DaftarKknController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('landing');
@@ -55,7 +53,7 @@ Route::post('panitia/sign-in', [LoginController::class, 'panitia_login'])
     ->middleware('guest');
 
 Route::middleware(['checkWebServiceSession'])->group(function () {
-    Route::get('/dashboard', [KknController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'dashboard_panitia'])->name('dashboard');
     Route::get('/kkn/create', [KknController::class, 'create'])->name('kkn.create');
     Route::post('/kkn', [KknController::class, 'store'])->name('kkn.store');
     Route::get('/kkn/{id}/edit', [KknController::class, 'edit'])->name('kkn.edit');

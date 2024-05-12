@@ -27,10 +27,11 @@ class DaftarKknController extends Controller
         $nim = $request->session()->get('nim');
 
         $fields = ['npm', 'nama', 'tempat_lahir', 'tanggal_lahir', 'email', 'alamat', 'no_tlp_mhs'];
+        $jumlah_sks = DaftarModel::getJumlahSKS($nim);
 
         $mahasiswa = DaftarModel::get_mhs($nim, $fields);
 
-        return view('mahasiswa.daftar-kkn', compact('mahasiswa'));
+        return view('mahasiswa.daftar-kkn', compact('mahasiswa', 'jumlah_sks'));
     }
 
     public function buat()
