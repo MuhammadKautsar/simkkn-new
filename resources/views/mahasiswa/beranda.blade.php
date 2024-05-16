@@ -72,7 +72,7 @@
                                                                 <th class="text-center min-w-125px">Nama / Periode</th>
                                                                 <th class="text-center min-w-125px">Jenis</th>
                                                                 <th class="text-center min-w-125px">Lokasi</th>
-                                                                <th class="text-center min-w-125px">Masa Kegiatan</th>
+                                                                <th class="text-center min-w-125px">Masa Pendaftaran</th>
                                                                 <th class="text-center min-w-125px">Status</th>
                                                                 <th class="text-center min-w-125px">Aksi</th>
                                                             </tr>
@@ -84,7 +84,11 @@
                                                             <tr>
                                                                 <td class="text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->masa_periode }}</td>
                                                                 <td class="text-center text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->jenisKkn->kategori }}</td>
-                                                                <td class="text-center text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->lokasi }}</td>
+                                                                <td class="text-center text-gray-500 mt-1 fw-semibold fs-4">
+                                                                    @foreach ($kkn->lokasi_mappings as $lokasi)
+                                                                        {{ $lokasi->id_kabupaten }}
+                                                                    @endforeach
+                                                                </td>
                                                                 <td class="text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->ket }}</td>
                                                                 {{-- <td class="mb-0 text-sm">{{ $kkn->status }}</td> --}}
                                                                 @if($kkn->status === 1)

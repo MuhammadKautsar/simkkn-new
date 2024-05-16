@@ -14,10 +14,6 @@ Route::get('/', function () {
     return view('landing');
 });
 
-Route::get('/berkas', function () {
-    return view('panitia.berkas');
-})->name('berkas');
-
 Route::get('/profile', function () {
     return view('account-pages.profile');
 })->name('profile')->middleware('auth');
@@ -38,6 +34,7 @@ Route::get('/logout', [LoginController::class, 'logout'])
 Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::get('/beranda', [MahasiswaController::class, 'index'])->name('beranda');
     Route::get('/daftarkkn', [DaftarKknController::class, 'daftar'])->name('daftar');
+    Route::post('/submit_registrasi', [DaftarKknController::class, 'submit_registrasi'])->name('submit_registrasi');
 });
 
 Route::prefix('dosen')->middleware(['checkWebServiceSession'])->group(function () {
@@ -60,6 +57,8 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
 
     Route::put('/kkn/{id}/update', [KknController::class, 'update'])->name('kkn.update');
 
+    Route::get('/berkas', [KknController::class, 'berkas'])->name('berkas');
+
     Route::get('/jenis-kkn', [KknController::class, 'jenis_kkn'])->name('jenis.kkn');
     Route::post('/jenis-kkn-add', [KknController::class, 'add_jenis_kkn'])->name('jenis-kkn.add');
 
@@ -69,3 +68,6 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
 
 Route::get('/user-profile', [ProfileController::class, 'index'])->name('users.profile')->middleware('auth');
 Route::put('/user-profile/update', [ProfileController::class, 'update'])->name('users.update')->middleware('auth');
+
+Route::post('/get-kabupaten', [DaftarKknController::class, 'getKabupaten']);
+Route::post('/get-kecamatan', [DaftarKknController::class, 'getKecamatan']);

@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $nip = $request->session()->get('nip');
         $users = User::paginate(10);
-        return view('panitia.users-management', compact('users'));
+        return view('panitia.users-management', compact('users', 'nip'));
     }
 
     public function store(Request $request)

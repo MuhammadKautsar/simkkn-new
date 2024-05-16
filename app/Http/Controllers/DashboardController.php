@@ -8,12 +8,14 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function dashboard_panitia()
+    public function dashboard_panitia(Request $request)
     {
+        $nip = $request->session()->get('nip');
+
         // $kkns = Periode::orderBy('id', 'desc')->paginate(10);
         $kkns = Periode::orderBy('id', 'desc')->where('status', '<>', 2)->get();
 
-        return view('panitia.dashboard', compact('kkns'));
+        return view('panitia.dashboard', compact('kkns', 'nip'));
     }
 
     // public function dashboard_panitia()

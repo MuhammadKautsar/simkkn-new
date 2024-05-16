@@ -16,9 +16,20 @@
                     <!--begin::Content wrapper-->
                     <div class="d-flex flex-column flex-column-fluid">
                         <!--begin::Toolbar-->
-                        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
-                        </div>
-                        <!--end::Toolbar-->
+							<div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+								<!--begin::Toolbar container-->
+								<div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
+									<!--begin::Page title-->
+									<div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+										<!--begin::Title-->
+										<h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Formulir Registrasi Online KKN</h1>
+										<!--end::Title-->
+									</div>
+									<!--end::Page title-->
+								</div>
+								<!--end::Toolbar container-->
+							</div>
+						<!--end::Toolbar-->
                         <!--begin::Content-->
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
@@ -29,99 +40,977 @@
                                     <div class="col-xl-12">
                                         <!--begin::Table widget 14-->
                                         <div class="card card-flush h-md-100">
-                                            <!--begin::Header-->
-                                            <div class="card-header pt-7">
-                                                <!--begin::Title-->
-                                                <h3 class="card-title align-items-start flex-column">
-                                                    <span class="card-label fw-bold text-gray-800">Daftar KKN</span>
-                                                </h3>
-                                                <!--end::Title-->
-                                            </div>
-                                            <!--end::Header-->
-                                            <!--begin::Body-->
-                                            <div class="card-body pt-6">
-                                                <form action="{{ route('kkn.store') }}" method="POST">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <label for="nama_kkn">Nama Mahasiswa:</label>
-                                                            <input disabled type="text" name="nama_kkn" id="nama_kkn" class="form-control" value="{{ $mahasiswa['nama'] }}">
-                                                            @error('nama_kkn')
-                                                                <span class="text-danger text-sm">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <label for="masa_kegiatan">NPM:</label>
-                                                            <input disabled type="text" name="masa_kegiatan" id="masa_kegiatan" class="form-control" value="{{ $mahasiswa['npm'] }}">
-                                                            @error('masa_kegiatan')
-                                                                <span class="text-danger text-sm">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </div>
-                                                    <div class="row p-2">
-                                                        <label for="jenis_kkn">Alamat</label>
-                                                        <input type="text" name="jenis_kkn" id="jenis_kkn" placeholder="" class="form-control" required value="{{ $mahasiswa['alamat'] }}">
-                                                        @error('jenis_kkn')
-                                                            <span class="text-danger text-sm">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <label for="masa_pendaftaran">Tempat lahir:</label>
-                                                            <input disabled type="text" name="masa_pendaftaran" id="masa_pendaftaran" placeholder="" class="form-control" value="{{ $mahasiswa['tempat_lahir'] }}">
-                                                            @error('masa_pendaftaran')
-                                                                <span class="text-danger text-sm">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
+											<!--begin::Form-->
+											<form id="kt_ecommerce_settings_general_form" class="form" action="{{ route('submit_registrasi') }}" method="POST">
+                                                <!--begin::Header-->
+                                                <div class="card-header pt-7">
+                                                    <!--begin::Title-->
+                                                    <h3 class="card-title align-items-start flex-column">
+                                                        <span class="card-label fw-bold text-gray-800">Biodata/Pernyataan Mahasiswa KKN</span><br>
+                                                        <span class="text-muted fw-semibold fs-7">Jika data tidak ada, maka diisi dengan "-"</span>
+                                                    </h3>
+                                                    <!--end::Title-->
+                                                </div>
+                                                <!--end::Header-->
+                                                <!--begin::Card body-->
+                                                    <div class="card-body pt-5">
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-3">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Nama</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input disabled type="text" class="form-control form-control-solid" name="nama" value="{{ $mahasiswa['nama'] }}" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">NIM</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input disabled type="text" class="form-control form-control-solid" name="nim" value="{{ $mahasiswa['npm'] }}" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">NIK</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="nik" value="" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-3">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Tempat Lahir</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input disabled type="text" class="form-control form-control-solid" name="tmp_lahir" value="{{ $mahasiswa['tempat_lahir'] }}" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Tanggal Lahir</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input disabled type="text" class="form-control form-control-solid" name="tgl_lahir" value="{{ $mahasiswa['tanggal_lahir'] }}" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Jenis Kelamin</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input disabled type="text" class="form-control form-control-solid" name="jenis_kelamin" value="{{ $mahasiswa['jenis_kelamin'] }}" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-3">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Jumlah SKS yang Telah Lulus</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input disabled type="number" class="form-control form-control-solid" name="sks" value="{{ $jumlah_sks }}" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Email</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input readonly type="email" class="form-control form-control-solid" name="email" value="{{ $mahasiswa['email'] }}" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">No. Handphone</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="number" class="form-control form-control-solid" name="no_hp" value="{{ $mahasiswa['no_tlp_mhs'] }}" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
 
-                                                        <div class="col-6">
-                                                            <label for="">Tanggal lahir</label>
-                                                            <input disabled type="text" name="" id="" placeholder="" class="form-control" value="{{ $mahasiswa['tanggal_lahir'] }}">
-                                                            @error('')
-                                                                <span class="text-danger text-sm">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <label for="tahun_ajaran">Nomor hp:</label>
-                                                            <input type="text" name="tahun_ajaran" id="tahun_ajaran" placeholder="" class="form-control" required value="{{ $mahasiswa['no_tlp_mhs'] }}">
-                                                            @error('tahun_ajaran')
-                                                                <span class="text-danger text-sm">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
+                                                <!--end::Card body-->
+                                                <!--begin::Header-->
+                                                <div class="card-header pt-1">
+                                                    <!--begin::Title-->
+                                                    <h3 class="card-title align-items-start flex-column">
+                                                        <span class="card-label fw-bold text-gray-800">Silahkan lengkapi data-data di bawah ini</span>
+                                                    </h3>
+                                                    <!--end::Title-->
+                                                </div>
+                                                <!--end::Header-->
+                                                <!--begin::Card body-->
+                                                    <div class="card-body pt-5">
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-3">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Agama</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="agama" data-placeholder="Pilih Agama">
+                                                                                <option value="" disabled selected>Pilih Agama</option>
+                                                                                <option value="Islam">Islam</option>
+                                                                                <option value="Kristen Katolik">Kristen Katolik</option>
+                                                                                <option value="Kristen Protestan">Kristen Protestan</option>
+                                                                                <option value="Hindu">Hindu</option>
+                                                                                <option value="Budha">Budha</option>
+                                                                                <option value="Konghuchu">Konghuchu</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">BPJS</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="bpjs" data-placeholder="Pilih BPJS">
+                                                                                <option value="" disabled selected>Pilih BPJS</option>
+                                                                                <option value="Ada">Ada</option>
+                                                                                <option value="Tidak Ada">Tidak Ada</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span>Talenta</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="talenta" data-placeholder="Pilih Talenta">
+                                                                                <option value="" disabled selected>Pilih Talenta</option>
+                                                                                <option value="Moderator" >Moderator</option>
+                                                                                <option value="Qori">Qori</option>
+                                                                                <option value="Pembaca Doa">Pembaca Doa</option>
+                                                                                <option value="Dirigen">Dirigen</option>
+                                                                                <option value="Orator / Motivator">Orator / Motivator</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-3">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Status</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="status" data-placeholder="Pilih Status">
+                                                                                <option value="" disabled selected>Pilih Status</option>
+                                                                                <option value="Menikah">Menikah</option>
+                                                                                <option value="Belum Menikah">Belum Menikah</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Kewarganegaraan</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="warga" data-placeholder="Pilih Kewarganegaraan">
+                                                                                <option value="" disabled selected>Pilih Kewarganegaraan</option>
+                                                                                <option value="WNI">WNI</option>
+                                                                                <option value="WNA">WNA</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span>Warga Negara Asing</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="negara_asing" placeholder="Negara Kewarganegaraan Asing" />
+                                                                        <span class="helper-text">Hanya diisi untuk WNA</span>
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-4">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3" for="provinsi">
+                                                                            <span class="required">Provinsi Domisili Saat Ini</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="provinsi" class="provinsi form-select form-select-solid"
+                                                                            name="id_provinsi" data-placeholder="Pilih Provinsi" data-target="#kabupaten">
+                                                                                <option value="" disabled selected>Pilih Provinsi</option>
+                                                                                @foreach($provinsi as $prov)
+                                                                                    <option value="{{ $prov->id }}">{{ $prov->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3" for="kabupaten">
+                                                                            <span class="required">Kabupaten Domisili Saat Ini</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kabupaten" class="kabupaten form-select form-select-solid" name="id_kabupaten" data-placeholder="Pilih Kabupaten" data-target="#kecamatan">
+                                                                                <option value="" disabled selected>Pilih Kabupaten/Kota</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3" for="kecamatan">
+                                                                            <span class="required">Kecamatan Domisili Saat Ini</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kecamatan" class="kecamatan form-select form-select-solid" name="kecamatan" data-placeholder="Pilih Kecamatan">
+                                                                                <option value="" disabled selected>Pilih Kecamatan</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Alamat Domisili Saat Ini</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="alamat_lengkap" placeholder="Alamat Domisili Saat Ini" />
+                                                                        <span class="helper-text">Hanya isi nama jalan dan nama desa saja</span>
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span>Penyakit Berat yang Pernah Diderita</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="penyakit" data-placeholder="Pilih Kecamatan">
+                                                                                <option value="" disabled selected>Pilih Jenis Penyakit</option>
+                                                                                <option value="Schizoprenia">Schizoprenia</option>
+                                                                                <option value="Epilipsi">Epilipsi</option>
+                                                                                <option value="Dementia">Dementia</option>
+                                                                                <option value="Drug Abuse">Drug Abuse</option>
+                                                                                <option value="Trauma phsikis">Trauma phsikis</option>
+                                                                                <option value="TBC">TBC</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span>Penyakit Lain</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="penyakit_lain" placeholder="atau Isi Penyakit" />
+                                                                        <span class="helper-text">Bila tidak memiliki penyakit berat, kolom diatas di isi dengan "-".</span>
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span>Disabilitas</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="informasi_lainnya" data-placeholder="Disabilitas">
+                                                                                <option value="" disabled selected>Pilih salah satu</option>
+                                                                                <option value="Ya">Ya</option>
+                                                                                <option value="Tidak">Tidak</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span>Jenis disabilitas</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="jenis_disabilitas" placeholder="Jenis disabilitas" />
+                                                                        <span class="helper-text">Bila tidak ada, kolom diatas dapat dikosongkan.</span>
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
 
-                                                        <div class="col-6">
-                                                            <label for="semester">Nomor hp ayah:</label>
-                                                            <input type="text" name="semester" id="semester" placeholder="" class="form-control" required>
-                                                            @error('semester')
-                                                                <span class="text-danger text-sm">{{ $message }}</span>
-                                                            @enderror
-                                                        </div>
                                                     </div>
-                                                    <div class="row p-2">
-                                                        <label for="kode_kkn">jumlah sks:</label>
-                                                        <input disabled type="text" name="kode_kkn" id="kode_kkn" placeholder="" class="form-control" required value="{{ $jumlah_sks }}">
-                                                        @error('kode_kkn')
-                                                            <span class="text-danger text-sm">{{ $message }}</span>
-                                                        @enderror
+                                                <!--end::Card body-->
+                                                <!--begin::Header-->
+                                                <div class="card-header pt-1">
+                                                    <!--begin::Title-->
+                                                    <h3 class="card-title align-items-start flex-column">
+                                                        <span class="card-label fw-bold text-gray-800">Data Ayah</span>
+                                                    </h3>
+                                                    <!--end::Title-->
+                                                </div>
+                                                <!--end::Header-->
+                                                <!--begin::Card body-->
+                                                    <div class="card-body pt-5">
+                                                        <!--begin::Form-->
+                                                        <form id="kt_ecommerce_settings_general_form" class="form" action="#">
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span>Nama Ayah</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="nama_ayah" placeholder="" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span>No. Telpon Ayah</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="no_hp_ayah" placeholder="" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-4">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3" for="provinsi_ayah">
+                                                                            <span class="required">Provinsi</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="provinsi_ayah" class="provinsi form-select form-select-solid" name="provinsi_ayah" data-placeholder="Pilih Provinsi" data-target="#kabupaten_ayah">
+                                                                                <option value="" disabled selected>Pilih Provinsi</option>
+                                                                                @foreach($provinsi as $prov)
+                                                                                    <option value="{{ $prov->id }}">{{ $prov->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3" for="kabupaten_ayah">
+                                                                            <span class="required">Kabupaten</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kabupaten_ayah" class="kabupaten form-select form-select-solid" name="kabupaten_ayah" data-placeholder="Pilih Kabupaten" data-target="#kecamatan_ayah">
+                                                                                <option value="" disabled selected>Pilih Kabupaten/Kota</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3" for="kecamatan_ayah">
+                                                                            <span class="required">Kecamatan</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kecamatan_ayah" class="form-select form-select-solid" name="kecamatan_ayah" data-placeholder="Pilih Kecamatan">
+                                                                                <option value="" disabled selected>Pilih Kecamatan</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Alamat Ayah</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="alamat_lengkap_ayah" placeholder="Alamat Ayah" />
+                                                                        <span class="helper-text">Hanya isi nama jalan dan nama desa saja</span>
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
+                                                        </form>
+                                                        <!--end::Form-->
                                                     </div>
-                                                    <div class="row p-2">
-                                                        <label for="kuota_peserta">Upload Berkas</label>
-                                                        <input type="file" name="kuota_peserta" id="kuota_peserta" placeholder="" class="form-control" required>
-                                                        @error('kuota_peserta')
-                                                            <span class="text-danger text-sm">{{ $message }}</span>
-                                                        @enderror
+                                                <!--end::Card body-->
+                                                <!--begin::Header-->
+                                                <div class="card-header pt-1">
+                                                    <!--begin::Title-->
+                                                    <h3 class="card-title align-items-start flex-column">
+                                                        <span class="card-label fw-bold text-gray-800">Data Ibu</span>
+                                                    </h3>
+                                                    <!--end::Title-->
+                                                </div>
+                                                <!--end::Header-->
+                                                <!--begin::Card body-->
+                                                    <div class="card-body pt-5">
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span>Nama Ibu</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="nama_ibu" placeholder="" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span>No. Telpon Ibu</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="no_hp_ibu" placeholder="" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-4">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3" for="provinsi_ibu">
+                                                                            <span class="required">Provinsi</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="provinsi_ibu" class="provinsi form-select form-select-solid"
+                                                                            name="provinsi_ibu" data-placeholder="Pilih Provinsi" data-target="#kabupaten_ibu">
+                                                                                <option value="" disabled selected>Pilih Provinsi</option>
+                                                                                @foreach($provinsi as $prov)
+                                                                                    <option value="{{ $prov->id }}">{{ $prov->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3" for="kabupaten_ibu">
+                                                                            <span class="required">Kabupaten</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kabupaten_ibu" class="kabupaten form-select form-select-solid" name="kabupaten_ibu" data-placeholder="Pilih Kabupaten" data-target="#kecamatan_ibu">
+                                                                                <option value="" disabled selected>Pilih Kabupaten/Kota</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3" for="kecamatan_ibu">
+                                                                            <span class="required">Kecamatan</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kecamatan_ibu" class="form-select form-select-solid" name="kecamatan_ibu" data-placeholder="Pilih Kecamatan">
+                                                                                <option value="" disabled selected>Pilih Kecamatan</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Alamat Ibu</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="alamat_lengkap_ibu" placeholder="Alamat Ibu" />
+                                                                        <span class="helper-text">Hanya isi nama jalan dan nama desa saja</span>
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
+
                                                     </div>
-                                                    <div class="row p-2">
-                                                        <label for="kuota_peserta">Memenuhi Persyaratan :</label>
-                                                        <label>
-                                                            <input type="checkbox" name="terms" id="terms" required> Mencapai 100 sks
-                                                        </label>
+                                                <!--end::Card body-->
+                                                <!--begin::Header-->
+                                                <div class="card-header pt-1">
+                                                    <!--begin::Title-->
+                                                    <h3 class="card-title align-items-start flex-column">
+                                                        <span class="card-label fw-bold text-gray-800">Data Wali</span>
+                                                    </h3>
+                                                    <!--end::Title-->
+                                                </div>
+                                                <!--end::Header-->
+                                                <!--begin::Card body-->
+                                                    <div class="card-body pt-5">
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span>Nama Wali</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="nama_Wali" placeholder="" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span>No. Telpon Wali</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="no_hp_Wali" placeholder="" />
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
+                                                            <!--begin::Row-->
+                                                            <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-4">
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Provinsi</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="provinsi_wali" class="provinsi form-select form-select-solid" name="provinsi_wali" data-placeholder="Pilih Provinsi" data-target="#kabupaten_wali">
+                                                                                <option value="" disabled selected>Pilih Provinsi</option>
+                                                                                @foreach($provinsi as $prov)
+                                                                                    <option value="{{ $prov->id }}">{{ $prov->name }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Kabupaten</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kabupaten_wali" class="kabupaten form-select form-select-solid" name="kabupaten_wali" data-placeholder="Pilih Kabupaten" data-target="#kecamatan_wali">
+                                                                                <option value="" disabled selected>Pilih Kabupaten/Kota</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Kecamatan</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <div class="w-100">
+                                                                            <!--begin::Select2-->
+                                                                            <select id="kecamatan_wali" class="kecamatan form-select form-select-solid" name="kecamatan_wali" data-placeholder="Pilih Kecamatan">
+                                                                                <option value="" disabled selected>Pilih Kecamatan</option>
+                                                                            </select>
+                                                                            <!--end::Select2-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                                <!--begin::Col-->
+                                                                <div class="col">
+                                                                    <!--begin::Input group-->
+                                                                    <div class="fv-row mb-7">
+                                                                        <!--begin::Label-->
+                                                                        <label class="fs-6 fw-semibold form-label mt-3">
+                                                                            <span class="required">Alamat Wali</span>
+                                                                        </label>
+                                                                        <!--end::Label-->
+                                                                        <!--begin::Input-->
+                                                                        <input type="text" class="form-control form-control-solid" name="alamat_lengkap_wali" placeholder="Alamat Wali" />
+                                                                        <span class="helper-text">Hanya isi nama jalan dan nama desa saja</span>
+                                                                        <!--end::Input-->
+                                                                    </div>
+                                                                    <!--end::Input group-->
+                                                                </div>
+                                                                <!--end::Col-->
+                                                            </div>
+                                                            <!--end::Row-->
                                                     </div>
-                                                    <button type="submit" class="mt-6 mb-0 btn btn-success btn-sm float-end">Daftar</button>
-                                                </form>
-                                            </div>
-                                            <!--end: Card Body-->
+                                                <!--end::Card body-->
+                                                <!--begin::Header-->
+                                                <div class="card-header pt-1">
+                                                    <!--begin::Title-->
+                                                    <h3 class="card-title align-items-start flex-column">
+                                                        <span class="card-label fw-bold text-gray-800">Unggah Berkas</span>
+                                                    </h3>
+                                                    <!--end::Title-->
+                                                </div>
+                                                <!--end::Header-->
+                                                <!--begin::Card body-->
+                                                    <div class="card-body pt-5">
+                                                            <!--begin::Input group-->
+                                                            <div class="fv-row mb-7">
+                                                                <!--begin::Label-->
+                                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                                    <span class="required">Berkas Surat Izin Orang Tua/Surat Izin Suami</span>
+                                                                </label>
+                                                                <!--end::Label-->
+                                                                <!--begin::Input-->
+                                                                <input type="file" class="form-control form-control-solid" name="berkas_izin" value="" />
+                                                                <span class="helper-text">Upload Berkas Surat Izin Orang Tua/Surat Izin Suami serta berkas lainya yang dibutuhkan ( Maksimum File 2MB, Format File: PDF)</span>
+                                                                <!--end::Input-->
+                                                            </div>
+                                                            <!--end::Input group-->
+                                                            <!--begin::Input group-->
+                                                            <div class="fv-row mb-7">
+                                                                <!--begin::Label-->
+                                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                                    <span>Berkas surat keterangan dokter</span>
+                                                                </label>
+                                                                <!--end::Label-->
+                                                                <!--begin::Input-->
+                                                                <input type="file" class="form-control form-control-solid" name="berkas_dokter" value="" />
+                                                                <span class="helper-text">Upload Berkas surat keterangan dokter. (Maksimum File 2MB, Format File: PDF)</span>
+                                                                <!--end::Input-->
+                                                            </div>
+                                                            <!--end::Input group-->
+
+                                                            <div class="row p-2">
+                                                            <label for="syarat">Memenuhi Persyaratan :</label>
+                                                                <label>
+                                                                    <input type="checkbox" name="terms" id="terms" required> Mencapai 100 sks
+                                                                </label>
+                                                            </div>
+
+                                                            <!--begin::Separator-->
+                                                            <div class="separator mb-6"></div>
+                                                            <!--end::Separator-->
+                                                            <!--begin::Action buttons-->
+                                                            <div class="d-flex justify-content-end">
+                                                                <!--begin::Button-->
+                                                                <a href="/beranda"><button data-kt-contacts-type="cancel" class="btn btn-light me-3">Cancel</button></a>
+                                                                <!--end::Button-->
+                                                                <!--begin::Button-->
+                                                                <button type="submit" data-kt-contacts-type="submit" class="btn btn-primary">Submit</button>
+                                                                <!--end::Button-->
+                                                            </div>
+                                                            <!--end::Action buttons-->
+                                                    </div>
+                                                <!--end::Card body-->
+                                            </form>
+                                            <!--end::Form-->
                                         </div>
                                         <!--end::Table widget 14-->
                                     </div>
@@ -202,4 +1091,60 @@
     <script src="assets/js/custom/utilities/modals/users-search.js"></script>
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('body').on('change', '.provinsi', function () {
+                var id_provinsi = $(this).val();
+                var targetDropdown = $(this).data('target');
+
+                $.ajax({
+                    url: '/get-kabupaten',
+                    type: 'POST',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        id_provinsi: id_provinsi
+                    },
+                    success: function (data) {
+                        $(targetDropdown).empty();
+                        // console.log(id_provinsi);
+                        $(targetDropdown).append($('<option>').val('').text('Pilih Kabupaten/Kota'));
+                        $.each(data, function (key, value) {
+                            $(targetDropdown).append($('<option>').val(value.id).text(value.kabupaten));
+                        });
+                    }
+                });
+            });
+
+            $('body').on('change', '.kabupaten', function () {
+                var id_kabupaten = $(this).val();
+                var targetDropdown = $(this).data('target');
+
+                $.ajax({
+                    url: '/get-kecamatan',
+                    type: 'POST',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        id_kabupaten: id_kabupaten
+                    },
+                    success: function (data) {
+                        $(targetDropdown).empty();
+                        $(targetDropdown).append($('<option>').val('').text('Pilih Kecamatan'));
+                        $.each(data, function (key, value) {
+                            $(targetDropdown).append($('<option>').val(value.id).text(value.kecamatan));
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>

@@ -95,7 +95,15 @@
                                 <tr>
                                     <td class="mb-0 text-sm">{{ $kkn->masa_periode }}</td>
                                     <td class="text-center mb-0 text-sm">{{ $kkn->jenisKkn->kategori }}</td>
+                                    @if ($kkn->lokasi != '0')
                                     <td class="text-center mb-0 text-sm">{{ $kkn->lokasi }}</td>
+                                    @else
+                                    <td class="text-center mb-0 text-sm">
+                                        @foreach ($kkn->lokasi_mappings as $lokasi)
+                                            {{ $lokasi->id_kabupaten }}
+                                        @endforeach
+                                    </td>
+                                    @endif
                                     <td class="mb-0 text-sm">{{ $kkn->ket }}</td>
                                     {{-- <td class="mb-0 text-sm">{{ $kkn->status }}</td> --}}
                                     @if($kkn->status === 1)

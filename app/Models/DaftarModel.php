@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use DB;
 
 class DaftarModel extends Model
 {
@@ -75,5 +76,19 @@ class DaftarModel extends Model
         $jumlah_sks = $arr["data"]["jumlah_sks"];
 
         return $jumlah_sks;
+    }
+
+    public static function getKabupaten($id_provinsi)
+    {
+        return DB::table('regencies')
+            ->where('province_id', $id_provinsi)
+            ->get();
+    }
+
+    public static function getKecamatan($id_kabupaten)
+    {
+        return DB::table('districts')
+            ->where('regency_id', $id_kabupaten)
+            ->get();
     }
 }

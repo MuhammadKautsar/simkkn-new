@@ -15,16 +15,24 @@ class KknController extends Controller
         return view('panitia.dashboard', compact('kkns'));
     }
 
-    public function jenis_kkn()
+    public function berkas(Request $request)
     {
-        $jenis_kkns = JenisKkn::all();
-        return view('panitia.jenis-kkn', compact('jenis_kkns'));
+        $nip = $request->session()->get('nip');
+        return view('panitia.berkas', compact('nip'));
     }
 
-    public function create()
+    public function jenis_kkn(Request $request)
     {
+        $nip = $request->session()->get('nip');
         $jenis_kkns = JenisKkn::all();
-        return view('panitia.kkn-baru', compact('jenis_kkns'));
+        return view('panitia.jenis-kkn', compact('jenis_kkns', 'nip'));
+    }
+
+    public function create(Request $request)
+    {
+        $nip = $request->session()->get('nip');
+        $jenis_kkns = JenisKkn::all();
+        return view('panitia.kkn-baru', compact('jenis_kkns', 'nip'));
     }
 
     public function buat()

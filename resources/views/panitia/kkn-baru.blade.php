@@ -16,7 +16,7 @@
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                     <!--begin::Item-->
                     <li class="breadcrumb-item text-muted">
-                        <a href="index.html" class="text-muted text-hover-primary">Home</a>
+                        <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Beranda</a>
                     </li>
                     <!--end::Item-->
                     <!--begin::Item-->
@@ -25,7 +25,9 @@
                     </li>
                     <!--end::Item-->
                     <!--begin::Item-->
-                    <li class="breadcrumb-item text-muted">Management</li>
+                    <li class="breadcrumb-item text-muted">
+                        <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary">Daftar Kegiatan KKN</a>
+                    </li>
                     <!--end::Item-->
                     <!--begin::Item-->
                     <li class="breadcrumb-item">
@@ -33,7 +35,7 @@
                     </li>
                     <!--end::Item-->
                     <!--begin::Item-->
-                    <li class="breadcrumb-item text-muted">KKN</li>
+                    <li class="breadcrumb-item text-muted">Kegiatan KKN Baru</li>
                     <!--end::Item-->
                 </ul>
                 <!--end::Breadcrumb-->
@@ -47,125 +49,288 @@
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container container-xxl">
-            <div class="row justify-content-center">
-                <div class="col-lg-9 col-12">
-                    @if (session('error'))
-                        <div class="alert alert-danger" role="alert" id="alert">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-                    @if (session('success'))
-                        <div class="alert alert-success" role="alert" id="alert">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-                </div>
-            </div>
-            <!--begin::Card-->
-            <div class="card">
-                <!--begin::Card header-->
-                <div class="card-header border-0 pt-6">
-                    <!--begin::Card title-->
-                    <div class="card-title">
-                        <h5>Konfigurasi KKN</h5>
+            <!--begin::Row-->
+            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+                <!--begin::Col-->
+                <div class="col-xl-12">
+                    <!--begin::Table widget 14-->
+                    <div class="card card-flush h-md-100">
+                        <!--begin::Form-->
+                        <form id="kt_ecommerce_settings_general_form" class="form" action="{{ route('kkn.store') }}" method="POST">
+                            <!--begin::Header-->
+                            <div class="card-header pt-1">
+                                <!--begin::Title-->
+                                <h3 class="card-title align-items-start flex-column">
+                                    <span class="card-label fw-bold text-gray-800">Konfigurasi KKN</span>
+                                </h3>
+                                <!--end::Title-->
+                            </div>
+                            <!--end::Header-->
+                            <!--begin::Card body-->
+                                <div class="card-body pt-5">
+                                        <!--begin::Row-->
+                                        <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                            <!--begin::Col-->
+                                            <div class="col">
+                                                <!--begin::Input group-->
+                                                <div class="fv-row mb-7">
+                                                    <!--begin::Label-->
+                                                    <label class="fs-6 fw-semibold form-label mt-3">
+                                                        <span>Nama Kegiatan/Periode KKN:</span>
+                                                    </label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text" class="form-control form-control-solid" name="nama" placeholder="Contoh: KKN Reguler Periode XVIII" />
+                                                    <!--end::Input-->
+                                                </div>
+                                                <!--end::Input group-->
+                                            </div>
+                                            <!--end::Col-->
+                                            <!--begin::Col-->
+                                            <div class="col">
+                                                <!--begin::Input group-->
+                                                <div class="fv-row mb-7">
+                                                    <!--begin::Label-->
+                                                    <label class="fs-6 fw-semibold form-label mt-3">
+                                                        <span>Masa Kegiatan KKN:</span>
+                                                    </label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text" class="form-control form-control-solid" name="masa_periode" placeholder="Contoh: Januari 2020-Februari 2020" />
+                                                    <!--end::Input-->
+                                                </div>
+                                                <!--end::Input group-->
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Row-->
+                                        <!--begin::Row-->
+                                        <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                            <!--begin::Col-->
+                                            <div class="col">
+                                                <!--begin::Input group-->
+                                                <div class="fv-row mb-7">
+                                                    <!--begin::Label-->
+                                                    <label class="fs-6 fw-semibold form-label mt-3">
+                                                        <span>Jenis Kegiatan KKN:</span>
+                                                    </label>
+                                                    <!--end::Label-->
+                                                    <div class="w-100">
+                                                        <!--begin::Select2-->
+                                                        <select id="kt_ecommerce_select2_country" required class="form-select form-select-solid" name="jenis_kkn">
+                                                            <option disabled selected>- Pilih -</option>
+                                                            @foreach ($jenis_kkns as $item)
+                                                                <option value="{{ $item->id }}">{{ $item->kategori }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <!--end::Select2-->
+                                                    </div>
+                                                </div>
+                                                <!--end::Input group-->
+                                            </div>
+                                            <!--end::Col-->
+                                            <!--begin::Col-->
+                                            <div class="col">
+                                                <!--begin::Input group-->
+                                                <div class="fv-row mb-7">
+                                                    <!--begin::Label-->
+                                                    <label class="fs-6 fw-semibold form-label mt-3">
+                                                        <span>Kode Kegiatan KKN:</span>
+                                                    </label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text" class="form-control form-control-solid" name="kode_kkn" placeholder="Contoh: GL" />
+                                                    <!--end::Input-->
+                                                </div>
+                                                <!--end::Input group-->
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Row-->
+                                        <!--begin::Row-->
+                                        <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                            <!--begin::Col-->
+                                            <div class="col">
+                                                <!--begin::Input group-->
+                                                <div class="fv-row mb-7">
+                                                    <!--begin::Label-->
+                                                    <label class="fs-6 fw-semibold form-label mt-3">
+                                                        <span>Tahun Ajaran:</span>
+                                                    </label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="text" class="form-control form-control-solid" name="tahun" placeholder="" />
+                                                    <!--end::Input-->
+                                                </div>
+                                                <!--end::Input group-->
+                                            </div>
+                                            <!--end::Col-->
+                                            <!--begin::Col-->
+                                            <div class="col">
+                                                <!--begin::Input group-->
+                                                <div class="fv-row mb-7">
+                                                    <!--begin::Label-->
+                                                    <label class="fs-6 fw-semibold form-label mt-3">
+                                                        <span>Semester:</span>
+                                                    </label>
+                                                    <!--end::Label-->
+                                                    <div class="w-100">
+                                                        <!--begin::Select2-->
+                                                        <select id="kt_ecommerce_select2_country" required class="form-select form-select-solid" name="semester">
+                                                            <option value="3">Genap</option>
+                                                            <option value="1">Ganjil</option>
+                                                        </select>
+                                                        <!--end::Select2-->
+                                                    </div>
+                                                </div>
+                                                <!--end::Input group-->
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Row-->
+                                        <!--begin::Row-->
+                                        <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                            <!--begin::Col-->
+                                            <div class="col">
+                                                <!--begin::Input group-->
+                                                <div class="fv-row mb-7">
+                                                    <!--begin::Label-->
+                                                    <label class="fs-6 fw-semibold form-label mt-3">
+                                                        <span>Mulai Pendaftaran Online KKN:</span>
+                                                    </label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="date" class="form-control form-control-solid" name="tgl_mulai" placeholder="" />
+                                                    <!--end::Input-->
+                                                </div>
+                                                <!--end::Input group-->
+                                            </div>
+                                            <!--end::Col-->
+                                            <!--begin::Col-->
+                                            <div class="col">
+                                                <!--begin::Input group-->
+                                                <div class="fv-row mb-7">
+                                                    <!--begin::Label-->
+                                                    <label class="fs-6 fw-semibold form-label mt-3">
+                                                        <span>Akhir Pendaftaran Online KKN:</span>
+                                                    </label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="date" class="form-control form-control-solid" name="tgl_akhir" placeholder="" />
+                                                    <!--end::Input-->
+                                                </div>
+                                                <!--end::Input group-->
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Row-->
+                                        <!--begin::Row-->
+                                        <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                            <!--begin::Col-->
+                                            <div class="col">
+                                                <!--begin::Input group-->
+                                                <div class="fv-row mb-7">
+                                                    <!--begin::Label-->
+                                                    <label class="fs-6 fw-semibold form-label mt-3">
+                                                        <span>Minimal SKS:</span>
+                                                    </label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="number" class="form-control form-control-solid" name="min_sks" placeholder="Contoh: 120" />
+                                                    <!--end::Input-->
+                                                </div>
+                                                <!--end::Input group-->
+                                            </div>
+                                            <!--end::Col-->
+                                            <!--begin::Col-->
+                                            <div class="col">
+                                                <!--begin::Input group-->
+                                                <div class="fv-row mb-7">
+                                                    <!--begin::Label-->
+                                                    <label class="fs-6 fw-semibold form-label mt-3">
+                                                        <span>Kuota Peserta KKN:</span>
+                                                    </label>
+                                                    <!--end::Label-->
+                                                    <!--begin::Input-->
+                                                    <input type="number" class="form-control form-control-solid" name="kuota" placeholder="Contoh: 100" />
+                                                    <!--end::Input-->
+                                                </div>
+                                                <!--end::Input group-->
+                                            </div>
+                                            <!--end::Col-->
+                                        </div>
+                                        <!--end::Row-->
+
+                                        <!--begin::Separator-->
+                                        <div class="separator mb-6"></div>
+                                        <!--end::Separator-->
+                                        <!--begin::Action buttons-->
+                                        <div class="d-flex justify-content-end">
+                                            <!--begin::Button-->
+                                            <button type="reset" data-kt-contacts-type="cancel" class="btn btn-light me-3">Cancel</button>
+                                            <!--end::Button-->
+                                            <!--begin::Button-->
+                                            <button type="submit" data-kt-contacts-type="submit" class="btn btn-primary">
+                                                <span class="indicator-label">Submit</span>
+                                                <span class="indicator-progress">Please wait...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                            </button>
+                                            <!--end::Button-->
+                                        </div>
+                                        <!--end::Action buttons-->
+                                </div>
+                            <!--end::Card body-->
+                            <!--begin::Header-->
+                            <div class="card-header pt-5">
+                                <!--begin::Title-->
+                                <h3 class="card-title align-items-start flex-column">
+                                    <span class="card-label fw-bold text-gray-800">Persyaratan Pendaftaran</span>
+                                </h3>
+                                <!--end::Title-->
+                            </div>
+                            <!--end::Header-->
+                            <!--begin::Card body-->
+                                <div class="card-body pt-5">
+                                        <!--begin::Input group-->
+                                        <div class="fv-row mb-7">
+                                            <!--begin::Label-->
+                                            <label class="fs-6 fw-semibold form-label mt-3">
+                                                <span class="required">Poin Persyaratan</span>
+                                            </label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <input type="text" class="form-control form-control-solid" name="poin_persyaratan" value="" />
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+
+                                        <!--begin::Separator-->
+                                        <div class="separator mb-6"></div>
+                                        <!--end::Separator-->
+                                        <!--begin::Action buttons-->
+                                        <div class="d-flex justify-content-end">
+                                            <!--begin::Button-->
+                                            <button type="reset" data-kt-contacts-type="cancel" class="btn btn-light me-3">Cancel</button>
+                                            <!--end::Button-->
+                                            <!--begin::Button-->
+                                            <button type="submit" data-kt-contacts-type="submit" class="btn btn-primary">
+                                                <span class="indicator-label">Submit</span>
+                                                <span class="indicator-progress">Please wait...
+                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                            </button>
+                                            <!--end::Button-->
+                                        </div>
+                                        <!--end::Action buttons-->
+                                </div>
+                            <!--end::Card body-->
+                        </form>
+                        <!--end::Form-->
                     </div>
-                    <!--end::Card title-->
+                    <!--end::Table widget 14-->
                 </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body py-4">
-                    <form action="{{ route('kkn.store') }}" method="POST">
-                        @csrf
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="nama_kkn">Nama Kegiatan/Periode KKN:</label>
-                                <input type="text" name="nama_kkn" id="nama_kkn" class="form-control" required>
-                                @error('nama_kkn')
-                                    <span class="text-danger text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-6">
-                                <label for="masa_kegiatan">Masa Kegiatan KKN:</label>
-                                <input type="text" name="masa_kegiatan" id="masa_kegiatan" class="form-control" required>
-                                @error('masa_kegiatan')
-                                    <span class="text-danger text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="row p-2">
-                            <label for="jenis_kkn">Jenis KKN</label>
-                            <select type="number" name="jenis_kkn" id="jenis_kkn" placeholder="" class="form-select" required>
-                                <option disabled selected>- Pilih -</option>
-                                @foreach ($jenis_kkns as $item)
-                                    <option value="{{ $item->id }}">{{ $item->kategori }}</option>
-                                @endforeach
-                            </select>
-                            @error('jenis_kkn')
-                                <span class="text-danger text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="masa_pendaftaran">Masa Pendaftaran Online KKN:</label>
-                                <input type="text" name="masa_pendaftaran" id="masa_pendaftaran" placeholder="" class="form-control" required>
-                                @error('masa_pendaftaran')
-                                    <span class="text-danger text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-6">
-                                <label for=""></label>
-                                <input type="text" name="" id="" placeholder="" class="form-control">
-                                @error('')
-                                    <span class="text-danger text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="tahun_ajaran">Tahun Ajaran:</label>
-                                <input type="text" name="tahun_ajaran" id="tahun_ajaran" placeholder="" class="form-control" required>
-                                @error('tahun_ajaran')
-                                    <span class="text-danger text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-6">
-                                <label for="semester">Semester:</label>
-                                <select type="text" name="semester" id="semester" placeholder="" class="form-select" required>
-                                    <option value="ganjil">Ganjil</option>
-                                    <option value="genap">Genap</option>
-                                </select>
-                                @error('semester')
-                                    <span class="text-danger text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="row p-2">
-                            <label for="kode_kkn">Kode Kegiatan KKN:</label>
-                            <input type="text" name="kode_kkn" id="kode_kkn" placeholder="" class="form-control" required>
-                            @error('kode_kkn')
-                                <span class="text-danger text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="row p-2">
-                            <label for="minimal_sks">Minimal SKS:</label>
-                            <input type="number" name="minimal_sks" id="minimal_sks" placeholder="" class="form-control" required>
-                            @error('minimal_sks')
-                                <span class="text-danger text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="row p-2">
-                            <label for="kuota_peserta">Kuota Peserta KKN:</label>
-                            <input type="number" name="kuota_peserta" id="kuota_peserta" placeholder="" class="form-control" required>
-                            @error('kuota_peserta')
-                                <span class="text-danger text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <button type="submit" class="mt-6 mb-0 btn btn-success btn-sm float-end">Save</button>
-                    </form>
-                </div>
-                <!--end::Card body-->
+                <!--end::Col-->
             </div>
-            <!--end::Card-->
+            <!--end::Row-->
         </div>
         <!--end::Content container-->
     </div>

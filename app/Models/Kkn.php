@@ -11,15 +11,6 @@ class Kkn extends Model
 
     protected $table = 'kkn';
 
-    protected $fillable = [
-        'nama_kkn',
-        'masa_kegiatan',
-        'jenis_kkn',
-        'masa_pendaftaran',
-        'tahun_ajaran',
-        'semester',
-        'kode_kkn',
-        'minimal_sks',
-        'kuota_peserta',
-    ];
+    // protected $fillable = ['*'];
+    protected $guarded = [];
 }

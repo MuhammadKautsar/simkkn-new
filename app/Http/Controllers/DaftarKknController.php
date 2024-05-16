@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kkn;
 use App\Models\Periode;
 use App\Models\JenisKkn;
+use App\Models\Provinsi;
 use App\Models\DaftarModel;
 use Illuminate\Http\Request;
 
@@ -26,12 +27,14 @@ class DaftarKknController extends Controller
     {
         $nim = $request->session()->get('nim');
 
-        $fields = ['npm', 'nama', 'tempat_lahir', 'tanggal_lahir', 'email', 'alamat', 'no_tlp_mhs'];
+        $fields = ['npm', 'nama', 'tempat_lahir', 'tanggal_lahir', 'email', 'alamat', 'no_tlp_mhs', 'jenis_kelamin'];
         $jumlah_sks = DaftarModel::getJumlahSKS($nim);
 
         $mahasiswa = DaftarModel::get_mhs($nim, $fields);
 
-        return view('mahasiswa.daftar-kkn', compact('mahasiswa', 'jumlah_sks'));
+        $provinsi = Provinsi::all();
+
+        return view('mahasiswa.daftar-kkn', compact('mahasiswa', 'jumlah_sks', 'provinsi'));
     }
 
     public function buat()
@@ -41,36 +44,57 @@ class DaftarKknController extends Controller
         // return view('panitia.kkn-edit', compact('jenis_kkns'));
     }
 
-    public function store(Request $request)
+    public function submit_registrasi(Request $request)
     {
         // Validasi input
         $request->validate([
-            'nama_kkn' => 'required|string|max:255',
-            'masa_kegiatan' => 'required|string|max:255',
-            'jenis_kkn' => 'required',
-            'masa_pendaftaran' => 'required|string|max:255',
-            'tahun_ajaran' => 'required|string|max:255',
-            'semester' => 'required|string|max:255',
-            'kode_kkn' => 'required|string|max:255',
-            'minimal_sks' => 'required|numeric',
-            'kuota_peserta' => 'required|numeric',
+            'nama' => 'required|string',
+            'nim' => 'required|numeric',
+            'nik' => 'required|numeric',
+            'tmp_lahir' => 'required|string',
+            'tgl_lahir' => 'required|string',
+            'jenis_kelamin' => 'required|string',
+            'sks' => 'required|numeric',
+            'email' => 'required|email',
+            'no_hp' => 'required|numeric',
+            'agama' => 'required|string',
+            'bpjs' => 'required|string',
+            'status' => 'required|string',
+            'warga' => 'required|string',
+            'provinsi' => 'required|string',
+            'kabupaten' => 'required|string',
+            'kecamatan' => 'required|string',
+            'alamat_lengkap' => 'required|string',
         ]);
 
         // Simpan data KKN baru
         $kkn = new Kkn();
-        $kkn->nama_kkn = $request->nama_kkn;
-        $kkn->masa_kegiatan = $request->masa_kegiatan;
-        $kkn->jenis_kkn = $request->jenis_kkn;
-        $kkn->masa_pendaftaran = $request->masa_pendaftaran;
-        $kkn->tahun_ajaran = $request->tahun_ajaran;
-        $kkn->semester = $request->semester;
-        $kkn->kode_kkn = $request->kode_kkn;
-        $kkn->minimal_sks = $request->minimal_sks;
-        $kkn->kuota_peserta = $request->kuota_peserta;
+        $kkn->nama_mhs = $request->nama;
+        $kkn->nim13 = $request->nim;
+        $kkn->nik_indonesia = $request->nik;
+        $kkn->tempat_lahir = $request->tmp_lahir;
+        $kkn->tgl_lahir = $request->tgl_lahir;
+        $kkn->jenis_kelamin = $request->jenis_kelamin;
+        $kkn->jum_sks = $request->sks;
+        $kkn->penyakit = $request->penyakit;
+        $kkn->informasi_lainnya = $request->informasi_lainnya;
+        $kkn->agama = $request->agama;
+        $kkn->status_sipil = $request->status;
+        $kkn->no_telp_mhs = $request->no_hp;
+        $kkn->no_telp_ayah = $request->no_telp_ayah;
+        $kkn->no_telp_ibu = $request->no_telp_ibu;
+        $kkn->no_telp_wali = $request->no_telp_wali;
+        $kkn->bpjs = $request->bpjs;
+        $kkn->ayah = $request->ayah;
+        $kkn->ibu = $request->ibu;
+        $kkn->wali = $request->wali;
+        $kkn->talenta = $request->talenta;
+        $kkn->kewarganegaraan = $request->kewarganegaraan;
+        $kkn->negara_asing = $request->negara_asing;
         $kkn->save();
 
         // Redirect dengan pesan sukses
-        return redirect()->route('dashboard')->with('success', 'KKN baru berhasil ditambahkan.');
+        return redirect()->route('dashboard')->with('success', 'KKN berhasil didaftarkan.');
     }
 
     public function edit($id)
@@ -106,16 +130,6 @@ class DaftarKknController extends Controller
 
         $kkns->save();
 
-        if ($request->hasFile("gambar")) {
-            $files = $request->file("gambar");
-            foreach ($files as $file) {
-                $imageName = time() . "_" . $file->getClientOriginalName();
-                $request["kkns_id"] = $id;
-                $request["path_image"] = asset('uploads/' . $imageName);
-                $file->move($this->path_file("/uploads"), $imageName);
-                Image::create($request->all());
-            }
-        }
         return redirect('/dashboard')->with('sukses', 'Data berhasil diupdate');
     }
 
@@ -133,5 +147,37 @@ class DaftarKknController extends Controller
 
         // Redirect dengan pesan sukses
         return redirect()->route('jenis.kkn')->with('success', 'Kategori KKN baru berhasil ditambahkan.');
+    }
+
+    public function getKabupaten(Request $request)
+    {
+        $id_provinsi = $request->post('id_provinsi');
+        $data_kabupaten = DaftarModel::getKabupaten($id_provinsi);
+        $data_row = array();
+
+        foreach ($data_kabupaten as $data) {
+            $data_column = array();
+            $data_column['id'] = $data->id;
+            $data_column['kabupaten'] = ucwords(strtolower($data->name));
+            $data_row[] = $data_column;
+        }
+
+        return response()->json($data_row);
+    }
+
+    public function getKecamatan(Request $request)
+    {
+        $id_kabupaten = $request->post('id_kabupaten');
+        $data_kecamatan = DaftarModel::getKecamatan($id_kabupaten);
+        $data_row = array();
+
+        foreach ($data_kecamatan as $data) {
+            $data_column = array();
+            $data_column['id'] = $data->id;
+            $data_column['kecamatan'] = ucwords(strtolower($data->name));
+            $data_row[] = $data_column;
+        }
+
+        return response()->json($data_row);
     }
 }

@@ -17,4 +17,9 @@ class Periode extends Model
         return $this->belongsTo(JenisKkn::class, 'jenis_kkn', 'id');
     }
 
+    public function lokasi_mappings()
+    {
+        return $this->hasMany(LokasiKkn::class, 'id_periode', 'id');
+    }
+
 }
