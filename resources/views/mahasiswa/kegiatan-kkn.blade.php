@@ -84,22 +84,18 @@
                                                             <tr>
                                                                 <td class="text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->masa_periode }}</td>
                                                                 <td class="text-center text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->jenisKkn->kategori }}</td>
-                                                                @if ($kkn->lokasi != '0')
-                                                                    <td class="text-center text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->lokasi }}</td>
-                                                                @else
                                                                 <td class="text-center text-gray-500 mt-1 fw-semibold fs-4">
                                                                     @foreach ($kkn->lokasi_mappings as $lokasi)
                                                                         {{ $lokasi->id_kabupaten }}
                                                                     @endforeach
                                                                 </td>
-                                                                @endif
                                                                 <td class="text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->ket }}</td>
                                                                 {{-- <td class="mb-0 text-sm">{{ $kkn->status }}</td> --}}
                                                                 @if($kkn->status === 1)
                                                                     <td class="text-center"><span class="badge badge-primary">Aktif</span></td>
                                                                 @endif
                                                                 <td class="text-center">
-                                                                    <a href="{{ route('daftar', $kkn->id) }}" class="btn btn-primary px-3 mb-0">Daftar</a>
+                                                                    <a href="{{ route('daftar') }}" class="btn btn-primary px-3 mb-0">Daftar</a>
                                                                 </td>
                                                             </tr>
                                                             @endforeach

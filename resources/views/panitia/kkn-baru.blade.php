@@ -1,6 +1,9 @@
 @extends('layouts.panitia-layout')
 
 @section('content')
+{{-- @if( session('pesan'))
+    @dd("oke")
+@endif --}}
 <!--begin::Content wrapper-->
 <div class="d-flex flex-column flex-column-fluid">
     <!--begin::Toolbar-->
@@ -56,7 +59,8 @@
                     <!--begin::Table widget 14-->
                     <div class="card card-flush h-md-100">
                         <!--begin::Form-->
-                        <form id="kt_ecommerce_settings_general_form" class="form" action="{{ route('kkn.store') }}" method="POST">
+                        <form class="form" action="{{ route('kkn.store') }}" method="POST">
+                            @csrf
                             <!--begin::Header-->
                             <div class="card-header pt-1">
                                 <!--begin::Title-->
@@ -80,8 +84,11 @@
                                                     </label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" class="form-control form-control-solid" name="nama" placeholder="Contoh: KKN Reguler Periode XVIII" />
+                                                    <input required type="text" class="form-control form-control-solid" name="nama_kkn" placeholder="Contoh: KKN Reguler Periode XVIII" />
                                                     <!--end::Input-->
+                                                    @error('masa_periode')
+                                                        <span class="error-message text-danger">{{ $message }}</span>
+                                                    @enderror
                                                 </div>
                                                 <!--end::Input group-->
                                             </div>
@@ -96,7 +103,7 @@
                                                     </label>
                                                     <!--end::Label-->
                                                     <!--begin::Input-->
-                                                    <input type="text" class="form-control form-control-solid" name="masa_periode" placeholder="Contoh: Januari 2020-Februari 2020" />
+                                                    <input type="text" class="form-control form-control-solid" name="masa_kkn" placeholder="Contoh: Januari 2020-Februari 2020" />
                                                     <!--end::Input-->
                                                 </div>
                                                 <!--end::Input group-->
@@ -307,20 +314,7 @@
                                         <!--begin::Separator-->
                                         <div class="separator mb-6"></div>
                                         <!--end::Separator-->
-                                        <!--begin::Action buttons-->
-                                        <div class="d-flex justify-content-end">
-                                            <!--begin::Button-->
-                                            <button type="reset" data-kt-contacts-type="cancel" class="btn btn-light me-3">Cancel</button>
-                                            <!--end::Button-->
-                                            <!--begin::Button-->
-                                            <button type="submit" data-kt-contacts-type="submit" class="btn btn-primary">
-                                                <span class="indicator-label">Submit</span>
-                                                <span class="indicator-progress">Please wait...
-                                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                            </button>
-                                            <!--end::Button-->
-                                        </div>
-                                        <!--end::Action buttons-->
+
                                 </div>
                             <!--end::Card body-->
                         </form>

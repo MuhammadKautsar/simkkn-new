@@ -44,34 +44,45 @@ class KknController extends Controller
 
     public function store(Request $request)
     {
+        // return redirect()->back()->with("pesan", "controller oke");
+        $messages = [
+            'required' => 'Kolom ini wajib diisi.',
+            'max' => 'Kolom ini tidak boleh lebih dari :max karakter.',
+            'numeric' => 'Kolom ini harus berisi angka.',
+        ];
+
         // Validasi input
-        $request->validate([
-            'nama_kkn' => 'required|string|max:255',
-            'masa_kegiatan' => 'required|string|max:255',
-            'jenis_kkn' => 'required',
-            'masa_pendaftaran' => 'required|string|max:255',
-            'tahun_ajaran' => 'required|string|max:255',
-            'semester' => 'required|string|max:255',
-            'kode_kkn' => 'required|string|max:255',
-            'minimal_sks' => 'required|numeric',
-            'kuota_peserta' => 'required|numeric',
-        ]);
+        // $request->validate([
+        //     'jenis_kkn' => 'required',
+        //     // 'masa_pendaftaran' => 'required|string|max:255',
+        //     // 'tahun_ajaran' => 'required|string|max:255',
+        //     // 'semester' => 'required|string|max:255',
+        //     'kode_kkn' => 'required|string|max:255',
+        //     'min_sks' => 'required|numeric',
+        //     'kuota' => 'required|numeric',
+        // ], $messages);
 
         // Simpan data KKN baru
-        $kkn = new Kkn();
-        $kkn->nama_kkn = $request->nama_kkn;
-        $kkn->masa_kegiatan = $request->masa_kegiatan;
-        $kkn->jenis_kkn = $request->jenis_kkn;
-        $kkn->masa_pendaftaran = $request->masa_pendaftaran;
-        $kkn->tahun_ajaran = $request->tahun_ajaran;
-        $kkn->semester = $request->semester;
-        $kkn->kode_kkn = $request->kode_kkn;
-        $kkn->minimal_sks = $request->minimal_sks;
-        $kkn->kuota_peserta = $request->kuota_peserta;
-        $kkn->save();
+        $periode = new Periode();
+        // $periode->masa_periode = $request->masa_periode;
+        $periode->jenis_kkn = $request->jenis_kkn;
+        // $periode->masa_pendaftaran = $request->masa_pendaftaran;
+        // $periode->tahun_ajaran = $request->tahun_ajaran;
+        // $periode->semester = $request->semester;
+        $periode->kode = $request->kode_kkn;
+        $periode->min_sks = $request->min_sks;
+        $periode->status = 1;
+        $periode->kuota = $request->kuota;
+        $periode->min_sks = $request->min_sks;
+        $periode->lokasi = 0;
+
+        // dd($periode);
+        $periode->save();
+
+        // dd($periode);
 
         // Redirect dengan pesan sukses
-        return redirect()->route('dashboard')->with('success', 'KKN baru berhasil ditambahkan.');
+        return redirect('/dashboard')->with('success', 'KKN baru berhasil dibuat.');
     }
 
     public function edit($id)

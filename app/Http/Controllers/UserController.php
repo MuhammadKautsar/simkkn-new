@@ -10,7 +10,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $nip = $request->session()->get('nip');
-        $users = User::paginate(10);
+        $users = User::all();
         return view('panitia.users-management', compact('users', 'nip'));
     }
 

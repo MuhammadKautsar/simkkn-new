@@ -41,7 +41,9 @@
                                         <!--begin::Table widget 14-->
                                         <div class="card card-flush h-md-100">
 											<!--begin::Form-->
-											<form id="kt_ecommerce_settings_general_form" class="form" action="{{ route('submit_registrasi') }}" method="POST">
+											<form class="form" action="{{ route('submit_registrasi') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="periode" value="{{ $periodeId }}">
                                                 <!--begin::Header-->
                                                 <div class="card-header pt-7">
                                                     <!--begin::Title-->
@@ -66,7 +68,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input disabled type="text" class="form-control form-control-solid" name="nama" value="{{ $mahasiswa['nama'] }}" />
+                                                                        <input readonly type="text" class="form-control form-control-solid" name="nama" value="{{ $mahasiswa['nama'] }}" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -82,7 +84,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input disabled type="text" class="form-control form-control-solid" name="nim" value="{{ $mahasiswa['npm'] }}" />
+                                                                        <input readonly type="text" class="form-control form-control-solid" name="nim" value="{{ $mahasiswa['npm'] }}" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -118,7 +120,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input disabled type="text" class="form-control form-control-solid" name="tmp_lahir" value="{{ $mahasiswa['tempat_lahir'] }}" />
+                                                                        <input readonly type="text" class="form-control form-control-solid" name="tmp_lahir" value="{{ $mahasiswa['tempat_lahir'] }}" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -134,7 +136,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input disabled type="text" class="form-control form-control-solid" name="tgl_lahir" value="{{ $mahasiswa['tanggal_lahir'] }}" />
+                                                                        <input readonly type="date" class="form-control form-control-solid" name="tgl_lahir" value="{{ $mahasiswa['tanggal_lahir'] }}" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -150,7 +152,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input disabled type="text" class="form-control form-control-solid" name="jenis_kelamin" value="{{ $mahasiswa['jenis_kelamin'] }}" />
+                                                                        <input readonly type="text" class="form-control form-control-solid" name="jenis_kelamin" value="{{ $mahasiswa['jenis_kelamin'] }}" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -170,7 +172,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input disabled type="number" class="form-control form-control-solid" name="sks" value="{{ $jumlah_sks }}" />
+                                                                        <input readonly type="number" class="form-control form-control-solid" name="sks" value="{{ $jumlah_sks }}" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -464,8 +466,8 @@
                                                                         <!--end::Label-->
                                                                         <div class="w-100">
                                                                             <!--begin::Select2-->
-                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="penyakit" data-placeholder="Pilih Kecamatan">
-                                                                                <option value="" disabled selected>Pilih Jenis Penyakit</option>
+                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="penyakit">
+                                                                                <option value="-">Pilih Jenis Penyakit</option>
                                                                                 <option value="Schizoprenia">Schizoprenia</option>
                                                                                 <option value="Epilipsi">Epilipsi</option>
                                                                                 <option value="Dementia">Dementia</option>
@@ -555,9 +557,7 @@
                                                 <!--end::Header-->
                                                 <!--begin::Card body-->
                                                     <div class="card-body pt-5">
-                                                        <!--begin::Form-->
-                                                        <form id="kt_ecommerce_settings_general_form" class="form" action="#">
-                                                            <!--begin::Row-->
+                                                        <!--begin::Row-->
                                                             <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
                                                                 <!--begin::Col-->
                                                                 <div class="col">
@@ -676,9 +676,7 @@
                                                                 </div>
                                                                 <!--end::Col-->
                                                             </div>
-                                                            <!--end::Row-->
-                                                        </form>
-                                                        <!--end::Form-->
+                                                        <!--end::Row-->
                                                     </div>
                                                 <!--end::Card body-->
                                                 <!--begin::Header-->
@@ -692,7 +690,7 @@
                                                 <!--end::Header-->
                                                 <!--begin::Card body-->
                                                     <div class="card-body pt-5">
-                                                            <!--begin::Row-->
+                                                        <!--begin::Row-->
                                                             <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
                                                                 <!--begin::Col-->
                                                                 <div class="col">
@@ -812,8 +810,7 @@
                                                                 </div>
                                                                 <!--end::Col-->
                                                             </div>
-                                                            <!--end::Row-->
-
+                                                        <!--end::Row-->
                                                     </div>
                                                 <!--end::Card body-->
                                                 <!--begin::Header-->
@@ -855,7 +852,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input type="text" class="form-control form-control-solid" name="no_hp_Wali" placeholder="" />
+                                                                        <input type="text" class="form-control form-control-solid" name="no_hp_wali" placeholder="" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -1003,7 +1000,7 @@
                                                                 <a href="/beranda"><button data-kt-contacts-type="cancel" class="btn btn-light me-3">Cancel</button></a>
                                                                 <!--end::Button-->
                                                                 <!--begin::Button-->
-                                                                <button type="submit" data-kt-contacts-type="submit" class="btn btn-primary">Submit</button>
+                                                                <button type="submit" class="btn btn-primary">Submit</button>
                                                                 <!--end::Button-->
                                                             </div>
                                                             <!--end::Action buttons-->

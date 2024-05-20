@@ -94,7 +94,12 @@
                                 @foreach ($kkns as $kkn)
                                 <tr>
                                     <td class="mb-0 text-sm">{{ $kkn->masa_periode }}</td>
+                                    {{-- <td class="text-center mb-0 text-sm">{{ $kkn->jenisKkn->kategori }}</td> --}}
+                                    @if ($kkn->jenis_kkn == '0')
+                                    <td class="text-center mb-0 text-sm">Tidak Ada</td>
+                                    @else
                                     <td class="text-center mb-0 text-sm">{{ $kkn->jenisKkn->kategori }}</td>
+                                    @endif
                                     @if ($kkn->lokasi != '0')
                                     <td class="text-center mb-0 text-sm">{{ $kkn->lokasi }}</td>
                                     @else

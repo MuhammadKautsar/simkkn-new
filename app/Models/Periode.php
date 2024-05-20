@@ -12,6 +12,8 @@ class Periode extends Model
 
     protected $table = 'periode';
 
+    protected $guarded = [];
+
     public function jenisKkn()
     {
         return $this->belongsTo(JenisKkn::class, 'jenis_kkn', 'id');
@@ -21,5 +23,7 @@ class Periode extends Model
     {
         return $this->hasMany(LokasiKkn::class, 'id_periode', 'id');
     }
+
+    public $timestamps = false;
 
 }

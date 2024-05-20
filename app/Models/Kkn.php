@@ -13,4 +13,6 @@ class Kkn extends Model
 
     // protected $fillable = ['*'];
     protected $guarded = [];
+
+    public $timestamps = false;
 }

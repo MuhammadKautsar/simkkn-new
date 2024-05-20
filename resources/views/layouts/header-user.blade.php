@@ -5,7 +5,7 @@
         <!--begin::Logo-->
         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-15">
             <a href="index.html">
-                <img alt="Logo" src="assets/media/logos/logo.png" class="h-60px h-lg-90px app-sidebar-logo-default" />
+                <img alt="Logo" src="{{ asset('assets/media/logos/logo.png') }}" class="h-60px h-lg-90px app-sidebar-logo-default" />
             </a>
         </div>
         <!--end::Logo-->
@@ -103,7 +103,7 @@
                 <div class="app-navbar-item ms-1 ms-md-4" id="kt_header_user_menu_toggle">
                     <!--begin::Menu wrapper-->
                     <div class="cursor-pointer symbol symbol-35px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                        <img src="assets/media/avatars/blank.png" class="rounded-3" alt="user" />
+                        <img src="{{ asset('assets/media/avatars/blank.png') }}" class="rounded-3" alt="user" />
                     </div>
                     <!--begin::User account menu-->
                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-275px" data-kt-menu="true">
@@ -112,7 +112,7 @@
                             <div class="menu-content d-flex align-items-center px-3">
                                 <!--begin::Avatar-->
                                 <div class="symbol symbol-50px me-5">
-                                    <img alt="Logo" src="assets/media/avatars/blank.png" />
+                                    <img alt="Logo" src="{{ asset('assets/media/avatars/blank.png') }}" />
                                 </div>
                                 <!--end::Avatar-->
                                 <!--begin::Username-->
