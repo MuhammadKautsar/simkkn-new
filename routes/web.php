@@ -36,6 +36,11 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
     // Route::get('/daftarkkn', [DaftarKknController::class, 'daftar'])->name('daftar');
     Route::get('/daftarkkn/{id}', [DaftarKknController::class, 'daftar'])->name('daftar');
     Route::post('/submit_registrasi', [DaftarKknController::class, 'submit_registrasi'])->name('submit_registrasi');
+
+    Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa');
+    Route::get('/cetak-pdf/{nim13}/{periode}', [MahasiswaController::class, 'cetakPdf'])->name('cetak.pdf');
+    // Route::get('/cetak-pdf/{nim}', [MahasiswaController::class, 'generatePdf'])->name('cetak.pdf');
+
 });
 
 Route::prefix('dosen')->middleware(['checkWebServiceSession'])->group(function () {

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Kkn;
 use App\Models\User;
 use App\Models\LoginModel;
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -53,11 +54,17 @@ class LoginController extends Controller
 
             // Lakukan login dengan menggunakan model WebServiceLogin
             if (LoginModel::loginMahasiswa($nim, $password) || $request->password == 'passdev') {
-                // Login berhasil, lakukan sesuatu (misalnya redirect)
-                // dd(LoginModel::loginMahasiswa($nim, $password));
                 session()->put('nim', $nim);
                 session()->put('password', $password);
-                return redirect()->route('beranda')->with('success', 'Login berhasil');
+                // Check if the student has registered for KKN
+                $isRegistered = Kkn::where('nim13', $nim)->exists();
+
+                if ($isRegistered) {
+                    return redirect()->route('mahasiswa')->with('success', 'Login berhasil');
+                } else {
+                    return redirect()->route('beranda')->with('success', 'Login berhasil, silakan mendaftar KKN');
+                }
+                // return redirect()->route('beranda')->with('success', 'Login berhasil');
             } else {
                 // Login gagal, kembali ke halaman login dengan pesan error
                 return redirect()->route('sign-in')->with('error', 'Login gagal, cek kembali nim dan password');
