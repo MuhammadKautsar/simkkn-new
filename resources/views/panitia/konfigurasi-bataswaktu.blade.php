@@ -11,7 +11,7 @@
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
                     <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">
-                        Konfigurasi Kegiatan KKN Baru</h1>
+                        Konfigurasi Batas Waktu KKN Baru</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -36,7 +36,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Konfigurasi Deskripsi Kegiatan KKN Baru</li>
+                        <li class="breadcrumb-item text-muted">Konfigurasi Batas Waktu Kegiatan KKN Baru</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -63,7 +63,7 @@
                                     <!--begin::Nav-->
                                     <ul class="nav flex-wrap border-transparent fw-bold">
                                         <li class="nav-item my-1">
-                                            <a class="btn btn-color-gray-600 btn-active-secondary btn-active-color-primary fw-bolder fs-8 fs-lg-base nav-link px-3 px-lg-4 mx-3 active" href="{{ route('kkn.edit', ['id' => $kkn->id]) }}"><i class="ki-duotone ki-document fs-2">
+                                            <a class="btn btn-color-gray-600 btn-active-secondary btn-active-color-primary fw-bolder fs-8 fs-lg-base nav-link px-3 px-lg-4 mx-3" href="{{ route('kkn.edit', ['id' => $kkn->id]) }}"><i class="ki-duotone ki-document fs-2">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                             </i> Deskripsi</a>
@@ -87,7 +87,7 @@
                                             </i> Peserta dan Kelompok</a>
                                         </li>
                                         <li class="nav-item my-1">
-                                            <a class="btn btn-color-gray-600 btn-active-secondary btn-active-color-primary fw-bolder fs-8 fs-lg-base nav-link px-3 px-lg-4 mx-3" href="{{ route('kkn.konfigurasi_bataswaktu', ['id' => $kkn->id]) }}"><i class="ki-duotone ki-calendar fs-2">
+                                            <a class="btn btn-color-gray-600 btn-active-secondary btn-active-color-primary fw-bolder fs-8 fs-lg-base nav-link px-3 px-lg-4 mx-3 active" href="{{ route('kkn.konfigurasi_bataswaktu', ['id' => $kkn->id]) }}"><i class="ki-duotone ki-calendar fs-2">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                             </i> Batasan Waktu</a>
@@ -117,7 +117,7 @@
                             <div class="card-header pt-1">
                                 <!--begin::Title-->
                                 <h3 class="card-title align-items-start flex-column">
-                                    <span class="card-label fw-bold text-gray-800">Konfigurasi Deskripsi KKN</span>
+                                    <span class="card-label fw-bold text-gray-800">Input Batas Waktu Dosen</span>
                                 </h3>
                                 <!--end::Title-->
                             </div>
@@ -127,7 +127,6 @@
                                 <!--begin::Form-->
                                 <form class="form" action="/kkn/{{ $kkn->id }}/update" method="POST">
                                     @csrf
-                                    <!--begin::Row-->
                                     <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
                                         <!--begin::Col-->
                                         <div class="col">
@@ -135,16 +134,13 @@
                                             <div class="fv-row mb-7">
                                                 <!--begin::Label-->
                                                 <label class="fs-6 fw-semibold form-label mt-3">
-                                                    <span>Nama Kegiatan/Periode KKN:</span>
+                                                    <span>Mulai Upload Laporan Survey Dosen::</span>
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input required type="text" class="form-control form-control-solid"
-                                                    name="nama_kkn" placeholder="Contoh: KKN Reguler Periode XVIII" />
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_mulai" placeholder="Dari Tanggal" />
                                                 <!--end::Input-->
-                                                @error('masa_periode')
-                                                    <span class="error-message text-danger">{{ $message }}</span>
-                                                @enderror
                                             </div>
                                             <!--end::Input group-->
                                         </div>
@@ -155,20 +151,18 @@
                                             <div class="fv-row mb-7">
                                                 <!--begin::Label-->
                                                 <label class="fs-6 fw-semibold form-label mt-3">
-                                                    <span>Masa Kegiatan KKN:</span>
+                                                    <span>Akhir Upload Laporan Survey Dosen::</span>
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    name="masa_kkn" placeholder="Contoh: Januari 2020-Februari 2020" />
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_akhir" placeholder="" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
                                         </div>
                                         <!--end::Col-->
                                     </div>
-                                    <!--end::Row-->
-                                    <!--begin::Row-->
                                     <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
                                         <!--begin::Col-->
                                         <div class="col">
@@ -176,96 +170,7 @@
                                             <div class="fv-row mb-7">
                                                 <!--begin::Label-->
                                                 <label class="fs-6 fw-semibold form-label mt-3">
-                                                    <span>Jenis Kegiatan KKN:</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <div class="w-100">
-                                                    <!--begin::Select2-->
-                                                    <select id="kt_ecommerce_select2_country" required
-                                                        class="form-select form-select-solid" name="jenis_kkn">
-                                                        <option disabled selected>- Pilih -</option>
-                                                        @foreach ($jenis_kkns as $item)
-                                                            <option value="{{ $item->id }}">{{ $item->kategori }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <!--end::Select2-->
-                                                </div>
-                                            </div>
-                                            <!--end::Input group-->
-                                        </div>
-                                        <!--end::Col-->
-                                        <!--begin::Col-->
-                                        <div class="col">
-                                            <!--begin::Input group-->
-                                            <div class="fv-row mb-7">
-                                                <!--begin::Label-->
-                                                <label class="fs-6 fw-semibold form-label mt-3">
-                                                    <span>Kode Kegiatan KKN:</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    name="kode_kkn" placeholder="Contoh: GL" />
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--end::Input group-->
-                                        </div>
-                                        <!--end::Col-->
-                                    </div>
-                                    <!--end::Row-->
-                                    <!--begin::Row-->
-                                    <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
-                                        <!--begin::Col-->
-                                        <div class="col">
-                                            <!--begin::Input group-->
-                                            <div class="fv-row mb-7">
-                                                <!--begin::Label-->
-                                                <label class="fs-6 fw-semibold form-label mt-3">
-                                                    <span>Tahun Ajaran:</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input type="text" class="form-control form-control-solid" name="tahun"
-                                                    placeholder="" />
-                                                <!--end::Input-->
-                                            </div>
-                                            <!--end::Input group-->
-                                        </div>
-                                        <!--end::Col-->
-                                        <!--begin::Col-->
-                                        <div class="col">
-                                            <!--begin::Input group-->
-                                            <div class="fv-row mb-7">
-                                                <!--begin::Label-->
-                                                <label class="fs-6 fw-semibold form-label mt-3">
-                                                    <span>Semester:</span>
-                                                </label>
-                                                <!--end::Label-->
-                                                <div class="w-100">
-                                                    <!--begin::Select2-->
-                                                    <select id="kt_ecommerce_select2_country" required
-                                                        class="form-select form-select-solid" name="semester">
-                                                        <option value="3">Genap</option>
-                                                        <option value="1">Ganjil</option>
-                                                    </select>
-                                                    <!--end::Select2-->
-                                                </div>
-                                            </div>
-                                            <!--end::Input group-->
-                                        </div>
-                                        <!--end::Col-->
-                                    </div>
-                                    <!--end::Row-->
-                                    <!--begin::Row-->
-                                    <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
-                                        <!--begin::Col-->
-                                        <div class="col">
-                                            <!--begin::Input group-->
-                                            <div class="fv-row mb-7">
-                                                <!--begin::Label-->
-                                                <label class="fs-6 fw-semibold form-label mt-3">
-                                                    <span>Mulai Pendaftaran Online KKN:</span>
+                                                    <span>Mulai Upload Profil Desa:</span>
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
@@ -282,7 +187,7 @@
                                             <div class="fv-row mb-7">
                                                 <!--begin::Label-->
                                                 <label class="fs-6 fw-semibold form-label mt-3">
-                                                    <span>Akhir Pendaftaran Online KKN:</span>
+                                                    <span>Akhir Upload Profil Desa:</span>
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
@@ -294,8 +199,6 @@
                                         </div>
                                         <!--end::Col-->
                                     </div>
-                                    <!--end::Row-->
-                                    <!--begin::Row-->
                                     <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
                                         <!--begin::Col-->
                                         <div class="col">
@@ -303,12 +206,12 @@
                                             <div class="fv-row mb-7">
                                                 <!--begin::Label-->
                                                 <label class="fs-6 fw-semibold form-label mt-3">
-                                                    <span>Minimal SKS:</span>
+                                                    <span>Mulai Upload Laporan Monev:</span>
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="number" class="form-control form-control-solid"
-                                                    name="min_sks" placeholder="Contoh: 120" />
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_mulai" placeholder="" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -320,29 +223,59 @@
                                             <div class="fv-row mb-7">
                                                 <!--begin::Label-->
                                                 <label class="fs-6 fw-semibold form-label mt-3">
-                                                    <span>Kuota Peserta KKN:</span>
+                                                    <span>Akhir Upload Laporan Monev:</span>
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="number" class="form-control form-control-solid"
-                                                    name="kuota" placeholder="Contoh: 100" />
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_akhir" placeholder="" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
                                         </div>
                                         <!--end::Col-->
                                     </div>
-                                    <!--end::Row-->
-
+                                    <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Mulai Upload Nilai:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_mulai" placeholder="" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Akhir Upload Nilai:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_akhir" placeholder="" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
+                                    </div>
                                     <!--begin::Separator-->
                                     <div class="separator mb-6"></div>
                                     <!--end::Separator-->
                                     <!--begin::Action buttons-->
                                     <div class="d-flex justify-content-end">
-                                        <!--begin::Button-->
-                                        <button type="reset" data-kt-contacts-type="cancel"
-                                            class="btn btn-light me-3">Cancel</button>
-                                        <!--end::Button-->
                                         <!--begin::Button-->
                                         <button type="submit" data-kt-contacts-type="submit" class="btn btn-primary">
                                             <span class="indicator-label">Submit</span>
@@ -361,36 +294,240 @@
 
                         <div class="card card-flush mt-8">
                             <!--begin::Header-->
-                            <div class="card-header pt-5">
+                            <div class="card-header pt-1">
                                 <!--begin::Title-->
                                 <h3 class="card-title align-items-start flex-column">
-                                    <span class="card-label fw-bold text-gray-800">Persyaratan Pendaftaran</span>
+                                    <span class="card-label fw-bold text-gray-800">Input Batas Waktu Mahasiswa/Mahasiswi</span>
                                 </h3>
                                 <!--end::Title-->
                             </div>
                             <!--end::Header-->
+                            <!--begin::Card body-->
                             <div class="card-body pt-5">
+                                <!--begin::Form-->
                                 <form class="form" action="/kkn/{{ $kkn->id }}/update" method="POST">
                                     @csrf
-                                    <!--begin::Input group-->
-                                    <div class="fv-row mb-7">
-                                        <!--begin::Label-->
-                                        <label class="fs-6 fw-semibold form-label mt-3">
-                                            <span class="required">Poin Persyaratan</span>
-                                        </label>
-                                        <!--end::Label-->
-                                        <!--begin::Input-->
-                                        <input type="text" class="form-control form-control-solid" name="poin_persyaratan"
-                                            value="" />
-                                        <!--end::Input-->
+                                    <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Mulai Upload Laporan Proposal Kegiatan Mahasiswa:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_mulai" placeholder="Dari Tanggal" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Akhir Upload Laporan Proposal Kegiatan Mahasiswa:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_akhir" placeholder="" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
                                     </div>
-                                    <!--end::Input group-->
-
+                                    <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Mulai Upload Logbook Minggu Ke-1 Mahasiswa:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_mulai" placeholder="" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Akhir Upload Logbook Minggu Ke-1 Mahasiswa:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_akhir" placeholder="" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
+                                    </div>
+                                    <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Mulai Upload Logbook Minggu Ke-2 Mahasiswa:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_mulai" placeholder="" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Akhir Upload Logbook Minggu Ke-2 Mahasiswa:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_akhir" placeholder="" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
+                                    </div>
+                                    <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Mulai Upload Logbook Minggu Ke-3 Mahasiswa:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_mulai" placeholder="" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Akhir Upload Logbook Minggu Ke-3 Mahasiswa:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_akhir" placeholder="" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
+                                    </div>
+                                    <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Mulai Upload Logbook Minggu Ke-4 Mahasiswa:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_mulai" placeholder="" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Akhir Upload Logbook Minggu Ke-4 Mahasiswa:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_akhir" placeholder="" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
+                                    </div>
+                                    <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Mulai Upload Laporan Akhir Mahasiswa:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_mulai" placeholder="" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
+                                        <!--begin::Col-->
+                                        <div class="col">
+                                            <!--begin::Input group-->
+                                            <div class="fv-row mb-7">
+                                                <!--begin::Label-->
+                                                <label class="fs-6 fw-semibold form-label mt-3">
+                                                    <span>Akhir Upload Laporan Akhir Mahasiswa:</span>
+                                                </label>
+                                                <!--end::Label-->
+                                                <!--begin::Input-->
+                                                <input type="date" class="form-control form-control-solid"
+                                                    name="tgl_akhir" placeholder="" />
+                                                <!--end::Input-->
+                                            </div>
+                                            <!--end::Input group-->
+                                        </div>
+                                        <!--end::Col-->
+                                    </div>
                                     <!--begin::Separator-->
                                     <div class="separator mb-6"></div>
                                     <!--end::Separator-->
                                     <!--begin::Action buttons-->
-                                    <div class="d-flex justify-content-start">
+                                    <div class="d-flex justify-content-end">
                                         <!--begin::Button-->
                                         <button type="submit" data-kt-contacts-type="submit" class="btn btn-primary">
                                             <span class="indicator-label">Submit</span>
@@ -402,24 +539,11 @@
                                     </div>
                                     <!--end::Action buttons-->
                                 </form>
+                                <!--end::Form-->
                             </div>
-                            <div class="card-body pt-0">
-                                <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
-                                    <thead>
-                                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                            <th class="min-w-125px">Poin Persyaratan</th>
-                                            <th class="text-end min-w-100px">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="fw-semibold text-gray-600">
-                                        <tr>
-                                            <td class="mb-0 text-sm"></td>
-                                            <td class="mb-0 text-sm"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <!--end::Card body-->
                         </div>
+
                     </div>
                     <!--end::Col-->
                 </div>

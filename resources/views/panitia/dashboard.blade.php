@@ -113,23 +113,19 @@
                                     {{-- <td class="mb-0 text-sm">{{ $kkn->status }}</td> --}}
                                     @if($kkn->status === 1)
                                         <td class="text-center"><span class="badge badge-primary">Aktif</span></td>
-                                        <td class="text-center">
-                                            <a href="{{ route('kkn.edit', ['id' => $kkn->id]) }}" class="konfigurasi_kkn"><i class="fas fa-cog"></i></a>
-                                            {{-- @if(auth()->user()->level !== "1")
+                                        {{-- <td class="text-center">
+                                            @if(auth()->user()->level !== "1")
                                                 <a href="" data-value="{{ $kkn->id }}" class="kkn_selesai"><i class="fas fa-check"></i></a> <a href="" class="kkn_nonaktif" data-value="{{ $kkn->id }}"><i class="fas fa-ban"></i></a>
-                                            @endif --}}
-                                        </td>
+                                            @endif
+                                        </td> --}}
                                     @elseif ($kkn->status === 2)
                                         <td class="text-center"><span class="badge badge-danger">Nonaktif</span></td>
-                                        <td class="text-center">
-                                            <a href="" data-value="{{ $kkn->id }}" class="konfigurasi_kkn"><i class="fas fa-cog"></i></a>
-                                        </td>
                                     @else
                                         <td class="text-center"><span class="badge badge-success">Selesai</span></td>
-                                        <td class="text-center">
-                                            <a href="" data-value="{{ $kkn->id }}" class="konfigurasi_kkn"><i class="fas fa-cog"></i></a>
-                                        </td>
                                     @endif
+                                    <td class="text-center">
+                                        <a href="{{ route('kkn.edit', ['id' => $kkn->id]) }}" class="konfigurasi_kkn"><i class="fas fa-cog"></i></a>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

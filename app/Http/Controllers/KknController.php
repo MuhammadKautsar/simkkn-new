@@ -17,20 +17,20 @@ class KknController extends Controller
 
     public function berkas(Request $request)
     {
-        $nip = $request->session()->get('nip');
+        $nip = session()->get('nip');
         return view('panitia.berkas', compact('nip'));
     }
 
     public function jenis_kkn(Request $request)
     {
-        $nip = $request->session()->get('nip');
+        $nip = session()->get('nip');
         $jenis_kkns = JenisKkn::all();
         return view('panitia.jenis-kkn', compact('jenis_kkns', 'nip'));
     }
 
     public function create(Request $request)
     {
-        $nip = $request->session()->get('nip');
+        $nip = session()->get('nip');
         $jenis_kkns = JenisKkn::all();
         return view('panitia.kkn-baru', compact('jenis_kkns', 'nip'));
     }
@@ -87,9 +87,10 @@ class KknController extends Controller
 
     public function edit($id)
     {
-        $kkns = Periode::findOrFail($id);
+        $nip = session()->get('nip');
+        $kkn = Periode::findOrFail($id);
         $jenis_kkns = JenisKkn::all();
-        return view('panitia.kkn-edit', compact('kkns', 'jenis_kkns'));
+        return view('panitia.kkn-edit', compact('kkn', 'jenis_kkns', 'nip'));
     }
 
     public function update(Request $request, $id)
@@ -102,9 +103,9 @@ class KknController extends Controller
             // 'gambar' => 'required|max:5000'
         ]);
 
-        $kkns = Periode::findOrFail($id);
+        $kkn = Periode::findOrFail($id);
 
-        $kkns->update([
+        $kkn->update([
             "nama" => $request->nama,
             'promo_id' => $request->promo_id,
             "harga" => $request->harga,
@@ -129,6 +130,54 @@ class KknController extends Controller
             }
         }
         return redirect('/dashboard')->with('sukses', 'Data berhasil diupdate');
+    }
+
+    public function konfigurasi_dosen($id)
+    {
+        $nip = session()->get('nip');
+        $kkn = Periode::findOrFail($id);
+        $jenis_kkns = JenisKkn::all();
+        return view('panitia.konfigurasi-dosen', compact('kkn', 'jenis_kkns', 'nip'));
+    }
+
+    public function konfigurasi_lokasi($id)
+    {
+        $nip = session()->get('nip');
+        $kkn = Periode::findOrFail($id);
+        $jenis_kkns = JenisKkn::all();
+        return view('panitia.konfigurasi-lokasi', compact('kkn', 'jenis_kkns', 'nip'));
+    }
+
+    public function konfigurasi_peserta($id)
+    {
+        $nip = session()->get('nip');
+        $kkn = Periode::findOrFail($id);
+        $jenis_kkns = JenisKkn::all();
+        return view('panitia.konfigurasi-peserta', compact('kkn', 'jenis_kkns', 'nip'));
+    }
+
+    public function konfigurasi_bataswaktu($id)
+    {
+        $nip = session()->get('nip');
+        $kkn = Periode::findOrFail($id);
+        $jenis_kkns = JenisKkn::all();
+        return view('panitia.konfigurasi-bataswaktu', compact('kkn', 'jenis_kkns', 'nip'));
+    }
+
+    public function konfigurasi_monitoring($id)
+    {
+        $nip = session()->get('nip');
+        $kkn = Periode::findOrFail($id);
+        $jenis_kkns = JenisKkn::all();
+        return view('panitia.konfigurasi-monitoring', compact('kkn', 'jenis_kkns', 'nip'));
+    }
+
+    public function konfigurasi_nilaiakhir($id)
+    {
+        $nip = session()->get('nip');
+        $kkn = Periode::findOrFail($id);
+        $jenis_kkns = JenisKkn::all();
+        return view('panitia.konfigurasi-nilaiakhir', compact('kkn', 'jenis_kkns', 'nip'));
     }
 
     public function add_jenis_kkn(Request $request)

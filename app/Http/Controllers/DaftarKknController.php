@@ -15,7 +15,7 @@ class DaftarKknController extends Controller
 {
     public function index(Request $request)
     {
-        $nim = $request->session()->get('nim');
+        $nim = session()->get('nim');
 
         $jumlah_sks = DaftarModel::getJumlahSKS($nim);
         $fields = ['npm', 'nama'];

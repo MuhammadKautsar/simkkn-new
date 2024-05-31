@@ -45,7 +45,7 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
 
 Route::prefix('dosen')->middleware(['checkWebServiceSession'])->group(function () {
     Route::get('beranda', [DosenController::class, 'index'])->name('dosen.beranda');
-    Route::get('detail', [DosenController::class, 'create'])->name('detail');
+    Route::get('data_kelompok', [DosenController::class, 'data_kelompok'])->name('data_kelompok');
 });
 
 Route::get('panitia/sign-in', [LoginController::class, 'panitia_index'])
@@ -60,6 +60,13 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::get('/kkn/create', [KknController::class, 'create'])->name('kkn.create');
     Route::post('/kkn', [KknController::class, 'store'])->name('kkn.store');
     Route::get('/kkn/{id}/edit', [KknController::class, 'edit'])->name('kkn.edit');
+
+    Route::get('/kkn/{id}/konfigurasi_dosen', [KknController::class, 'konfigurasi_dosen'])->name('kkn.konfigurasi_dosen');
+    Route::get('/kkn/{id}/konfigurasi_lokasi', [KknController::class, 'konfigurasi_lokasi'])->name('kkn.konfigurasi_lokasi');
+    Route::get('/kkn/{id}/konfigurasi_peserta', [KknController::class, 'konfigurasi_peserta'])->name('kkn.konfigurasi_peserta');
+    Route::get('/kkn/{id}/konfigurasi_bataswaktu', [KknController::class, 'konfigurasi_bataswaktu'])->name('kkn.konfigurasi_bataswaktu');
+    Route::get('/kkn/{id}/konfigurasi_monitoring', [KknController::class, 'konfigurasi_monitoring'])->name('kkn.konfigurasi_monitoring');
+    Route::get('/kkn/{id}/konfigurasi_nilaiakhir', [KknController::class, 'konfigurasi_nilaiakhir'])->name('kkn.konfigurasi_nilaiakhir');
 
     Route::put('/kkn/{id}/update', [KknController::class, 'update'])->name('kkn.update');
 

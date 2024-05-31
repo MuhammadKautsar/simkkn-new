@@ -116,10 +116,17 @@
                                 </div>
                                 <!--end::Avatar-->
                                 <!--begin::Username-->
-                                <div class="d-flex flex-column">
-                                    <div class="fw-bold d-flex align-items-center fs-5">{{ $mahasiswa['nama'] }}</div>
-                                    <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ $mahasiswa['npm'] }}</a>
-                                </div>
+                                @if(session()->has('nim'))
+                                    <div class="d-flex flex-column">
+                                        <div class="fw-bold d-flex align-items-center fs-5">{{ $mahasiswa['nama'] }}</div>
+                                        <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ $mahasiswa['npm'] }}</a>
+                                    </div>
+                                @elseif(session()->has('nip'))
+                                    <div class="d-flex flex-column">
+                                        <div class="fw-bold d-flex align-items-center fs-5"></div>
+                                        <a href="#" class="fw-semibold text-muted text-hover-primary fs-7">{{ $nip }}</a>
+                                    </div>
+                                @endif
                                 <!--end::Username-->
                             </div>
                         </div>

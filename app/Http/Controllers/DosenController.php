@@ -11,14 +11,18 @@ class DosenController extends Controller
 {
     public function index()
     {
+        $nip = session()->get('nip');
+
         $kkns = Periode::where('status', '1')->orderBy('id', 'desc')->get();
-        $dosen = Dosen::all();
-        return view('dosen.beranda', compact('kkns', 'dosen'));
+
+        return view('dosen.beranda', compact('kkns', 'nip'));
     }
 
-    public function create()
+    public function data_kelompok()
     {
-        return view('mahasiswa.daftar-kkn');
+        $nip = session()->get('nip');
+
+        return view('dosen.data-kelompok', compact('nip'));
     }
 
     public function store(Request $request)
