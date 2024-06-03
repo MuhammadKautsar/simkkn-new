@@ -10,13 +10,13 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Akun Panitia</h1>
+                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Role</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                         <!--begin::Item-->
                         <li class="breadcrumb-item text-muted">
-                            <a href="" class="text-muted text-hover-primary">Akun Panitia</a>
+                            <a href="" class="text-muted text-hover-primary">Role</a>
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
@@ -25,7 +25,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Daftar Akun Panitia</li>
+                        <li class="breadcrumb-item text-muted">Daftar Role</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -79,7 +79,7 @@
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                     <span class="path3"></span>
-                                </i>Tambah Akun</button>
+                                </i>Tambah Role</button>
                             {{-- </a> --}}
                             <!--end::Button-->
                         </div>
@@ -92,55 +92,19 @@
                         <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
                             <thead>
                                 <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                    <th class="min-w-125px text-center">NIK/NIP</th>
-                                    <th class="min-w-250px text-center">Nama</th>
-                                    <th class="min-w-125px text-center">No HP</th>
-                                    <th class="min-w-125px text-center">Hak Akses</th>
-                                    <th class="min-w-125px text-center">Terakhir Login</th>
-                                    <th class="min-w-125px text-center">Keterangan</th>
-                                    <th class="min-w-125px text-center">Status</th>
+                                    <th class="min-w-125px text-center">ID</th>
+                                    <th class="min-w-250px text-center">Nama Level</th>
                                     <th class="text-end min-w-100px text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="fw-semibold text-gray-600">
-                                @foreach ($users as $user)
+                                @foreach ($roles as $role)
                                     <tr>
-                                        <td class="align-middle bg-transparent border-bottom">{{ $user->nip }}</td>
-                                        <td class="align-middle bg-transparent border-bottom">{{ $user->nama }}</td>
-                                        <td class="align-middle bg-transparent border-bottom">{{ $user->nohp }}</td>
-                                        @if ($user->level == "1")
-                                            <td class="align-middle bg-transparent border-bottom text-center">Monitoring</td>
-                                        @else
-                                            <td class="align-middle bg-transparent border-bottom text-center">Panitia</td>
-                                        @endif
-                                        <td class="align-middle bg-transparent border-bottom">{{ $user->last_signed_in }}</td>
-                                        <td class="align-middle bg-transparent border-bottom">{{ $user->keterangan }}</td>
-                                        @if ($user->status == "1")
-                                            <td class="text-center"><span class="badge badge-success">Aktif</span></td>
-                                            <td class="text-center">
-                                                <a href="" data-bs-toggle="modal" data-bs-target="#editModal" data-nip="{{ $user->nip }}" data-nama="{{ $user->nama }}" data-nohp="{{ $user->nohp }}" data-level="{{ $user->level }}" data-keterangan="{{ $user->keterangan }}"><i class="fas fa-cog"></i></a>
-                                                {{-- <a href="" class="nonaktif"><i class="fas fa-ban"></i></a> --}}
-                                                <a href="#" onclick="event.preventDefault(); document.getElementById('deactivate-form-{{ $user->nip }}').submit();">
-                                                    <i class="fas fa-ban"></i>
-                                                </a>
-                                                <form id="deactivate-form-{{ $user->nip }}" action="{{ route('user.deactivate', $user->nip) }}" method="POST" style="display: none;">
-                                                    @csrf
-                                                </form>
-                                            {{-- </td> --}}
-                                        @else
-                                            <td class="text-center"><span class="badge badge-danger">Nonaktif</span></td>
-                                            <td class="text-center">
-                                                <a href="" data-bs-toggle="modal" data-bs-target="#editModal" data-nip="{{ $user->nip }}" data-nama="{{ $user->nama }}" data-nohp="{{ $user->nohp }}" data-level="{{ $user->level }}" data-keterangan="{{ $user->keterangan }}"><i class="fas fa-cog"></i></a>
-                                                {{-- <a href="" class="aktif"><i class="fas fa-check"></i></a> --}}
-                                                <a href="#" onclick="event.preventDefault(); document.getElementById('activate-form-{{ $user->nip }}').submit();">
-                                                    <i class="fas fa-check"></i>
-                                                </a>
-                                                <form id="activate-form-{{ $user->nip }}" action="{{ route('user.activate', $user->nip) }}" method="POST" style="display: none;">
-                                                    @csrf
-                                                </form>
-                                            {{-- </td> --}}
-                                        @endif
-                                            <a href="/users-management/{{$user->nip}}/delete" onclick="return confirm('Yakin mau dihapus ?')"><i class="fas fa-trash" aria-hidden="true"></i></a>
+                                        <td class="align-middle bg-transparent border-bottom text-center">{{ $role->id }}</td>
+                                        <td class="align-middle bg-transparent border-bottom text-center">{{ $role->nama_level }}</td>
+                                        <td class="align-middle bg-transparent border-bottom text-center">
+                                            <a href="" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ $role->id }}" data-nama_level="{{ $role->nama_level }}"><i class="fas fa-cog"></i></a>
+                                            <a href="/role/{{$role->id}}/delete" onclick="return confirm('Yakin mau dihapus ?')"><i class="fas fa-trash" aria-hidden="true"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -166,7 +130,7 @@
                 <!--begin::Modal header-->
                 <div class="modal-header">
                     <!--begin::Modal title-->
-                    <h2 class="fw-bold">Tambah Akun Panitia KKN Baru</h2>
+                    <h2 class="fw-bold">Tambah Role Baru</h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -176,39 +140,25 @@
                 <!--begin::Modal body-->
                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                     <!--begin::Form-->
-                    <form class="form" action="{{ route('users-management.store') }}" method="POST">
+                    <form class="form" action="{{ route('role.store') }}" method="POST">
                         @csrf
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">
                             <label class="fs-6 fw-semibold form-label mb-2">
-                                <span class="required">NIP</span>
+                                <span class="required">Nama Role</span>
                             </label>
-                            <input class="form-control form-control-solid" placeholder="" name="nip" />
-                            <label class="fs-6 fw-semibold form-label mb-2 mt-2">
-                                <span class="required">Nomor Handphone</span>
-                            </label>
-                            <input class="form-control form-control-solid" placeholder="" name="nohp" />
-                            <label class="fs-6 fw-semibold form-label mb-2 mt-2">
-                                <span class="required">Hak Akses</span>
-                            </label>
-                            <select required class="form-select form-select-solid" name="level">
-                                <option value="2">Panitia</option>
-                                <option value="1">Monitoring</option>
-                            </select>
-                            <label class="fs-6 fw-semibold form-label mb-2 mt-2">
-                                <span class="required">Keterangan</span>
-                            </label>
-                            <input class="form-control form-control-solid" placeholder="" name="keterangan" />
+                            <input class="form-control form-control-solid" placeholder="" name="nama_level" />
                         </div>
                         <!--end::Input group-->
                         <!--begin::Actions-->
                         <div class="text-center pt-15">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" data-kt-permissions-modal-action="submit">
+                            {{-- <button type="submit" class="btn btn-primary" data-kt-permissions-modal-action="submit">
                                 <span class="indicator-label">Submit</span>
                                 <span class="indicator-progress">Please wait...
                                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                            </button>
+                            </button> --}}
+                            <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
                         <!--end::Actions-->
                     </form>
@@ -233,27 +183,12 @@
               </div>
               <div class="modal-body">
                 <div class="mb-3">
-                  <label for="editNip" class="form-label">NIP</label>
-                  <input disabled type="text" class="form-control" id="editNip" name="nip" readonly>
+                  <label for="editId" class="form-label">NIP</label>
+                  <input disabled type="hidden" class="form-control" id="editId" name="id">
                 </div>
                 <div class="mb-3">
                   <label for="editNama" class="form-label">Nama</label>
-                  <input disabled type="text" class="form-control" id="editNama" name="nama" readonly>
-                </div>
-                <div class="mb-3">
-                  <label for="editNohp" class="form-label">No HP</label>
-                  <input type="number" class="form-control" id="editNohp" name="nohp" required>
-                </div>
-                <div class="mb-3">
-                  <label for="editLevel" class="form-label">Level</label>
-                  <select required class="form-select" id="editLevel" name="level">
-                    <option value="2">Panitia</option>
-                    <option value="1">Monitoring</option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="editKeterangan" class="form-label">Keterangan</label>
-                  <textarea class="form-control" id="editKeterangan" name="keterangan"></textarea>
+                  <input type="text" class="form-control" id="editNama" name="nama_level">
                 </div>
               </div>
               <div class="modal-footer">
@@ -269,35 +204,18 @@
         var editModal = document.getElementById('editModal');
         editModal.addEventListener('show.bs.modal', function (event) {
           var button = event.relatedTarget;
-          var nip = button.getAttribute('data-nip');
-          var nama = button.getAttribute('data-nama');
-          var nohp = button.getAttribute('data-nohp');
-          var level = button.getAttribute('data-level');
-          var keterangan = button.getAttribute('data-keterangan');
+          var id = button.getAttribute('data-id');
+          var nama_level = button.getAttribute('data-nama_level');
 
-          var editNip = editModal.querySelector('#editNip');
+        //   var editNip = editModal.querySelector('#editNip');
           var editNama = editModal.querySelector('#editNama');
-          var editNohp = editModal.querySelector('#editNohp');
-          var editLevel = editModal.querySelector('#editLevel');
-          var editKeterangan = editModal.querySelector('#editKeterangan');
           var editForm = editModal.querySelector('#editForm');
 
-          editNip.value = nip;
-          editNama.value = nama;
-          editNohp.value = nohp;
-          editKeterangan.value = keterangan;
-
-          // Setel opsi yang sesuai dengan level dari database
-          var options = editLevel.options;
-          for (var i = 0; i < options.length; i++) {
-            if (options[i].value == level) {
-                options[i].selected = true;
-                break;
-            }
-          }
+          editId.value = id;
+          editNama.value = nama_level;
 
           // Setel aksi form secara dinamis
-          editForm.action = '/user/' + nip + '/update';
+          editForm.action = '/role/' + id + '/update';
         });
     </script>
 

@@ -77,6 +77,15 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
 
     Route::get('/users-management', [UserController::class, 'index'])->name('users-management');
     Route::post('/users-management/store', [UserController::class, 'store'])->name('users-management.store');
+    Route::get('/users-management/{nip}/delete', [UserController::class, 'destroy'])->name('users-management.delete');
+    Route::put('/user/{nip}/update', [UserController::class, 'update'])->name('user.update');
+    Route::post('/user/{nip}/activate', [UserController::class, 'activate'])->name('user.activate');
+    Route::post('/user/{nip}/deactivate', [UserController::class, 'deactivate'])->name('user.deactivate');
+
+    Route::get('/roles', [UserController::class, 'roles'])->name('roles');
+    Route::post('/role/store', [UserController::class, 'role_store'])->name('role.store');
+    Route::get('/role/{id}/delete', [UserController::class, 'role_destroy'])->name('role.delete');
+    Route::put('/role/{id}/update', [UserController::class, 'role_update'])->name('role.update');
 });
 
 Route::get('/user-profile', [ProfileController::class, 'index'])->name('users.profile')->middleware('auth');

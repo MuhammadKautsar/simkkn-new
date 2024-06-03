@@ -99,10 +99,9 @@ if (isset($_COOKIE["sidebar_minimize_state"]) && $_COOKIE["sidebar_minimize_stat
                     </div>
                     <!--end:Menu item-->
                     <!--begin:Menu item-->
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                    {{-- <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                         <!--begin:Menu link-->
                         <a class="menu-link @if(request()->routeIs('users-management')) active @endif" href="{{ route('users-management') }}">
-                        {{-- <span class="menu-link"> --}}
                             <span class="menu-icon">
                                 <i class="ki-duotone ki-user fs-2">
                                     <span class="path1"></span>
@@ -110,11 +109,50 @@ if (isset($_COOKIE["sidebar_minimize_state"]) && $_COOKIE["sidebar_minimize_stat
                                 </i>
                             </span>
                             <span class="menu-title">Panitia</span>
-                        {{-- </span> --}}
                         </a>
                         <!--end:Menu link-->
-                    </div>
+                    </div> --}}
                     <!--end:Menu item-->
+                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion @if(request()->routeIs('users-management')) here show @elseif(request()->routeIs('roles')) here show @endif">
+                        <!--begin:Menu link-->
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <i class="ki-duotone ki-user fs-2">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                            </span>
+                            <span class="menu-title">Panitia</span>
+                            <span class="menu-arrow"></span>
+                        </span>
+                        <!--end:Menu link-->
+                        <!--begin:Menu sub-->
+                        <div class="menu-sub menu-sub-accordion">
+                            <!--begin:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link @if(request()->routeIs('users-management')) active @endif" href="{{ route('users-management') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">List User</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                            <!--end:Menu item-->
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link @if(request()->routeIs('roles')) active @endif" href="{{ route('roles') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">List Role</span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        </div>
+                        <!--end:Menu sub-->
+                    </div>
                 </div>
                 <!--end::Menu-->
             </div>
