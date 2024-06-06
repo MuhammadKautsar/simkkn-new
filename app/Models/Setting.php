@@ -5,18 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Level extends Model
+class Setting extends Model
 {
     use HasFactory;
 
-    protected $table = 'level';
-
     protected $guarded = [];
 
-    public $timestamps = false;
-
-    public function features()
+    public function feature()
     {
-        return $this->belongsToMany(Feature::class, 'settings');
+        return $this->belongsTo(Feature::class);
+    }
+
+    public function level()
+    {
+        return $this->belongsTo(Level::class);
     }
 }

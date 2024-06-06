@@ -10,13 +10,13 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Role</h1>
+                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Previleges Fitur</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                         <!--begin::Item-->
                         <li class="breadcrumb-item text-muted">
-                            <a href="index.html" class="text-muted text-hover-primary">Beranda</a>
+                            <a href="" class="text-muted text-hover-primary">Beranda</a>
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
@@ -25,7 +25,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Role</li>
+                        <li class="breadcrumb-item text-muted">Fitur</li>
                         <!--end::Item-->
                         <!--begin::Item-->
                         <li class="breadcrumb-item">
@@ -33,7 +33,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Jenis Role</li>
+                        <li class="breadcrumb-item text-muted">Previleges Fitur</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -59,6 +59,16 @@
                         {{ session('error') }}
                     </div>
                 @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <div class="card card-flush">
                     <!--begin::Card header-->
                     <div class="card-header mt-6">
@@ -80,15 +90,13 @@
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
                             <!--begin::Button-->
-                            {{-- <a href="{{ route('kkn.create') }}"> --}}
                             <button type="button" class="btn btn-light-primary" data-bs-toggle="modal"
-                                data-bs-target="#kt_modal_add_permission">
+                                data-bs-target="#addModal">
                                 <i class="ki-duotone ki-plus-square fs-3">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                     <span class="path3"></span>
-                                </i>Tambah Role</button>
-                            {{-- </a> --}}
+                                </i>Tambah Privilege Fitur</button>
                             <!--end::Button-->
                         </div>
                         <!--end::Card toolbar-->
@@ -97,22 +105,42 @@
                     <!--begin::Card body-->
                     <div class="card-body pt-0">
                         <!--begin::Table-->
-                        <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
+                        <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0">
                             <thead>
                                 <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                    <th class="min-w-125px text-center">ID</th>
-                                    <th class="min-w-250px text-center">Nama Level</th>
-                                    <th class="text-end min-w-100px text-center">Aksi</th>
+                                    <th class="min-w-125px">Role</th>
+                                    <th class="min-w-250px">Fitur</th>
+                                    <th class="text-end min-w-100px">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="fw-semibold text-gray-600">
                                 @foreach ($roles as $role)
                                     <tr>
-                                        <td class="align-middle bg-transparent border-bottom text-center">{{ $role->id }}</td>
-                                        <td class="align-middle bg-transparent border-bottom text-center">{{ $role->nama_level }}</td>
-                                        <td class="align-middle bg-transparent border-bottom text-center">
-                                            <a href="" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ $role->id }}" data-nama_level="{{ $role->nama_level }}"><i class="fas fa-cog"></i></a>
-                                            <a href="/role/{{$role->id}}/delete" onclick="return confirm('Yakin mau dihapus ?')"><i class="fas fa-trash" aria-hidden="true"></i></a>
+                                        <td>{{ $role->nama_level }}</td>
+                                        <td>
+                                            @foreach ($role->features as $feature)
+                                                {{-- <span class="badge bg-light-primary badge-sm">{{ $feature->nama_fitur }} --}}
+                                                    <!-- Tombol Hapus Fitur -->
+                                                    <form action="{{ route('settings.destroy') }}" method="POST" style="display:inline-block;">
+                                                        @csrf
+                                                        <input type="hidden" name="level_id" value="{{ $role->id }}">
+                                                        <input type="hidden" name="feature_id" value="{{ $feature->id }}">
+                                                        <button type="submit" class="btn btn-sm" onclick="return confirm('Yakin mau dihapus ?')"><span class="badge bg-light-primary badge-sm">{{ $feature->nama_fitur }}<i class="ki-duotone ki-cross-circle fs-3 text-danger">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                        </i></button>
+                                                    </form>
+                                                </span>
+                                            @endforeach
+                                        </td>
+                                        <td class="text-end">
+                                            <!-- Tombol Hapus Semua Fitur -->
+                                            <form action="{{ route('settings.destroyAll') }}" method="POST" style="display:inline-block;">
+                                                @csrf
+                                                <input type="hidden" name="level_id" value="{{ $role->id }}">
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin mau dihapus ?')">Hapus Semua Fitur</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -130,42 +158,50 @@
     </div>
     <!--end::Content wrapper-->
 
-    <div class="modal fade" id="kt_modal_add_permission" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered mw-650px">
             <!--begin::Modal content-->
             <div class="modal-content">
                 <!--begin::Modal header-->
                 <div class="modal-header">
-                    <!--begin::Modal title-->
-                    <h2 class="fw-bold">Tambah Role Baru</h2>
-                    <!--end::Modal title-->
-                    <!--begin::Close-->
+                    <h2 class="fw-bold">Tambah Privilege Fitur</h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <!--end::Close-->
                 </div>
-                <!--end::Modal header-->
-                <!--begin::Modal body-->
-                <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <div class="modal-body mx-5 mx-xl-15 my-7">
                     <!--begin::Form-->
-                    <form class="form" action="{{ route('role.store') }}" method="POST">
+                    <form action="{{ route('settings.store') }}" method="POST">
                         @csrf
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">
                             <label class="fs-6 fw-semibold form-label mb-2">
-                                <span class="required">Nama Role</span>
+                                <span class="required">Role</span>
                             </label>
-                            <input class="form-control form-control-solid" placeholder="" name="nama_level" />
+                            <select class="form-select" name="level_id" required>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->id }}">{{ $role->nama_level }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="fv-row mb-7">
+                            <label class="fs-6 fw-semibold form-label mb-2">
+                                <span class="required">Fitur</span>
+                            </label>
+                            <div class="form-check">
+                                @foreach ($features as $feature)
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="feature_ids[]" value="{{ $feature->id }}" id="feature{{ $feature->id }}">
+                                        <label class="form-check-label" for="feature{{ $feature->id }}">
+                                            {{ $feature->nama_fitur }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                         <!--end::Input group-->
                         <!--begin::Actions-->
                         <div class="text-center pt-15">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            {{-- <button type="submit" class="btn btn-primary" data-kt-permissions-modal-action="submit">
-                                <span class="indicator-label">Submit</span>
-                                <span class="indicator-progress">Please wait...
-                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                            </button> --}}
                             <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
                         <!--end::Actions-->
@@ -178,52 +214,5 @@
         </div>
         <!--end::Modal dialog-->
     </div>
-
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <form id="editForm" action="" method="POST">
-              @csrf
-              @method('PUT')
-              <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Data</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <div class="mb-3">
-                  <input disabled type="hidden" class="form-control" id="editId" name="id">
-                </div>
-                <div class="mb-3">
-                  <label for="editNama" class="form-label">Nama</label>
-                  <input type="text" class="form-control" id="editNama" name="nama_level">
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-              </div>
-            </form>
-          </div>
-        </div>
-    </div>
-
-    <script>
-        var editModal = document.getElementById('editModal');
-        editModal.addEventListener('show.bs.modal', function (event) {
-          var button = event.relatedTarget;
-          var id = button.getAttribute('data-id');
-          var nama_level = button.getAttribute('data-nama_level');
-
-        //   var editNip = editModal.querySelector('#editNip');
-          var editNama = editModal.querySelector('#editNama');
-          var editForm = editModal.querySelector('#editForm');
-
-          editId.value = id;
-          editNama.value = nama_level;
-
-          // Setel aksi form secara dinamis
-          editForm.action = '/role/' + id + '/update';
-        });
-    </script>
 
 @endsection

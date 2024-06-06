@@ -140,7 +140,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input required type="text" class="form-control form-control-solid"
-                                                    name="nama_kkn" placeholder="Contoh: KKN Reguler Periode XVIII" />
+                                                    name="nama_kkn" placeholder="Contoh: KKN Reguler Periode XVIII" value="{{ $kkn->masa_periode }}"/>
                                                 <!--end::Input-->
                                                 @error('masa_periode')
                                                     <span class="error-message text-danger">{{ $message }}</span>
@@ -160,7 +160,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" class="form-control form-control-solid"
-                                                    name="masa_kkn" placeholder="Contoh: Januari 2020-Februari 2020" />
+                                                    name="masa_kkn" placeholder="Contoh: Januari 2020-Februari 2020" value="{{ $kkn->ket }}" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -206,7 +206,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" class="form-control form-control-solid"
-                                                    name="kode_kkn" placeholder="Contoh: GL" />
+                                                    name="kode_kkn" placeholder="Contoh: GL" value="{{ $kkn->kode }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -308,7 +308,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="number" class="form-control form-control-solid"
-                                                    name="min_sks" placeholder="Contoh: 120" />
+                                                    name="min_sks" placeholder="Contoh: 120" value="{{ $kkn->min_sks }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -325,7 +325,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="number" class="form-control form-control-solid"
-                                                    name="kuota" placeholder="Contoh: 100" />
+                                                    name="kuota" placeholder="Contoh: 100" value="{{ $kkn->kuota }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->

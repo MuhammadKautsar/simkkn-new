@@ -3,12 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KknController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\MahasiswaController;
-use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DaftarKknController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\Auth\LoginController;
 
 Route::get('/', function () {
     return view('landing');
@@ -75,6 +76,27 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::get('/jenis-kkn', [KknController::class, 'jenis_kkn'])->name('jenis.kkn');
     Route::post('/jenis-kkn-add', [KknController::class, 'add_jenis_kkn'])->name('jenis-kkn.add');
 
+    // Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
+    // Route::post('/admin/settings/toggle-feature', [AdminController::class, 'toggleFeature'])->name('admin.toggleFeature');
+
+    Route::get('/admin/features', [AdminController::class, 'features'])->name('features');
+    Route::post('/feature/store', [AdminController::class, 'feature_store'])->name('feature.store');
+    Route::get('/feature/{id}/delete', [AdminController::class, 'feature_destroy'])->name('feature.delete');
+    Route::put('/feature/{id}/update', [AdminController::class, 'feature_update'])->name('feature.update');
+
+    Route::get('/admin/settings', [AdminController::class, 'index'])->name('previleges');
+    Route::post('/settings/update', [AdminController::class, 'update'])->name('settings.update');
+    Route::post('/settings/delete', [AdminController::class, 'destroy'])->name('settings.destroy');
+    Route::post('/settings/delete-all', [AdminController::class, 'destroyAll'])->name('settings.destroyAll');
+    Route::post('/settings/add', [AdminController::class, 'store'])->name('settings.store');
+
+    // Route::post('/admin/settings/update', [AdminController::class, 'update'])->name('admin.settings.update');
+
+    // Route::get('/settings', [AdminController::class, 'index'])->name('settings.index');
+
+});
+
+Route::middleware(['checkWebServiceSession', 'checkFeature:user-management'])->group(function () {
     Route::get('/users-management', [UserController::class, 'index'])->name('users-management');
     Route::post('/users-management/store', [UserController::class, 'store'])->name('users-management.store');
     Route::get('/users-management/{nip}/delete', [UserController::class, 'destroy'])->name('users-management.delete');

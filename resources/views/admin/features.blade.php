@@ -10,13 +10,13 @@
                 <!--begin::Page title-->
                 <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                     <!--begin::Title-->
-                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Role</h1>
+                    <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Fitur</h1>
                     <!--end::Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                         <!--begin::Item-->
                         <li class="breadcrumb-item text-muted">
-                            <a href="index.html" class="text-muted text-hover-primary">Beranda</a>
+                            <a href="" class="text-muted text-hover-primary">Beranda</a>
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
@@ -25,7 +25,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Role</li>
+                        <li class="breadcrumb-item text-muted">Fitur</li>
                         <!--end::Item-->
                         <!--begin::Item-->
                         <li class="breadcrumb-item">
@@ -33,7 +33,7 @@
                         </li>
                         <!--end::Item-->
                         <!--begin::Item-->
-                        <li class="breadcrumb-item text-muted">Jenis Role</li>
+                        <li class="breadcrumb-item text-muted">Jenis Fitur</li>
                         <!--end::Item-->
                     </ul>
                     <!--end::Breadcrumb-->
@@ -80,15 +80,13 @@
                         <!--begin::Card toolbar-->
                         <div class="card-toolbar">
                             <!--begin::Button-->
-                            {{-- <a href="{{ route('kkn.create') }}"> --}}
                             <button type="button" class="btn btn-light-primary" data-bs-toggle="modal"
                                 data-bs-target="#kt_modal_add_permission">
                                 <i class="ki-duotone ki-plus-square fs-3">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                     <span class="path3"></span>
-                                </i>Tambah Role</button>
-                            {{-- </a> --}}
+                                </i>Tambah Fitur</button>
                             <!--end::Button-->
                         </div>
                         <!--end::Card toolbar-->
@@ -101,18 +99,18 @@
                             <thead>
                                 <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                     <th class="min-w-125px text-center">ID</th>
-                                    <th class="min-w-250px text-center">Nama Level</th>
+                                    <th class="min-w-250px text-center">Nama Fitur</th>
                                     <th class="text-end min-w-100px text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="fw-semibold text-gray-600">
-                                @foreach ($roles as $role)
+                                @foreach ($features as $feature)
                                     <tr>
-                                        <td class="align-middle bg-transparent border-bottom text-center">{{ $role->id }}</td>
-                                        <td class="align-middle bg-transparent border-bottom text-center">{{ $role->nama_level }}</td>
+                                        <td class="align-middle bg-transparent border-bottom text-center">{{ $feature->id }}</td>
+                                        <td class="align-middle bg-transparent border-bottom text-center">{{ $feature->nama_fitur }}</td>
                                         <td class="align-middle bg-transparent border-bottom text-center">
-                                            <a href="" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ $role->id }}" data-nama_level="{{ $role->nama_level }}"><i class="fas fa-cog"></i></a>
-                                            <a href="/role/{{$role->id}}/delete" onclick="return confirm('Yakin mau dihapus ?')"><i class="fas fa-trash" aria-hidden="true"></i></a>
+                                            <a href="" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ $feature->id }}" data-nama_fitur="{{ $feature->nama_fitur }}"><i class="fas fa-cog"></i></a>
+                                            <a href="/feature/{{$feature->id}}/delete" onclick="return confirm('Yakin mau dihapus ?')"><i class="fas fa-trash" aria-hidden="true"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -138,7 +136,7 @@
                 <!--begin::Modal header-->
                 <div class="modal-header">
                     <!--begin::Modal title-->
-                    <h2 class="fw-bold">Tambah Role Baru</h2>
+                    <h2 class="fw-bold">Tambah Fitur Baru</h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -148,24 +146,19 @@
                 <!--begin::Modal body-->
                 <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
                     <!--begin::Form-->
-                    <form class="form" action="{{ route('role.store') }}" method="POST">
+                    <form class="form" action="{{ route('feature.store') }}" method="POST">
                         @csrf
                         <!--begin::Input group-->
                         <div class="fv-row mb-7">
                             <label class="fs-6 fw-semibold form-label mb-2">
-                                <span class="required">Nama Role</span>
+                                <span class="required">Nama Fitur</span>
                             </label>
-                            <input class="form-control form-control-solid" placeholder="" name="nama_level" />
+                            <input class="form-control form-control-solid" placeholder="" name="nama_fitur" />
                         </div>
                         <!--end::Input group-->
                         <!--begin::Actions-->
                         <div class="text-center pt-15">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            {{-- <button type="submit" class="btn btn-primary" data-kt-permissions-modal-action="submit">
-                                <span class="indicator-label">Submit</span>
-                                <span class="indicator-progress">Please wait...
-                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                            </button> --}}
                             <button type="submit" class="btn btn-primary">Save changes</button>
                         </div>
                         <!--end::Actions-->
@@ -195,7 +188,7 @@
                 </div>
                 <div class="mb-3">
                   <label for="editNama" class="form-label">Nama</label>
-                  <input type="text" class="form-control" id="editNama" name="nama_level">
+                  <input type="text" class="form-control" id="editNama" name="nama_fitur">
                 </div>
               </div>
               <div class="modal-footer">
@@ -212,17 +205,17 @@
         editModal.addEventListener('show.bs.modal', function (event) {
           var button = event.relatedTarget;
           var id = button.getAttribute('data-id');
-          var nama_level = button.getAttribute('data-nama_level');
+          var nama_fitur = button.getAttribute('data-nama_fitur');
 
         //   var editNip = editModal.querySelector('#editNip');
           var editNama = editModal.querySelector('#editNama');
           var editForm = editModal.querySelector('#editForm');
 
           editId.value = id;
-          editNama.value = nama_level;
+          editNama.value = nama_fitur;
 
           // Setel aksi form secara dinamis
-          editForm.action = '/role/' + id + '/update';
+          editForm.action = '/feature/' + id + '/update';
         });
     </script>
 
