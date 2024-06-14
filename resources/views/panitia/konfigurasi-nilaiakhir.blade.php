@@ -170,12 +170,26 @@
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
+                                        @foreach($nilai as $n)
                                         <tr>
-                                            <td class="mb-0 text-sm"></td>
-                                            <td class="mb-0 text-sm"></td>
+                                            <td>{{ $n->nim13 }}</td>
+                                            <td>{{ $n->nama_mhs }}</td>
+                                            <td>{{ $n->nama_fakultas }}</td>
+                                            <td>{{ $n->nama_prodi }}</td>
+                                            <td>{{ $n->nama_dpl }}</td>
+                                            <td>{{ $n->nilai_geuchik }}</td>
+                                            {{-- <td>{{ $n->nilai_dosen }}</td> --}}
+                                            <td>{{ $n->nilai_des }}</td>
+                                            {{-- <td>{{ $n->nilai_verified }}</td> --}}
+                                            <td>{{ $n->nilai }}</td>
+                                            {{-- <td>{{ $n->kd_kelompok }}</td> --}}
                                         </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                {{ $nilai->links() }}
                             </div>
                         </div>
 

@@ -118,7 +118,7 @@
                                     <div class="card-body">
                                         <h5 class="text-muted">Jumlah Peserta</h5>
                                         <div class="metric-value d-inline-block">
-                                            <h1 class="mb-1">1462</h1>
+                                            <h1 class="mb-1">{{ $jumlah_peserta }}</h1>
                                         </div>
                                         <div class="metric-label d-inline-block float-right text-success font-weight-bold">
                                             <span class="ml-1">Peserta</span>
@@ -131,7 +131,7 @@
                                     <div class="card-body">
                                         <h5 class="text-muted">Peserta Laki-Laki</h5>
                                         <div class="metric-value d-inline-block">
-                                            <h1 class="mb-1">484</h1>
+                                            <h1 class="mb-1">{{ $peserta_laki }}</h1>
                                         </div>
                                         <div class="metric-label d-inline-block float-right text-success font-weight-bold">
                                             <span class="ml-1">Mahasiswa</span>
@@ -144,7 +144,7 @@
                                     <div class="card-body">
                                         <h5 class="text-muted">Peserta Perempuan</h5>
                                         <div class="metric-value d-inline-block">
-                                            <h1 class="mb-1">1051</h1>
+                                            <h1 class="mb-1">{{ $peserta_perempuan }}</h1>
                                         </div>
                                         <div class="metric-label d-inline-block float-right text-success font-weight-bold">
                                             <span class="ml-1">Mahasiswi</span>
@@ -157,7 +157,7 @@
                                     <div class="card-body">
                                         <h5 class="text-muted">Total Prodi</h5>
                                         <div class="metric-value d-inline-block">
-                                            <h1 class="mb-1">49</h1>
+                                            <h1 class="mb-1">{{ $total_prodi }}</h1>
                                         </div>
                                         <div class="metric-label d-inline-block float-right text-success font-weight-bold">
                                             <span class="ml-1">Prodi</span>
@@ -361,12 +361,26 @@
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
-                                        <tr>
-                                            <td class="mb-0 text-sm"></td>
-                                            <td class="mb-0 text-sm"></td>
-                                        </tr>
+                                        @foreach ($peserta as $p)
+                                            <tr>
+                                                <td class="mb-0 text-sm">{{ $p->nim13 }}</td>
+                                                <td class="mb-0 text-sm">{{ $p->nama_mhs }}</td>
+                                                <td class="mb-0 text-sm">{{ $p->jenis_kelamin }}</td>
+                                                <td class="mb-0 text-sm">{{ $p->kd_fjjp7 }}</td>
+                                                <td class="mb-0 text-sm">{{ $p->kd_fakultas }}</td>
+                                                <td class="mb-0 text-sm"></td>
+                                                <td class="mb-0 text-sm"></td>
+                                                <td class="mb-0 text-sm"></td>
+                                                @if ($p->status_reg == 1)
+                                                <td><span class="badge badge-success">Aktif</span></td>
+                                                @else
+                                                <td><span class="badge badge-danger">Nonaktif</span></td>
+                                                @endif
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
+                                {{ $peserta->links() }}
                             </div>
                         </div>
 

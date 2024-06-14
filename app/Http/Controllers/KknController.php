@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BatasanWaktu;
+use App\Models\Dosen;
 use App\Models\Kkn;
 use App\Models\Periode;
 use App\Models\JenisKkn;
+use App\Models\MasterDesa;
+use App\Models\PanitiaModel;
 use Illuminate\Http\Request;
 
 class KknController extends Controller
@@ -137,7 +141,15 @@ class KknController extends Controller
         $nip = session()->get('nip');
         $kkn = Periode::findOrFail($id);
         $jenis_kkns = JenisKkn::all();
-        return view('panitia.konfigurasi-dosen', compact('kkn', 'jenis_kkns', 'nip'));
+
+        // Menggunakan metode query mentah
+        // $dosen = $this->getDosen($id);
+
+        // Atau menggunakan metode Eloquent
+        $perPage = 10;
+        $dosen = Dosen::getDosen($id, $perPage);
+
+        return view('panitia.konfigurasi-dosen', compact('kkn', 'dosen', 'jenis_kkns', 'nip'));
     }
 
     public function konfigurasi_lokasi($id)
@@ -145,7 +157,8 @@ class KknController extends Controller
         $nip = session()->get('nip');
         $kkn = Periode::findOrFail($id);
         $jenis_kkns = JenisKkn::all();
-        return view('panitia.konfigurasi-lokasi', compact('kkn', 'jenis_kkns', 'nip'));
+        $desa = $kkn->masterDesas()->whereNotNull('nama_desa')->paginate(10);
+        return view('panitia.konfigurasi-lokasi', compact('kkn', 'jenis_kkns', 'nip', 'desa'));
     }
 
     public function konfigurasi_peserta($id)
@@ -153,31 +166,255 @@ class KknController extends Controller
         $nip = session()->get('nip');
         $kkn = Periode::findOrFail($id);
         $jenis_kkns = JenisKkn::all();
-        return view('panitia.konfigurasi-peserta', compact('kkn', 'jenis_kkns', 'nip'));
+
+        // Menghitung jumlah peserta berdasarkan id periode dan status_reg = 1
+        $jumlah_peserta = Kkn::where('periode', $id)
+        ->where('status_reg', 1)
+        ->count();
+
+        // Menghitung jumlah peserta laki-laki
+        $peserta_laki = Kkn::where('periode', $id)
+        ->where('jenis_kelamin', 'Laki-laki')
+        ->count();
+
+        // Menghitung jumlah peserta perempuan
+        $peserta_perempuan = Kkn::where('periode', $id)
+        ->where('jenis_kelamin', 'Perempuan')
+        ->count();
+
+        // Menghitung jumlah prodi yang mendaftar berdasarkan kolom kd_fjjp7 (unik)
+        $total_prodi = Kkn::where('periode', $id)
+        ->distinct('kd_fjjp7')
+        ->count('kd_fjjp7');
+
+        $peserta = Kkn::where('periode', $id)->orderBy('status_reg', 'asc')->paginate(25);
+        return view('panitia.konfigurasi-peserta', compact('kkn', 'jenis_kkns', 'nip', 'peserta', 'jumlah_peserta', 'peserta_laki', 'peserta_perempuan', 'total_prodi'));
     }
 
     public function konfigurasi_bataswaktu($id)
     {
         $nip = session()->get('nip');
         $kkn = Periode::findOrFail($id);
-        $jenis_kkns = JenisKkn::all();
-        return view('panitia.konfigurasi-bataswaktu', compact('kkn', 'jenis_kkns', 'nip'));
+
+        $batasanWaktu = $kkn->getBatasanWaktu();
+        return view('panitia.konfigurasi-bataswaktu', compact('kkn', 'nip', 'batasanWaktu'));
     }
 
+    public function setBatasWaktuDosen(Request $request)
+    {
+        $request->validate([
+            'id_periode' => 'required|integer',
+            'mulai_laporan_survey' => 'required|date',
+            'akhir_laporan_survey' => 'required|date',
+            'mulai_monev' => 'required|date',
+            'akhir_monev' => 'required|date',
+            'mulai_upload_nilai' => 'required|date',
+            'akhir_upload_nilai' => 'required|date',
+        ]);
+
+        $id_periode = $request->input('id_periode');
+        $data = $request->only([
+            'mulai_laporan_survey', 'akhir_laporan_survey',
+            'mulai_monev', 'akhir_monev',
+            'mulai_upload_nilai', 'akhir_upload_nilai'
+        ]);
+
+        $periode = Periode::findOrFail($id_periode);
+
+        if (!$periode->batasan_waktu) {
+            $batasanWaktu = BatasanWaktu::create($data);
+            $periode->batasan_waktu = $batasanWaktu->id;
+            $periode->save();
+        } else {
+            $batasanWaktu = BatasanWaktu::findOrFail($periode->batasan_waktu);
+            $batasanWaktu->update($data);
+        }
+
+        return redirect()->back()->with('success', 'Data batasan waktu dosen berhasil disimpan.');
+    }
+
+    public function setBatasWaktuMahasiswa(Request $request)
+    {
+        $request->validate([
+            'id_periode_mhs' => 'required|integer',
+            'mulai_upload_proposal' => 'required|date',
+            'akhir_upload_proposal' => 'required|date',
+            'mulai_logbook_1' => 'required|date',
+            'akhir_logbook_1' => 'required|date',
+            'mulai_logbook_2' => 'required|date',
+            'akhir_logbook_2' => 'required|date',
+            'mulai_logbook_3' => 'required|date',
+            'akhir_logbook_3' => 'required|date',
+            'mulai_logbook_4' => 'required|date',
+            'akhir_logbook_4' => 'required|date',
+            'mulai_laporan_akhir' => 'required|date',
+            'akhir_laporan_akhir' => 'required|date',
+        ]);
+
+        $id_periode = $request->input('id_periode_mhs');
+        $data = $request->only([
+            'mulai_upload_proposal', 'akhir_upload_proposal',
+            'mulai_logbook_1', 'akhir_logbook_1',
+            'mulai_logbook_2', 'akhir_logbook_2',
+            'mulai_logbook_3', 'akhir_logbook_3',
+            'mulai_logbook_4', 'akhir_logbook_4',
+            'mulai_laporan_akhir', 'akhir_laporan_akhir'
+        ]);
+
+        $periode = Periode::findOrFail($id_periode);
+
+        if (!$periode->batasan_waktu) {
+            $batasanWaktu = BatasanWaktu::create($data);
+            $periode->batasan_waktu = $batasanWaktu->id;
+            $periode->save();
+        } else {
+            $batasanWaktu = BatasanWaktu::findOrFail($periode->batasan_waktu);
+            $batasanWaktu->update($data);
+        }
+
+        return redirect()->back()->with('success', 'Data batasan waktu mahasiswa berhasil disimpan.');
+    }
+
+    // public function konfigurasi_monitoring($id)
+    // {
+    //     $nip = session()->get('nip');
+    //     $kkn = Periode::findOrFail($id);
+    //     $jenis_kkns = JenisKkn::all();
+    //     return view('panitia.konfigurasi-monitoring', compact('kkn', 'jenis_kkns', 'nip'));
+    // }
+
+    // public function konfigurasi_monitoring($id, $idPeriode = null)
     public function konfigurasi_monitoring($id)
     {
         $nip = session()->get('nip');
         $kkn = Periode::findOrFail($id);
-        $jenis_kkns = JenisKkn::all();
-        return view('panitia.konfigurasi-monitoring', compact('kkn', 'jenis_kkns', 'nip'));
+
+        // $dataPeriode = $idPeriode;
+        // $jenisKkn = Periode::find($idPeriode)->jenis_kkn;
+        // $status = Periode::find($idPeriode)->status;
+        // $dataMahasiswa = $this->getMahasiswa($idPeriode); // Anda perlu mengimplementasikan metode ini
+        // $dataMahasiswaLuarUsk = $this->getMahasiswaLuar($idPeriode); // Anda perlu mengimplementasikan metode ini
+        // $dataDosen = $this->getKelompok($idPeriode);
+
+        $dataPeriode = $id;
+        $jenisKkn = Periode::find($id)->jenis_kkn;
+        $status = Periode::find($id)->status;
+        $dataMahasiswa = $this->getMahasiswa($id); // Anda perlu mengimplementasikan metode ini
+        $dataMahasiswaLuarUsk = $this->getMahasiswaLuar($id); // Anda perlu mengimplementasikan metode ini
+        $dataDosen = $this->getKelompok($id);
+
+        return view('panitia.konfigurasi-monitoring', compact('nip', 'kkn', 'dataPeriode', 'jenisKkn', 'status', 'dataMahasiswa', 'dataMahasiswaLuarUsk', 'dataDosen'));
     }
+
+    private function getKelompok($idPeriode)
+    {
+        $dataDosen = MasterDesa::where('periode', $idPeriode)
+            ->whereNotNull('kd_kelompok')
+            ->where('kd_kelompok', '<>', '')
+            ->orderBy('kd_kecamatan')
+            // ->get();
+            ->paginate(25);
+
+        foreach ($dataDosen as $data) {
+            $data->nama_dpl = $data->nip_dpl ? $this->getNamaDosen($data->nip_dpl, $idPeriode) : "";
+        }
+
+        return $dataDosen;
+    }
+
+    private function getNamaDosen($nipDpl, $idPeriode)
+    {
+        // Implementasikan logika untuk mendapatkan nama dosen
+        return "Nama Dosen"; // Ganti dengan logika yang sesuai
+    }
+
+    private function getMahasiswa($idPeriode)
+    {
+        $dataMhs = Kkn::select(
+                'kkn.*',
+                'f.nama_fakultas as fakultas',
+                'p.nama_prodi as prodi',
+                'm.proposal_kkn',
+                'm.penetapan_kkn',
+                'm.laporan_kkn',
+                \DB::raw("IF(kkn.nim13 = m.nim_ketua, 'Ketua', 'Anggota') as status_keanggotaan"),
+                'm.nama_desa',
+                'm.nama_kecamatan',
+                'd.nama as nama_dpl',
+                'l.logbook_1',
+                'l.logbook_2',
+                'l.logbook_3',
+                'l.logbook_4',
+                'l.youtube_1',
+                'l.youtube_2',
+                'l.youtube_3',
+                'l.youtube_4',
+                'r.name as kabupaten_domisili',
+                'v.name as provinsi_domisili',
+                \DB::raw("concat(substring(m.kd_kelompok, 1, length(pr.kode)), lpad(substring(m.kd_kelompok, length(pr.kode)+1), 3, '0')) as kd_kelompok")
+            )
+            ->leftJoin('prodi as p', \DB::raw('substring(kkn.nim13, 3, 7)'), '=', 'p.kd_fjjp7')
+            ->leftJoin('fakultas as f', 'f.kd_fakultas2', '=', 'kkn.kd_fakultas')
+            ->leftJoin('master_desa as m', 'kkn.kelompok', '=', 'm.id')
+            ->leftJoin('dosen as d', function($join) {
+                $join->on('m.nip_dpl', '=', 'd.nip')
+                     ->on('d.id_periode', '=', 'kkn.periode');
+            })
+            ->leftJoin('logbook as l', 'kkn.logbook', '=', 'l.id')
+            ->leftJoin('regencies as r', 'r.id', '=', 'kkn.id_kabupaten')
+            ->leftJoin('provinces as v', 'v.id', '=', 'r.province_id')
+            ->leftJoin('periode as pr', 'pr.id', '=', 'kkn.periode')
+            ->where('kkn.periode', $idPeriode)
+            // ->get();
+            ->paginate(25);
+
+        foreach ($dataMhs as $data) {
+            if (empty($data->kelompok) || $data->kelompok === "X") {
+                $data->kd_kelompok = "Belum ada kelompok";
+                $data->kabupaten_penempatan = "";
+            } else {
+                if ($data->kelompok !== "Nonaktif") {
+                    $lokasi = MasterDesa::join('regencies', 'regencies.id', '=', 'master_desa.kd_kabkota')
+                        ->where('master_desa.id', $data->kelompok)
+                        ->first();
+                    $data->kabupaten_penempatan = $lokasi ? $lokasi->name : "";
+                }
+            }
+
+            if ($data->status_reg === "0") {
+                $data->kd_kelompok = "Nonaktif";
+            }
+
+            $data->link_1 = explode("; ", $data->youtube_1);
+            $data->link_2 = explode("; ", $data->youtube_2);
+            $data->link_3 = explode("; ", $data->youtube_3);
+            $data->link_4 = explode("; ", $data->youtube_4);
+        }
+
+        return $dataMhs;
+    }
+
+    private function getMahasiswaLuar($idPeriode)
+    {
+        // Implementasikan metode ini sesuai kebutuhan Anda
+    }
+
+    // public function konfigurasi_nilaiakhir($id)
+    // {
+    //     $nip = session()->get('nip');
+    //     $kkn = Periode::findOrFail($id);
+    //     $jenis_kkns = JenisKkn::all();
+    //     return view('panitia.konfigurasi-nilaiakhir', compact('kkn', 'jenis_kkns', 'nip'));
+    // }
 
     public function konfigurasi_nilaiakhir($id)
     {
         $nip = session()->get('nip');
         $kkn = Periode::findOrFail($id);
         $jenis_kkns = JenisKkn::all();
-        return view('panitia.konfigurasi-nilaiakhir', compact('kkn', 'jenis_kkns', 'nip'));
+
+        $nilai = PanitiaModel::getNilaiAll($id);
+        return view('panitia.konfigurasi-nilaiakhir', compact('kkn', 'jenis_kkns', 'nip', 'nilai'));
     }
 
     public function add_jenis_kkn(Request $request)

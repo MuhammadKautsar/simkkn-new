@@ -1,9 +1,6 @@
 @extends('layouts.panitia-layout')
 
 @section('content')
-    {{-- @if (session('pesan'))
-    @dd("oke")
-@endif --}}
     <!--begin::Content wrapper-->
     <div class="d-flex flex-column flex-column-fluid">
         <!--begin::Toolbar-->
@@ -224,12 +221,19 @@
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
-                                        <tr>
-                                            <td class="mb-0 text-sm"></td>
-                                            <td class="mb-0 text-sm"></td>
-                                        </tr>
+                                        @foreach ($dosen as $d)
+                                            <tr>
+                                                <td class="mb-0 text-sm">{{ $d->nip }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->nama }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->nama_unit }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->fakultas }}</td>
+                                                <td class="mb-0 text-sm">{{ strtoupper($d->status) }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->no_hp }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
+                                {{ $dosen->links() }}
                             </div>
                         </div>
                     </div>

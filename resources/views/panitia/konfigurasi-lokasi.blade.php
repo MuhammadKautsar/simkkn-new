@@ -350,12 +350,20 @@
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
-                                        <tr>
-                                            <td class="mb-0 text-sm"></td>
-                                            <td class="mb-0 text-sm"></td>
-                                        </tr>
+                                        @foreach ($desa as $d)
+                                            <tr>
+                                                <td class="mb-0 text-sm">{{ $d->nama_kecamatan }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->nama_desa }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->nama_geuchik }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->no_hp_geuchik }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->nip_korcam }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->nip_dpl }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->kd_kelompok }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
+                                {{ $desa->links() }}
                             </div>
                         </div>
 
@@ -412,12 +420,19 @@
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
-                                        <tr>
-                                            <td class="mb-0 text-sm"></td>
-                                            <td class="mb-0 text-sm"></td>
-                                        </tr>
+                                        @foreach ($desa as $d)
+                                            <tr>
+                                                <td class="mb-0 text-sm">{{ $d->kd_prov }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->nama_kecamatan }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->nama_camat }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->no_hp_camat }}</td>
+                                                <td class="mb-0 text-sm">{{ $d->nip_korcam }}</td>
+                                                <td class="mb-0 text-sm"></td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
+                                {{ $desa->links() }}
                             </div>
                         </div>
 

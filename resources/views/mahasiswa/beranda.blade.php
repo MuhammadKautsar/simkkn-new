@@ -88,8 +88,16 @@
                                                                     <td class="text-center text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->lokasi }}</td>
                                                                 @else
                                                                 <td class="text-center text-gray-500 mt-1 fw-semibold fs-4">
+                                                                    @php
+                                                                        $count = count($kkn->lokasi_mappings);
+                                                                        $i = 0;
+                                                                    @endphp
                                                                     @foreach ($kkn->lokasi_mappings as $lokasi)
-                                                                        {{ $lokasi->id_kabupaten }}
+                                                                        {{ $lokasi->province ? ucwords(strtolower($lokasi->province->name)) : 'N/A' }} - {{ $lokasi->regency ? ucwords(strtolower($lokasi->regency->name)) : 'N/A' }}
+                                                                        @php $i++; @endphp
+                                                                        @if ($i < $count)
+                                                                            #
+                                                                        @endif
                                                                     @endforeach
                                                                 </td>
                                                                 @endif

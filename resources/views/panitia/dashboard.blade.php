@@ -102,9 +102,22 @@
                                     @if ($kkn->lokasi != '0')
                                     <td class="text-center mb-0 text-sm">{{ $kkn->lokasi }}</td>
                                     @else
-                                    <td class="text-center mb-0 text-sm">
+                                    {{-- <td class="text-center mb-0 text-sm">
                                         @foreach ($kkn->lokasi_mappings as $lokasi)
-                                            {{ $lokasi->id_kabupaten }}
+                                            {{ $lokasi->province ? ucwords(strtolower($lokasi->province->name)) : 'N/A' }} - {{ $lokasi->regency ? ucwords(strtolower($lokasi->regency->name)) : 'N/A' }} #
+                                        @endforeach
+                                    </td> --}}
+                                    <td class="text-center mb-0 text-sm">
+                                        @php
+                                            $count = count($kkn->lokasi_mappings);
+                                            $i = 0;
+                                        @endphp
+                                        @foreach ($kkn->lokasi_mappings as $lokasi)
+                                            {{ $lokasi->province ? ucwords(strtolower($lokasi->province->name)) : 'N/A' }} - {{ $lokasi->regency ? ucwords(strtolower($lokasi->regency->name)) : 'N/A' }}
+                                            @php $i++; @endphp
+                                            @if ($i < $count)
+                                                #
+                                            @endif
                                         @endforeach
                                     </td>
                                     @endif

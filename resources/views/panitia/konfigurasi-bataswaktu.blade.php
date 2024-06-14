@@ -125,8 +125,9 @@
                             <!--begin::Card body-->
                             <div class="card-body pt-5">
                                 <!--begin::Form-->
-                                <form class="form" action="/kkn/{{ $kkn->id }}/update" method="POST">
+                                <form action="{{ route('set.batas.waktu.dosen') }}" method="POST">
                                     @csrf
+                                    <input type="hidden" name="id_periode" value="{{ $kkn->id }}">
                                     <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
                                         <!--begin::Col-->
                                         <div class="col">
@@ -134,12 +135,12 @@
                                             <div class="fv-row mb-7">
                                                 <!--begin::Label-->
                                                 <label class="fs-6 fw-semibold form-label mt-3">
-                                                    <span>Mulai Upload Laporan Survey Dosen::</span>
+                                                    <span>Mulai Upload Laporan Survey Dosen:</span>
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_mulai" placeholder="Dari Tanggal" />
+                                                    name="mulai_laporan_survey" placeholder="Dari Tanggal" value="{{ $batasanWaktu['mulai_laporan_survey'] }}" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -151,12 +152,12 @@
                                             <div class="fv-row mb-7">
                                                 <!--begin::Label-->
                                                 <label class="fs-6 fw-semibold form-label mt-3">
-                                                    <span>Akhir Upload Laporan Survey Dosen::</span>
+                                                    <span>Akhir Upload Laporan Survey Dosen:</span>
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_akhir" placeholder="" />
+                                                    name="akhir_laporan_survey" placeholder="" value="{{ $batasanWaktu['akhir_laporan_survey'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -175,7 +176,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_mulai" placeholder="" />
+                                                    name="mulai_profil" placeholder=""/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -192,7 +193,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_akhir" placeholder="" />
+                                                    name="akhir_profil" placeholder=""/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -211,7 +212,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_mulai" placeholder="" />
+                                                    name="mulai_monev" placeholder="" value="{{ $batasanWaktu['mulai_monev'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -228,7 +229,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_akhir" placeholder="" />
+                                                    name="akhir_monev" placeholder="" value="{{ $batasanWaktu['akhir_monev'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -247,7 +248,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_mulai" placeholder="" />
+                                                    name="mulai_upload_nilai" placeholder="" value="{{ $batasanWaktu['mulai_upload_nilai'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -264,7 +265,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_akhir" placeholder="" />
+                                                    name="akhir_upload_nilai" placeholder="" value="{{ $batasanWaktu['akhir_upload_nilai'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -305,8 +306,9 @@
                             <!--begin::Card body-->
                             <div class="card-body pt-5">
                                 <!--begin::Form-->
-                                <form class="form" action="/kkn/{{ $kkn->id }}/update" method="POST">
+                                <form action="{{ route('set.batas.waktu.mahasiswa') }}" method="POST">
                                     @csrf
+                                    <input type="hidden" name="id_periode_mhs" value="{{ $kkn->id }}">
                                     <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
                                         <!--begin::Col-->
                                         <div class="col">
@@ -319,7 +321,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_mulai" placeholder="Dari Tanggal" />
+                                                    name="mulai_upload_proposal" placeholder="Dari Tanggal" value="{{ $batasanWaktu['mulai_upload_proposal'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -336,7 +338,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_akhir" placeholder="" />
+                                                    name="akhir_upload_proposal" placeholder="" value="{{ $batasanWaktu['akhir_upload_proposal'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -355,7 +357,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_mulai" placeholder="" />
+                                                    name="mulai_logbook_1" placeholder="" value="{{ $batasanWaktu['mulai_logbook_1'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -372,7 +374,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_akhir" placeholder="" />
+                                                    name="akhir_logbook_1" placeholder="" value="{{ $batasanWaktu['akhir_logbook_1'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -391,7 +393,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_mulai" placeholder="" />
+                                                    name="mulai_logbook_2" placeholder="" value="{{ $batasanWaktu['mulai_logbook_2'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -408,7 +410,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_akhir" placeholder="" />
+                                                    name="akhir_logbook_2" placeholder="" value="{{ $batasanWaktu['akhir_logbook_2'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -427,7 +429,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_mulai" placeholder="" />
+                                                    name="mulai_logbook_3" placeholder="" value="{{ $batasanWaktu['mulai_logbook_3'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -444,7 +446,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_akhir" placeholder="" />
+                                                    name="akhir_logbook_3" placeholder="" value="{{ $batasanWaktu['akhir_logbook_3'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -463,7 +465,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_mulai" placeholder="" />
+                                                    name="mulai_logbook_4" placeholder="" value="{{ $batasanWaktu['mulai_logbook_4'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -480,7 +482,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_akhir" placeholder="" />
+                                                    name="akhir_logbook_4" placeholder="" value="{{ $batasanWaktu['akhir_logbook_4'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -499,7 +501,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_mulai" placeholder="" />
+                                                    name="mulai_laporan" placeholder="" value="{{ $batasanWaktu['mulai_laporan'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -516,7 +518,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_akhir" placeholder="" />
+                                                    name="akhir_laporan" placeholder="" value="{{ $batasanWaktu['akhir_laporan'] }}"/>
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->

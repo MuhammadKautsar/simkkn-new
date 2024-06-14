@@ -13,7 +13,7 @@ class DashboardController extends Controller
         $nip = session()->get('nip');
 
         // $kkns = Periode::orderBy('id', 'desc')->paginate(10);
-        $kkns = Periode::orderBy('id', 'desc')->where('status', '<>', 2)->get();
+        $kkns = Periode::with(['lokasi_mappings.regency'])->orderBy('id', 'desc')->where('status', '<>', 2)->get();
 
         return view('panitia.dashboard', compact('kkns', 'nip'));
     }

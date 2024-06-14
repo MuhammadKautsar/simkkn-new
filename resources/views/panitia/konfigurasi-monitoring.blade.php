@@ -166,12 +166,55 @@
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
-                                        <tr>
-                                            <td class="mb-0 text-sm"></td>
-                                            <td class="mb-0 text-sm"></td>
-                                        </tr>
+                                        @foreach($dataDosen as $d)
+                                            <tr>
+                                                {{-- <td>{{ $d->nama_dpl }}</td> --}}
+                                                <td>{{ $d->kd_kelompok }}</td>
+                                                <td>
+                                                    @if($d->profil_desa)
+                                                        <span class="badge badge-success">Sudah diunggah</span>
+                                                    @else
+                                                        <span class="badge badge-danger">Belum diunggah</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($d->laporan_survey)
+                                                        <span class="badge badge-success">Sudah diunggah</span>
+                                                    @else
+                                                        <span class="badge badge-danger">Belum diunggah</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($d->monev)
+                                                        <span class="badge badge-success">Sudah diunggah</span>
+                                                    @else
+                                                        <span class="badge badge-danger">Belum diunggah</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($d->tgl_pdf_nilai)
+                                                        <span class="badge badge-success">Sudah diunggah</span>
+                                                    @else
+                                                        <span class="badge badge-danger">Belum diunggah</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($d->tgl_pdf_nilai_geuchik)
+                                                        <span class="badge badge-success">Sudah diunggah</span>
+                                                    @else
+                                                        <span class="badge badge-danger">Belum diunggah</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <a href="#" data-id="{{ $d->id }}" data-pengguna="dosen" class="download-berkas">
+                                                        <i class="fas fa-download"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
+                                {{ $dataDosen->links() }}
                                 <div class="d-flex justify-content-start">
                                     <!--begin::Button-->
                                     <button class="btn btn-primary">
@@ -305,23 +348,106 @@
                             <div class="card-body pt-0">
                                 <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
                                     <thead>
-                                        <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                            <th class="min-w-125px">NIM</th>
-                                            <th class="min-w-125px">Nama</th>
-                                            <th class="min-w-125px">Nama DPL</th>
-                                            <th class="min-w-125px">Proposal</th>
-                                            <th class="min-w-125px">Logbook</th>
-                                            <th class="min-w-125px">Laporan Akhir</th>
-                                            <th class="min-w-125px">Aksi</th>
+                                        <tr>
+                                            <th rowspan="2">NIM</th>
+                                            <th rowspan="2">Nama</th>
+                                            <th rowspan="2">Nama DPL</th>
+                                            <th rowspan="2">Kelompok</th>
+                                            <th rowspan="2">Proposal</th>
+                                            @if($jenisKkn == 10)
+                                                <th rowspan="2">SK Penetapan</th>
+                                            @endif
+                                            <th class="tet-center" colspan="4">Logbook</th>
+                                            <th rowspan="2">Laporan Akhir</th>
+                                            <th rowspan="2">Aksi</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Minggu Ke-1</th>
+                                            <th>Minggu Ke-2</th>
+                                            <th>Minggu Ke-3</th>
+                                            <th>Minggu Ke-4</th>
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
+                                        @foreach($dataMahasiswa as $m)
                                         <tr>
-                                            <td class="mb-0 text-sm"></td>
-                                            <td class="mb-0 text-sm"></td>
+                                            <td>{{ $m->nim13 }}</td>
+                                            <td>{{ $m->nama_mhs }}</td>
+                                            <td>{{ $m->nama_dpl }}</td>
+                                            <td>{{ $m->kd_kelompok }}</td>
+                                            <td>
+                                                @if($m->proposal_kkn)
+                                                    <span class="badge badge-success">Sudah diunggah</span>
+                                                @else
+                                                    <span class="badge badge-danger">Belum diunggah</span>
+                                                @endif
+                                            </td>
+                                            @if($jenisKkn == 10)
+                                                <td>
+                                                    @if($m->penetapan_kkn)
+                                                        <span class="badge badge-success">Sudah diunggah</span>
+                                                    @else
+                                                        <span class="badge badge-danger">Belum diunggah</span>
+                                                    @endif
+                                                </td>
+                                            @endif
+                                            <td>
+                                                @if($m->logbook_1)
+                                                    <span class="badge badge-success">Sudah diunggah</span>
+                                                    @foreach($m->link_1 as $link)
+                                                        <br><a href="{{ $link }}" class="mt-1 badge badge-primary">Link Video</a>
+                                                    @endforeach
+                                                @else
+                                                    <span class="badge badge-danger">Belum diunggah</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($m->logbook_2)
+                                                    <span class="badge badge-success">Sudah diunggah</span>
+                                                    @foreach($m->link_2 as $link)
+                                                        <br><a href="{{ $link }}" class="mt-1 badge badge-primary">Link Video</a>
+                                                    @endforeach
+                                                @else
+                                                    <span class="badge badge-danger">Belum diunggah</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($m->logbook_3)
+                                                    <span class="badge badge-success">Sudah diunggah</span>
+                                                    @foreach($m->link_3 as $link)
+                                                        <br><a href="{{ $link }}" class="mt-1 badge badge-primary">Link Video</a>
+                                                    @endforeach
+                                                @else
+                                                    <span class="badge badge-danger">Belum diunggah</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($m->logbook_4)
+                                                    <span class="badge badge-success">Sudah diunggah</span>
+                                                    @foreach($m->link_4 as $link)
+                                                        <br><a href="{{ $link }}" class="mt-1 badge badge-primary">Link Video</a>
+                                                    @endforeach
+                                                @else
+                                                    <span class="badge badge-danger">Belum diunggah</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($m->laporan_kkn)
+                                                    <span class="badge badge-success">Sudah diunggah</span>
+                                                @else
+                                                    <span class="badge badge-danger">Belum diunggah</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="#" data-id="{{ $m->nim13 }}" data-periode="{{ $dataPeriode }}" data-pengguna="mahasiswa" class="download-berkas">
+                                                    <i class="fas fa-download"></i>
+                                                </a>
+                                            </td>
                                         </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
+                                {{ $dataMahasiswa->links() }}
                                 <div class="d-flex justify-content-start">
                                     <!--begin::Button-->
                                     <button class="btn btn-primary">

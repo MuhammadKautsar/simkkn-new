@@ -15,4 +15,20 @@ class LokasiKkn extends Model
     {
         return $this->belongsTo(Periode::class);
     }
+
+    // Define relationship with Regency
+    public function regency()
+    {
+        return $this->belongsTo(Regency::class, 'id_kabupaten', 'id');
+    }
+
+    // Define custom accessor for province
+    public function getProvinceAttribute()
+    {
+        // Extract first 2 digits of id_kabupaten
+        $provinceId = substr($this->id_kabupaten, 0, 2);
+
+        // Fetch province using the extracted ID
+        return Provinsi::where('id', $provinceId)->first();
+    }
 }
