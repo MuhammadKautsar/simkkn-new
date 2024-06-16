@@ -200,7 +200,7 @@
 													<div class="card-title">
 														<!--begin::User-->
 														<div class="d-flex justify-content-center flex-column me-3">
-															<a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1">Data Pribadi</a>
+															<a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1">Ketentuan Mengunggah Logbook Mingguan</a>
 														</div>
 														<!--end::User-->
 													</div>
@@ -209,66 +209,23 @@
 												<!--end::Card header-->
 												<!--begin::Card body-->
 												<div class="card-body" id="kt_chat_messenger_body">
-                                                    <div class="table-responsive">
-                                                        <!--begin::Table-->
-                                                        <table class="table align-middle gs-0 gy-4">
-                                                            <!--begin::Table body-->
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>Nama</td>
-                                                                    <td>: {{ $data['nama_mhs'] }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>NIM</td>
-                                                                    <td>: {{ $data['nim13'] }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Fakultas / Jurusan</td>
-                                                                    <td>:  / </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Agama</td>
-                                                                    <td>: {{ $data['agama'] }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Jenis Kelamin</td>
-                                                                    <td>: {{ $data['jenis_kelamin'] }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>No Handhphone</td>
-                                                                    <td>: {{ $data['no_telp_mhs'] }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Riwayat Penyakit</td>
-                                                                    <td>: </td>
-                                                                </tr>
-                                                            </tbody>
-                                                            <!--end::Table body-->
-                                                        </table>
-                                                    </div>
+                                                    <span>1. Batas Upload Logbook Minggu ke-1 dari tanggal - sampai tanggal -</span><br>
+                                                    <span>2. Batas Upload Logbook Minggu ke-2 dari tanggal - sampai tanggal -</span><br>
+                                                    <span>3. Batas Upload Logbook Minggu ke-3 dari tanggal - sampai tanggal -</span><br>
+                                                    <span>4. Batas Upload Logbook Minggu ke-4 dari tanggal - sampai tanggal -</span><br>
+                                                    <span>5. Maksimum ukuran file sebesar 5MB dengan format .pdf</span><br>
+                                                    <span>6. Menyertakan tautan dokumentasi video kegiatan (1 video untuk 1 logbook mingguan) yang telah di unggah sesuai arahan panitia</span><br>
+                                                    <span>7. Tautan yang disertakan mohon diisi dengan 1 tautan saja tanpa ada penambahan karakter lainnya. Contoh tautan: https://www.youtube.com</span><br>
 												</div>
 												<!--end::Card body-->
 												<!--begin::Card footer-->
 												<div class="card-footer pt-4" id="kt_chat_messenger_footer">
 														<!--begin::Send-->
-														<a href="{{ route('cetak.pdf', ['nim13' => $data->nim13, 'periode' => $data->periode]) }}" class="btn btn-primary" target="blank">Unduh Berkas Lembar Pernyataan Mahasiswa KKN</a>
+														<a href="{" class="btn btn-primary" target="blank">Unduh Format Logbook</a>
 														<!--end::Send-->
 													<!--end::Toolbar-->
 												</div>
 												<!--end::Card footer-->
-                                                <!--begin::Card header-->
-												<div class="card-header" id="kt_chat_messenger_header">
-													<!--begin::Title-->
-													<div class="card-title">
-														<!--begin::User-->
-														<div class="d-flex justify-content-center flex-column me-3">
-															<a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1">Kegiatan KKN yang Diikuti</a>
-														</div>
-														<!--end::User-->
-													</div>
-													<!--end::Title-->
-												</div>
-												<!--end::Card header-->
 												<!--begin::Card body-->
 												<div class="card-body" id="kt_chat_messenger_body">
                                                     <div class="table-responsive">
@@ -277,19 +234,19 @@
                                                             <!--begin::Table body-->
                                                             <tbody>
                                                                 <tr>
-                                                                    <td>Nama/Periode KKN</td>
+                                                                    <td>Upload Logbook Minggu ke-1</td>
                                                                     <td>: </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>Jenis KKN</td>
+                                                                    <td>Upload Logbook Minggu ke-2</td>
                                                                     <td>: </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>Lokasi KKN</td>
+                                                                    <td>Upload Logbook Minggu ke-3</td>
                                                                     <td>:  / </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>Periode KKN</td>
+                                                                    <td>Upload Logbook Minggu ke-4</td>
                                                                     <td>: </td>
                                                                 </tr>
                                                             </tbody>

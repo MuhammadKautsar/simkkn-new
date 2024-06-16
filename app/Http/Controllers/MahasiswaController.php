@@ -20,6 +20,66 @@ class MahasiswaController extends Controller
         return view('mahasiswa.kegiatan-kkn', compact('mahasiswa', 'data'));
     }
 
+    public function kelompok()
+    {
+        $nim = session()->get('nim');
+
+        $fields = ['npm', 'nama'];
+        $mahasiswa = DaftarModel::get_mhs($nim, $fields);
+        $data = Kkn::where('nim13', $nim)->where('status_reg', '1')->first();
+        return view('mahasiswa.kelompok', compact('mahasiswa', 'data'));
+    }
+
+    public function upload_berkas()
+    {
+        $nim = session()->get('nim');
+
+        $fields = ['npm', 'nama'];
+        $mahasiswa = DaftarModel::get_mhs($nim, $fields);
+        $data = Kkn::where('nim13', $nim)->where('status_reg', '1')->first();
+        return view('mahasiswa.upload-berkas', compact('mahasiswa', 'data'));
+    }
+
+    public function upload_proposal()
+    {
+        $nim = session()->get('nim');
+
+        $fields = ['npm', 'nama'];
+        $mahasiswa = DaftarModel::get_mhs($nim, $fields);
+        $data = Kkn::where('nim13', $nim)->where('status_reg', '1')->first();
+        return view('mahasiswa.upload-proposal', compact('mahasiswa', 'data'));
+    }
+
+    public function upload_logbook()
+    {
+        $nim = session()->get('nim');
+
+        $fields = ['npm', 'nama'];
+        $mahasiswa = DaftarModel::get_mhs($nim, $fields);
+        $data = Kkn::where('nim13', $nim)->where('status_reg', '1')->first();
+        return view('mahasiswa.upload-logbook', compact('mahasiswa', 'data'));
+    }
+
+    public function upload_laporan()
+    {
+        $nim = session()->get('nim');
+
+        $fields = ['npm', 'nama'];
+        $mahasiswa = DaftarModel::get_mhs($nim, $fields);
+        $data = Kkn::where('nim13', $nim)->where('status_reg', '1')->first();
+        return view('mahasiswa.upload-laporan', compact('mahasiswa', 'data'));
+    }
+
+    public function nilai_akhir()
+    {
+        $nim = session()->get('nim');
+
+        $fields = ['npm', 'nama'];
+        $mahasiswa = DaftarModel::get_mhs($nim, $fields);
+        $data = Kkn::where('nim13', $nim)->where('status_reg', '1')->first();
+        return view('mahasiswa.nilai-akhir', compact('mahasiswa', 'data'));
+    }
+
     public function store(Request $request)
     {
         // Validasi input

@@ -42,6 +42,12 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::get('/cetak-pdf/{nim13}/{periode}', [MahasiswaController::class, 'cetakPdf'])->name('cetak.pdf');
     // Route::get('/cetak-pdf/{nim}', [MahasiswaController::class, 'generatePdf'])->name('cetak.pdf');
 
+    Route::get('/kelompok', [MahasiswaController::class, 'kelompok'])->name('kelompok');
+    Route::get('/upload-berkas', [MahasiswaController::class, 'upload_berkas'])->name('upload-berkas');
+    Route::get('/upload-proposal', [MahasiswaController::class, 'upload_proposal'])->name('upload-proposal');
+    Route::get('/upload-logbook', [MahasiswaController::class, 'upload_logbook'])->name('upload-logbook');
+    Route::get('/upload-laporan', [MahasiswaController::class, 'upload_laporan'])->name('upload-laporan');
+    Route::get('/nilai-akhir', [MahasiswaController::class, 'nilai_akhir'])->name('nilai-akhir');
 });
 
 Route::prefix('dosen')->middleware(['checkWebServiceSession'])->group(function () {
