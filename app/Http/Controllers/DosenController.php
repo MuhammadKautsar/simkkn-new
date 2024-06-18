@@ -4,18 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\Kkn;
 use App\Models\Dosen;
-use App\Models\Periode;
 use Illuminate\Http\Request;
 
 class DosenController extends Controller
 {
+    // public function index()
+    // {
+    //     $nip = session()->get('nip');
+
+    //     $kkns = Periode::where('status', '1')->orderBy('id', 'desc')->get();
+
+    //     return view('dosen.daftar_kelompok_dosen', compact('kkns', 'nip'));
+    // }
+
     public function index()
     {
+        // $nip_dpl = session('username');
         $nip = session()->get('nip');
 
-        $kkns = Periode::where('status', '1')->orderBy('id', 'desc')->get();
+        $data['data_dosen'] = Dosen::getDosen2($nip);
+        $data['daftar_kelompok'] = Dosen::getAllKelompok($nip);
 
-        return view('dosen.beranda', compact('kkns', 'nip'));
+        if (!empty($data['daftar_kelompok'])) {
+            $data['data_korcam'] = Dosen::getDosen2($data['daftar_kelompok'][0]->nip_korcam);
+        }
+
+        $data['daftar_kelompok_korcam'] = Dosen::getAllKelompokKorcam($nip);
+
+        return view('dosen.daftar_kelompok_dosen', compact('data', 'nip'));
     }
 
     public function data_kelompok()
@@ -23,6 +39,41 @@ class DosenController extends Controller
         $nip = session()->get('nip');
 
         return view('dosen.data-kelompok', compact('nip'));
+    }
+
+    public function profil_desa()
+    {
+        $nip = session()->get('nip');
+
+        return view('dosen.unggah-profil-desa', compact('nip'));
+    }
+
+    public function survey_lapangan()
+    {
+        $nip = session()->get('nip');
+
+        return view('dosen.unggah-survey', compact('nip'));
+    }
+
+    public function monev()
+    {
+        $nip = session()->get('nip');
+
+        return view('dosen.unggah-monev', compact('nip'));
+    }
+
+    public function dokumen_kelompok()
+    {
+        $nip = session()->get('nip');
+
+        return view('dosen.dokumen-kelompok', compact('nip'));
+    }
+
+    public function nilai()
+    {
+        $nip = session()->get('nip');
+
+        return view('dosen.unggah-nilai', compact('nip'));
     }
 
     public function store(Request $request)

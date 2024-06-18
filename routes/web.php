@@ -53,6 +53,12 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
 Route::prefix('dosen')->middleware(['checkWebServiceSession'])->group(function () {
     Route::get('beranda', [DosenController::class, 'index'])->name('dosen.beranda');
     Route::get('data_kelompok', [DosenController::class, 'data_kelompok'])->name('data_kelompok');
+
+    Route::get('profil_desa', [DosenController::class, 'profil_desa'])->name('profil_desa');
+    Route::get('survey_lapangan', [DosenController::class, 'survey_lapangan'])->name('survey_lapangan');
+    Route::get('monev', [DosenController::class, 'monev'])->name('monev');
+    Route::get('dokumen_kelompok', [DosenController::class, 'dokumen_kelompok'])->name('dokumen_kelompok');
+    Route::get('nilai', [DosenController::class, 'nilai'])->name('nilai');
 });
 
 Route::get('panitia/sign-in', [LoginController::class, 'panitia_index'])

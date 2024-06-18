@@ -47,21 +47,21 @@
                                                         <tbody>
                                                             <tr>
                                                             <td>Nama</td>
-                                                            <td>: </td>
+                                                            <td>: {{ $data['data_dosen']->nama }}</td>
                                                             <td>Fakultas / Nama Unit</td>
-                                                            <td>:  / </td>
+                                                            <td>: {{ $data['data_dosen']->nama_fakultas }} / {{ $data['data_dosen']->nama_unit }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>NIP/NIK</td>
-                                                            <td>: {{ session('nip') }}</td>
+                                                            <td>: {{ $data['data_dosen']->nip }}</td>
                                                             <td>Status</td>
-                                                            <td>: </td>
+                                                            <td>: {{ strtoupper($data['data_dosen']->status) }}</td>
                                                         </tr>
                                                         <tr>
                                                             <td>NIP/NIK Korcam</td>
-                                                            <td>: </td>
+                                                            <td>: {{ $data['data_korcam']->nip }}</td>
                                                             <td>Nama Korcam</td>
-                                                            <td>: </td>
+                                                            <td>: {{ $data['data_korcam']->nama }}</td>
                                                         </tr>
                                                         </tbody>
                                                         <!--end::Table body-->
@@ -119,16 +119,14 @@
                                                         <!--end::Table head-->
                                                         <!--begin::Table body-->
                                                         <tbody>
-                                                            @foreach ($kkns as $kkn)
+                                                            @foreach ($data['daftar_kelompok'] as $k)
                                                             <tr>
-                                                                <td class="mb-0 text-sm">{{ $kkn->masa_periode }}</td>
-                                                                <td class="text-center mb-0 text-sm">{{ $kkn->jenisKkn->kategori }}</td>
-                                                                <td class="text-center mb-0 text-sm"></td>
-                                                                <td class="mb-0 text-sm"></td>
-                                                                <td class="text-center"><span class="badge badge-primary"></span></td>
-                                                                <td class="text-center">
-                                                                    <a href="{{ route('data_kelompok') }}" class="btn btn-primary px-3 mb-0">Detail</a>
-                                                                </td>
+                                                                <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->periode }}</td>
+                                                                <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->kategori }}</td>
+                                                                <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->kd_kelompok }}</td>
+                                                                <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->ketua_kel }}</td>
+                                                                <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->lokasi_penempatan }}</td>
+                                                                <td><a href="{{ route('data_kelompok') }}" class="btn btn-primary px-3 mb-0">Detail</a></td>
                                                             </tr>
                                                             @endforeach
                                                         </tbody>
@@ -179,10 +177,16 @@
                                                         <!--end::Table head-->
                                                         <!--begin::Table body-->
                                                         <tbody>
+                                                            @foreach ($data['daftar_kelompok_korcam'] as $k)
                                                             <tr>
-                                                                <td>
-                                                                </td>
+                                                                <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->periode }}</td>
+                                                                <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->kategori }}</td>
+                                                                <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->kd_kelompok }}</td>
+                                                                <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->nama_dpl }}</td>
+                                                                <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->nama_desa }}</td>
+                                                                <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->nama_kecamatan }}</td>
                                                             </tr>
+                                                            @endforeach
                                                         </tbody>
                                                         <!--end::Table body-->
                                                     </table>
