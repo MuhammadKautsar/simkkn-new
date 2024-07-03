@@ -216,7 +216,7 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td>Nama/Periode KKN</td>
-                                                                    <td>: </td>
+                                                                    <td>: {{ $data['nama_periode'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Jenis Kegiatan KKN</td>
@@ -224,19 +224,19 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Kode Kelompok</td>
-                                                                    <td>:  - </td>
+                                                                    <td>:  {{ $data['kd_kel'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Lokasi Penempatan</td>
-                                                                    <td>: -</td>
+                                                                    <td>: {{ $data['lokasi_penempatan'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Nama Geuchik Gampong</td>
-                                                                    <td>: -</td>
+                                                                    <td>: {{ $data['nama_geuchik'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>No Handhphone Geuchik Gampong</td>
-                                                                    <td>: -</td>
+                                                                    <td>: {{ $data['no_hp_geuchik'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Dosen Pembimbing Lapangan</td>
@@ -328,8 +328,8 @@
     <!--begin::Javascript-->
     <script>var hostUrl = "assets/";</script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-    <script src="assets/plugins/global/plugins.bundle.js"></script>
-    <script src="assets/js/scripts.bundle.js"></script>
+    <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
     <!--end::Global Javascript Bundle-->
     <!--begin::Vendors Javascript(used for this page only)-->
     <script src="assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>

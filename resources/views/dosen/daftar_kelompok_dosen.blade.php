@@ -73,7 +73,7 @@
                                             <div class="card-footer pt-2 pb-7">
                                                 <div class="row">
                                                     <div class="col">
-                                                        <a href="" class="btn btn-primary px-3 mb-0">Unduh Panduan</a>
+                                                        <a href="{{ route('download.panduan', ['filename' => 'PANDUAN-PENGGUNAAN-SISTEM-APLIKASI-KULIAH-KERJA-NYATA.pdf']) }}" class="btn btn-primary px-3 mb-0"><i class="ki-solid ki-cloud-download fs-2x"></i>Unduh Panduan</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -126,7 +126,7 @@
                                                                 <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->kd_kelompok }}</td>
                                                                 <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->ketua_kel }}</td>
                                                                 <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->lokasi_penempatan }}</td>
-                                                                <td><a href="{{ route('data_kelompok') }}" class="btn btn-primary px-3 mb-0">Detail</a></td>
+                                                                <td><a href="{{ route('data_kelompok', $k->id) }}" class="btn btn-primary px-3 mb-0">Detail</a></td>
                                                             </tr>
                                                             @endforeach
                                                         </tbody>

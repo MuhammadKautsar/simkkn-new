@@ -14,18 +14,6 @@ class Dosen extends Model
     protected $table = 'dosen';
     public $timestamps = false;
 
-    // public function getDosen($id)
-    // {
-    //     $result = DB::select("
-    //         SELECT d.*, f.nama_fakultas as fakultas
-    //         FROM dosen d
-    //         LEFT JOIN fakultas_dosen f on d.fakultas = f.kd_fakultas
-    //         WHERE id_periode = ? AND status <> 'verifikator'
-    //     ", [$id]);
-
-    //     return $result;
-    // }
-
     public static function getDosen($id, $perPage = 10)
     {
         return self::select('dosen.*', 'fakultas_dosen.nama_fakultas as fakultas')
@@ -105,7 +93,7 @@ class Dosen extends Model
         return $results;
     }
 
-    private static function getLokasi($id_kabupaten)
+    public static function getLokasi($id_kabupaten)
     {
         $sql = "SELECT * FROM regencies WHERE id = ?";
         $regencies = DB::select($sql, [$id_kabupaten]);
@@ -132,5 +120,84 @@ class Dosen extends Model
         }
 
         return $data;
+    }
+
+    public function getKelompok($idKelompok)
+    {
+        return DB::table('master_desa')->where('id', $idKelompok)->first();
+    }
+
+    public function getPeriode($periodeId)
+    {
+        return DB::table('periode')->where('id', $periodeId)->first();
+    }
+
+    public function getStatusDosen($nip, $periodeId)
+    {
+        return DB::table('dosen')->where('nip', $nip)->where('id_periode', $periodeId)->first();
+    }
+
+    public function getMhs($idKelompok)
+    {
+        $query = DB::select("
+            SELECT k.nim13 as npm, k.agama, k.talenta, k.nama_mhs, k.no_telp_mhs as no_hp, k.kelompok, k.logbook,
+                   k.periode as id_periode, p.nama_prodi as jurusan, f.nama_fakultas as fakultas, 1 as asal
+            FROM dbkkn.kkn k
+            LEFT JOIN prodi p ON p.kd_fjjp7 = SUBSTRING(k.nim13, 3, 7)
+            LEFT JOIN fakultas f ON f.kd_fakultas2 = SUBSTRING(k.nim13, 3, 2)
+            WHERE k.kelompok = ?
+            UNION
+            SELECT k.npm, k.agama, '-', k.nama_mhs, k.no_hp, k.kelompok, k.logbook, k.id_periode, p.nama_prodi
+                   AS jurusan, pt.nama_ptn AS fakultas, 2 AS asal
+            FROM kkn_non_usk k
+            LEFT JOIN prodi_non_usk p ON p.kode_prodi = k.kode_prodi
+            LEFT JOIN ptn pt ON pt.kode_ptn = p.kode_ptn
+            WHERE k.kelompok = ?
+        ", [$idKelompok, $idKelompok]);
+
+        foreach ($query as $data) {
+            $data->status = $this->getStatusAnggota($data->kelompok, $data->npm);
+            if (!$data->logbook) {
+                $data->logbook_1 = null;
+                $data->logbook_2 = null;
+                $data->logbook_3 = null;
+                $data->logbook_4 = null;
+                $data->link_1 = null;
+                $data->link_2 = null;
+                $data->link_3 = null;
+                $data->link_4 = null;
+            } else {
+                $data->logbook_1 = $this->getLogbook($data->logbook, "logbook_1");
+                $data->logbook_2 = $this->getLogbook($data->logbook, "logbook_2");
+                $data->logbook_3 = $this->getLogbook($data->logbook, "logbook_3");
+                $data->logbook_4 = $this->getLogbook($data->logbook, "logbook_4");
+                $data->link_1 = $this->getLogbook($data->logbook, "youtube_1");
+                $data->link_2 = $this->getLogbook($data->logbook, "youtube_2");
+                $data->link_3 = $this->getLogbook($data->logbook, "youtube_3");
+                $data->link_4 = $this->getLogbook($data->logbook, "youtube_4");
+            }
+        }
+
+        return $query;
+    }
+
+    private function getStatusAnggota($idKel, $nim)
+    {
+        $query = DB::select("SELECT nim_ketua FROM dbkkn.master_desa WHERE id = ?", [$idKel]);
+        if (count($query) > 0 && $query[0]->nim_ketua === $nim) {
+            return "Ketua";
+        } else {
+            return "Anggota";
+        }
+    }
+
+    private function getLogbook($id, $column)
+    {
+        $query = DB::select("SELECT * FROM dbkkn.logbook WHERE id = ?", [$id]);
+        if (count($query) > 0 && empty($query[0]->$column)) {
+            return "Belum diunggah";
+        } else {
+            return $query[0]->$column ?? "Belum diunggah";
+        }
     }
 }

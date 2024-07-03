@@ -216,31 +216,31 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td>Nama/Periode KKN</td>
-                                                                    <td>: </td>
+                                                                    <td>: {{ $data_periode['nama_periode'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Jenis Kegiatan KKN</td>
-                                                                    <td>: </td>
+                                                                    <td>: {{ $data_periode['jenis_kkn'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Kode Kelompok</td>
-                                                                    <td>:  - </td>
+                                                                    <td>: {{ $data['kode_kel'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Lokasi Penempatan</td>
-                                                                    <td>: -</td>
+                                                                    <td>: {{ $data['desa_penempatan'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Nama Geuchik Gampong</td>
-                                                                    <td>: -</td>
+                                                                    <td>: {{ $data['nama_geuchik'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>No Handhphone Geuchik Gampong</td>
-                                                                    <td>: -</td>
+                                                                    <td>: {{ $data['no_hp_geuchik'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Dosen Pembimbing Lapangan</td>
-                                                                    <td>: -</td>
+                                                                    <td>: {{ $data['nama_dpl'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Laporan Profil Desa</td>
@@ -257,6 +257,34 @@
                                                             </tbody>
                                                             <!--end::Table body-->
                                                         </table>
+                                                        @if($data['mhs_kelompok'] == "0")
+                                                            <p>Data Kelompok tidak/belum tersedia</p>
+                                                        @else
+                                                            <table class="bordered responsive-table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th data-field="id">NIM</th>
+                                                                        <th data-field="id">Nama</th>
+                                                                        <th data-field="price">Jenis Kelamin</th>
+                                                                        <th data-field="name">No. Handphone</th>
+                                                                        <th data-field="price">Fakultas/Prodi</th>
+                                                                        <th data-field="price">Status</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                @foreach($data['mhs_kelompok'] as $m)
+                                                                    <tr>
+                                                                        <td><?php echo $m->npm?></td>
+                                                                        <td><?php echo $m->nama_mhs?></td>
+                                                                        <td><?php echo $m->jenis_kelamin?></td>
+                                                                        <td><?php echo $m->no_hp?></td>
+                                                                        <td><?php echo $m->fakultas?> / <?php echo $m->jurusan?></td>
+                                                                        <td><?php echo $m->status?></td>
+                                                                    </tr>
+                                                                @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        @endif
                                                     </div>
 												</div>
 												<!--end::Card body-->

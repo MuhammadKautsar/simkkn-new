@@ -216,15 +216,15 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td>Nama</td>
-                                                                    <td>: {{ $data['nama_mhs'] }}</td>
+                                                                    <td>: {{ $data['nama'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>NIM</td>
-                                                                    <td>: {{ $data['nim13'] }}</td>
+                                                                    <td>: {{ $data['nim'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Fakultas / Jurusan</td>
-                                                                    <td>:  / </td>
+                                                                    <td>: {{ $data['fakultas'] }} / {{ $data['jurusan'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Agama</td>
@@ -236,11 +236,11 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>No Handhphone</td>
-                                                                    <td>: {{ $data['no_telp_mhs'] }}</td>
+                                                                    <td>: {{ $data['no_hp'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Riwayat Penyakit</td>
-                                                                    <td>: </td>
+                                                                    <td>: {{ $data['riwayat_penyakit'] }}</td>
                                                                 </tr>
                                                             </tbody>
                                                             <!--end::Table body-->
@@ -251,7 +251,7 @@
 												<!--begin::Card footer-->
 												<div class="card-footer pt-4" id="kt_chat_messenger_footer">
 														<!--begin::Send-->
-														<a href="{{ route('cetak.pdf', ['nim13' => $data->nim13, 'periode' => $data->periode]) }}" class="btn btn-primary" target="blank">Unduh Berkas Lembar Pernyataan Mahasiswa KKN</a>
+														<a href="{{ route('cetak.pdf', ['nim13' => $data['nim'], 'periode' => $data['periode']]) }}" class="btn btn-primary" target="blank">Unduh Berkas Lembar Pernyataan Mahasiswa KKN</a>
 														<!--end::Send-->
 													<!--end::Toolbar-->
 												</div>
@@ -278,19 +278,19 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td>Nama/Periode KKN</td>
-                                                                    <td>: </td>
+                                                                    <td>: {{ $data_periode['nama_periode'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Jenis KKN</td>
-                                                                    <td>: </td>
+                                                                    <td>: {{ $data_periode['jenis_kkn'] }}</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Lokasi KKN</td>
-                                                                    <td>:  / </td>
+                                                                    <td>:  -</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Periode KKN</td>
-                                                                    <td>: </td>
+                                                                    <td>: {{ $data_periode['masa_periode'] }}</td>
                                                                 </tr>
                                                             </tbody>
                                                             <!--end::Table body-->

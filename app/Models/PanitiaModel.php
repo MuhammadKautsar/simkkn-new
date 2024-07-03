@@ -176,4 +176,13 @@ class PanitiaModel extends Model
 
         return $results;
     }
+
+    public function getStatusGenerator($idPeriode)
+    {
+        $status = DB::table('team_generator')
+            ->where('id_periode', $idPeriode)
+            ->value('status');
+
+        return $status == "1"; // Jika status adalah "1", return true, jika tidak return false.
+    }
 }
