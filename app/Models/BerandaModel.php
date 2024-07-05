@@ -152,4 +152,10 @@ class BerandaModel extends Model
 
         return $result;
     }
+
+    public function getNilaiMhs($id_periode, $nim)
+    {
+        $query = DB::select("SELECT * FROM dbkkn.nilai_kkn WHERE periode = ? AND nim13 = ?", [$id_periode, $nim]);
+        return $query ? $query[0] : null;
+    }
 }

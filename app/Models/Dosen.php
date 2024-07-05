@@ -200,4 +200,13 @@ class Dosen extends Model
             return $query[0]->$column ?? "Belum diunggah";
         }
     }
+
+    public function getJenisKkn($id_jenis)
+    {
+        $result = DB::table('dbkkn.jenis_kkn')
+            ->where('id', $id_jenis)
+            ->first();
+
+        return $result ? $result->kategori : "";
+    }
 }

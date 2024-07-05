@@ -66,7 +66,7 @@
                                                             <div class="d-flex align-items-center py-2">
                                                                 <div class="menu-item menu-accordion" style="width: 100%;">
                                                                     <!--begin:Menu link-->
-                                                                    <a class="menu-link @if(request()->routeIs('mahasiswa')) active @endif" href="{{ route('mahasiswa') }}">
+                                                                    <a class="menu-link active" href="#" data-target="beranda">
                                                                         <span class="menu-icon me-3">
                                                                             <i class="ki-duotone ki-home fs-2">
                                                                                 <span class="path1"></span>
@@ -83,7 +83,7 @@
                                                             <div class="d-flex align-items-center py-2">
                                                                 <div class="menu-item menu-accordion" style="width: 100%;">
                                                                     <!--begin:Menu link-->
-                                                                    <a class="menu-link @if(request()->routeIs('kelompok')) active @endif" href="{{ route('kelompok') }}">
+                                                                    <a class="menu-link" href="#" data-target="kelompok">
                                                                         <span class="menu-icon me-3">
                                                                             <i class="ki-duotone ki-profile-user fs-2">
                                                                                 <span class="path1"></span>
@@ -100,7 +100,7 @@
                                                             <div class="d-flex align-items-center py-2">
                                                                 <div class="menu-item menu-accordion" style="width: 100%;">
                                                                     <!--begin:Menu link-->
-                                                                    <a class="menu-link @if(request()->routeIs('upload-berkas')) active @endif" href="{{ route('upload-berkas') }}">
+                                                                    <a class="menu-link" href="#" data-target="upload-berkas">
                                                                         <span class="menu-icon me-3">
                                                                             <i class="ki-duotone ki-file-up fs-2">
                                                                                 <span class="path1"></span>
@@ -117,7 +117,7 @@
                                                             <div class="d-flex align-items-center py-2">
                                                                 <div class="menu-item menu-accordion" style="width: 100%;">
                                                                     <!--begin:Menu link-->
-                                                                    <a class="menu-link @if(request()->routeIs('upload-proposal')) active @endif" href="{{ route('upload-proposal') }}">
+                                                                    <a class="menu-link" href="#" data-target="upload-proposal">
                                                                         <span class="menu-icon me-3">
                                                                             <i class="ki-duotone ki-file-up fs-2">
                                                                                 <span class="path1"></span>
@@ -134,7 +134,7 @@
                                                             <div class="d-flex align-items-center py-2">
                                                                 <div class="menu-item menu-accordion" style="width: 100%;">
                                                                     <!--begin:Menu link-->
-                                                                    <a class="menu-link @if(request()->routeIs('upload-logbook')) active @endif" href="{{ route('upload-logbook') }}">
+                                                                    <a class="menu-link" href="#" data-target="upload-logbook">
                                                                         <span class="menu-icon me-3">
                                                                             <i class="ki-duotone ki-file-up fs-2">
                                                                                 <span class="path1"></span>
@@ -151,7 +151,7 @@
                                                             <div class="d-flex align-items-center py-2">
                                                                 <div class="menu-item menu-accordion" style="width: 100%;">
                                                                     <!--begin:Menu link-->
-                                                                    <a class="menu-link @if(request()->routeIs('upload-laporan')) active @endif" href="{{ route('upload-laporan') }}">
+                                                                    <a class="menu-link" href="#" data-target="upload-laporan">
                                                                         <span class="menu-icon me-3">
                                                                             <i class="ki-duotone ki-file-up fs-2">
                                                                                 <span class="path1"></span>
@@ -168,7 +168,7 @@
                                                             <div class="d-flex align-items-center py-2">
                                                                 <div class="menu-item menu-accordion" style="width: 100%;">
                                                                     <!--begin:Menu link-->
-                                                                    <a class="menu-link @if(request()->routeIs('nilai-akhir')) active @endif" href="{{ route('nilai-akhir') }}">
+                                                                    <a class="menu-link" href="#" data-target="nilai-akhir">
                                                                         <span class="menu-icon me-3">
                                                                             <i class="ki-duotone ki-document fs-2">
                                                                                 <span class="path1"></span>
@@ -193,112 +193,440 @@
 										<!--end::Sidebar-->
 										<!--begin::Content-->
 										<div class="flex-lg-row-fluid ms-lg-7 ms-xl-10">
-											<div class="card" id="kt_chat_messenger">
-												<!--begin::Card header-->
-												<div class="card-header" id="kt_chat_messenger_header">
-													<!--begin::Title-->
-													<div class="card-title">
-														<!--begin::User-->
-														<div class="d-flex justify-content-center flex-column me-3">
-															<a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1">Data Pribadi</a>
-														</div>
-														<!--end::User-->
-													</div>
-													<!--end::Title-->
-												</div>
-												<!--end::Card header-->
-												<!--begin::Card body-->
-												<div class="card-body" id="kt_chat_messenger_body">
-                                                    <div class="table-responsive">
-                                                        <!--begin::Table-->
-                                                        <table class="table align-middle gs-0 gy-4">
-                                                            <!--begin::Table body-->
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>Nama</td>
-                                                                    <td>: {{ $data['nama'] }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>NIM</td>
-                                                                    <td>: {{ $data['nim'] }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Fakultas / Jurusan</td>
-                                                                    <td>: {{ $data['fakultas'] }} / {{ $data['jurusan'] }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Agama</td>
-                                                                    <td>: {{ $data['agama'] }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Jenis Kelamin</td>
-                                                                    <td>: {{ $data['jenis_kelamin'] }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>No Handhphone</td>
-                                                                    <td>: {{ $data['no_hp'] }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Riwayat Penyakit</td>
-                                                                    <td>: {{ $data['riwayat_penyakit'] }}</td>
-                                                                </tr>
-                                                            </tbody>
-                                                            <!--end::Table body-->
-                                                        </table>
+											<div class="card" id="content">
+                                                <div id="beranda" class="content-section">
+                                                    <!--begin::Card header-->
+                                                    <div class="card-header" id="kt_chat_messenger_header">
+                                                        <!--begin::Title-->
+                                                        <div class="card-title">
+                                                            <!--begin::User-->
+                                                            <div class="d-flex justify-content-center flex-column me-3">
+                                                                <a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1">Data Pribadi</a>
+                                                            </div>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Title-->
                                                     </div>
-												</div>
-												<!--end::Card body-->
-												<!--begin::Card footer-->
-												<div class="card-footer pt-4" id="kt_chat_messenger_footer">
-														<!--begin::Send-->
-														<a href="{{ route('cetak.pdf', ['nim13' => $data['nim'], 'periode' => $data['periode']]) }}" class="btn btn-primary" target="blank">Unduh Berkas Lembar Pernyataan Mahasiswa KKN</a>
-														<!--end::Send-->
-													<!--end::Toolbar-->
-												</div>
-												<!--end::Card footer-->
-                                                <!--begin::Card header-->
-												<div class="card-header" id="kt_chat_messenger_header">
-													<!--begin::Title-->
-													<div class="card-title">
-														<!--begin::User-->
-														<div class="d-flex justify-content-center flex-column me-3">
-															<a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1">Kegiatan KKN yang Diikuti</a>
-														</div>
-														<!--end::User-->
-													</div>
-													<!--end::Title-->
-												</div>
-												<!--end::Card header-->
-												<!--begin::Card body-->
-												<div class="card-body" id="kt_chat_messenger_body">
-                                                    <div class="table-responsive">
-                                                        <!--begin::Table-->
-                                                        <table class="table align-middle gs-0 gy-4">
-                                                            <!--begin::Table body-->
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>Nama/Periode KKN</td>
-                                                                    <td>: {{ $data_periode['nama_periode'] }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Jenis KKN</td>
-                                                                    <td>: {{ $data_periode['jenis_kkn'] }}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Lokasi KKN</td>
-                                                                    <td>:  -</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Periode KKN</td>
-                                                                    <td>: {{ $data_periode['masa_periode'] }}</td>
-                                                                </tr>
-                                                            </tbody>
-                                                            <!--end::Table body-->
-                                                        </table>
+                                                    <!--end::Card header-->
+                                                    <!--begin::Card body-->
+                                                    <div class="card-body" id="kt_chat_messenger_body">
+                                                        <div class="table-responsive">
+                                                            <!--begin::Table-->
+                                                            <table class="table align-middle gs-0 gy-4">
+                                                                <!--begin::Table body-->
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Nama</td>
+                                                                        <td>: {{ $data['nama'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>NIM</td>
+                                                                        <td>: {{ $data['nim'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Fakultas / Jurusan</td>
+                                                                        <td>: {{ $data['fakultas'] }} / {{ $data['jurusan'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Agama</td>
+                                                                        <td>: {{ $data['agama'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Jenis Kelamin</td>
+                                                                        <td>: {{ $data['jenis_kelamin'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>No Handhphone</td>
+                                                                        <td>: {{ $data['no_hp'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Riwayat Penyakit</td>
+                                                                        <td>: {{ $data['riwayat_penyakit'] }}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                                <!--end::Table body-->
+                                                            </table>
+                                                        </div>
                                                     </div>
-												</div>
-												<!--end::Card body-->
-											</div>
+                                                    <!--end::Card body-->
+                                                    <!--begin::Card footer-->
+                                                    <div class="card-footer pt-4" id="kt_chat_messenger_footer">
+                                                            <!--begin::Send-->
+                                                            <a href="{{ route('cetak.pdf', ['nim13' => $data['nim'], 'periode' => $data['periode']]) }}" class="btn btn-primary" target="blank">Unduh Berkas Lembar Pernyataan Mahasiswa KKN</a>
+                                                            <!--end::Send-->
+                                                        <!--end::Toolbar-->
+                                                    </div>
+                                                    <!--end::Card footer-->
+                                                    <!--begin::Card header-->
+                                                    <div class="card-header" id="kt_chat_messenger_header">
+                                                        <!--begin::Title-->
+                                                        <div class="card-title">
+                                                            <!--begin::User-->
+                                                            <div class="d-flex justify-content-center flex-column me-3">
+                                                                <a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1">Kegiatan KKN yang Diikuti</a>
+                                                            </div>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Title-->
+                                                    </div>
+                                                    <!--end::Card header-->
+                                                    <!--begin::Card body-->
+                                                    <div class="card-body" id="kt_chat_messenger_body">
+                                                        <div class="table-responsive">
+                                                            <!--begin::Table-->
+                                                            <table class="table align-middle gs-0 gy-4">
+                                                                <!--begin::Table body-->
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Nama/Periode KKN</td>
+                                                                        <td>: {{ $data['nama_periode'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Jenis KKN</td>
+                                                                        <td>: {{ $data['jenis_kkn'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Lokasi KKN</td>
+                                                                        <td>:  -</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Periode KKN</td>
+                                                                        <td>: {{ $data['masa_periode'] }}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                                <!--end::Table body-->
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <!--end::Card body-->
+                                                </div>
+
+                                                <div id="kelompok" class="content-section">
+                                                    <!--begin::Card header-->
+                                                    <div class="card-header" id="kt_chat_messenger_header">
+                                                        <!--begin::Title-->
+                                                        <div class="card-title">
+                                                            <!--begin::User-->
+                                                            <div class="d-flex justify-content-center flex-column me-3">
+                                                                <a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1">Data Kelompok</a>
+                                                            </div>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Title-->
+                                                    </div>
+                                                    <!--end::Card header-->
+                                                    <!--begin::Card body-->
+                                                    <div class="card-body" id="kt_chat_messenger_body">
+                                                        <div class="table-responsive">
+                                                            <!--begin::Table-->
+                                                            <table class="table align-middle gs-0 gy-4">
+                                                                <!--begin::Table body-->
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Nama/Periode KKN</td>
+                                                                        <td>: {{ $data['nama_periode'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Jenis Kegiatan KKN</td>
+                                                                        <td>: {{ $data['jenis_kkn'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Kode Kelompok</td>
+                                                                        <td>: {{ $data['kode_kel'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Lokasi Penempatan</td>
+                                                                        <td>: {{ $data['desa_penempatan'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Nama Geuchik Gampong</td>
+                                                                        <td>: {{ $data['nama_geuchik'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>No Handhphone Geuchik Gampong</td>
+                                                                        <td>: {{ $data['no_hp_geuchik'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Dosen Pembimbing Lapangan</td>
+                                                                        <td>: {{ $data['nama_dpl'] }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Laporan Profil Desa</td>
+                                                                        <td>: <a href="" class="btn btn-primary" target="blank">Unduh Dokumen</a></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Laporan Survey Dosen</td>
+                                                                        <td>: <a href="" class="btn btn-primary" target="blank">Unduh Dokumen</a></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Anggota Kelompok</td>
+                                                                        <td>: </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                                <!--end::Table body-->
+                                                            </table>
+                                                            @if($data['mhs_kelompok'] == "0")
+                                                                <p>Data Kelompok tidak/belum tersedia</p>
+                                                            @else
+                                                                <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                                                                    <thead class="bg-gray-100">
+                                                                        <tr>
+                                                                            <th data-field="id">NIM</th>
+                                                                            <th data-field="id">Nama</th>
+                                                                            <th data-field="price">Jenis Kelamin</th>
+                                                                            <th data-field="name">No. Handphone</th>
+                                                                            <th data-field="price">Fakultas/Prodi</th>
+                                                                            <th data-field="price">Status</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    @foreach($data['mhs_kelompok'] as $m)
+                                                                        <tr>
+                                                                            <td><?php echo $m->npm?></td>
+                                                                            <td><?php echo $m->nama_mhs?></td>
+                                                                            <td><?php echo $m->jenis_kelamin?></td>
+                                                                            <td><?php echo $m->no_hp?></td>
+                                                                            <td><?php echo $m->fakultas?> / <?php echo $m->jurusan?></td>
+                                                                            <td><?php echo $m->status?></td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <!--end::Card body-->
+                                                </div>
+
+                                                <div id="upload-berkas" class="content-section">
+                                                    <!--begin::Card header-->
+                                                    <div class="card-header" id="kt_chat_messenger_header">
+                                                        <!--begin::Title-->
+                                                        <div class="card-title">
+                                                            <!--begin::User-->
+                                                            <div class="d-flex justify-content-center flex-column me-3">
+                                                                <a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1">Ketentuan Mengunggah Berkas KKN</a>
+                                                            </div>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Title-->
+                                                    </div>
+                                                    <!--end::Card header-->
+                                                    <!--begin::Card body-->
+                                                    <div class="card-body" id="kt_chat_messenger_body">
+                                                        <ol class="caption mt-0">
+                                                            <li><p class="caption mt-0 mb-0">Batas Unggah Proposal Berkas KKN dari tanggal {{ $data['mulai_proposal'] }} sampai tanggal {{ $data['akhir_proposal'] }}</p></li>
+                                                            <li><p class="caption mt-0 mb-0">Maksimum ukuran file sebesar 10MB dengan format .pdf</p></li>
+                                                        </ol>
+                                                        <input type="file" class="form-control form-control-solid" name="berkas" />
+                                                    </div>
+                                                    <!--end::Card body-->
+                                                    <!--begin::Card footer-->
+                                                    <div class="card-footer pt-4" id="kt_chat_messenger_footer">
+                                                            <!--begin::Send-->
+                                                            <a href="" class="btn btn-primary text-end" target="blank">Submit</a>
+                                                            <!--end::Send-->
+                                                    </div>
+                                                    <!--end::Card footer-->
+                                                </div>
+
+                                                <div id="upload-proposal" class="content-section">
+                                                    <!--begin::Card header-->
+                                                    <div class="card-header" id="kt_chat_messenger_header">
+                                                        <!--begin::Title-->
+                                                        <div class="card-title">
+                                                            <!--begin::User-->
+                                                            <div class="d-flex justify-content-center flex-column me-3">
+                                                                <a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1">Ketentuan Mengunggah Proposal Program Kerja Kelompok</a>
+                                                            </div>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Title-->
+                                                    </div>
+                                                    <!--end::Card header-->
+                                                    <!--begin::Card body-->
+                                                    <div class="card-body" id="kt_chat_messenger_body">
+                                                        <ol class="caption mt-0">
+                                                            <li><p class="caption mt-0 mb-0">Batas Unggah Proposal Program Kerja Kelompok dari tanggal {{ $data['mulai_proposal'] }} sampai tanggal {{ $data['akhir_proposal'] }}</p></li>
+                                                            <li><p class="caption mt-0 mb-0">Maksimum ukuran file sebesar 10MB dengan format .pdf</p></li>
+                                                            <li><p class="caption mt-0 mb-0">Proposal Program Kerja Kelompok hanya dapat di unggah oleh ketua kelompok</p></li>
+                                                        </ol>
+                                                    </div>
+                                                    <!--end::Card body-->
+                                                    <!--begin::Card footer-->
+                                                    <div class="card-footer pt-4" id="kt_chat_messenger_footer">
+                                                            <!--begin::Send-->
+                                                            <a href="" class="btn btn-primary" target="blank">Unduh Dokumen</a>
+                                                            <!--end::Send-->
+                                                        <!--end::Toolbar-->
+                                                    </div>
+                                                    <!--end::Card footer-->
+                                                </div>
+
+                                                <div id="upload-logbook" class="content-section">
+                                                    <!--begin::Card header-->
+                                                    <div class="card-header" id="kt_chat_messenger_header">
+                                                        <!--begin::Title-->
+                                                        <div class="card-title">
+                                                            <!--begin::User-->
+                                                            <div class="d-flex justify-content-center flex-column me-3">
+                                                                <a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1">Ketentuan Mengunggah Logbook Mingguan</a>
+                                                            </div>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Title-->
+                                                    </div>
+                                                    <!--end::Card header-->
+                                                    <!--begin::Card body-->
+                                                    <div class="card-body" id="kt_chat_messenger_body">
+                                                        <ol class="caption mt-0">
+                                                            <li><p class="caption mt-0 mb-0">Batas Upload Logbook Minggu ke-1 dari tanggal {{ $data['mulai_logbook_1'] }} sampai tanggal {{ $data['akhir_logbook_1'] }}</p></li>
+                                                            <li><p class="caption mt-0 mb-0">Batas Upload Logbook Minggu ke-2 dari tanggal {{ $data['mulai_logbook_2'] }} sampai tanggal {{ $data['akhir_logbook_2'] }}</p></li>
+                                                            <li><p class="caption mt-0 mb-0">Batas Upload Logbook Minggu ke-3 dari tanggal {{ $data['mulai_logbook_3'] }} sampai tanggal {{ $data['akhir_logbook_3'] }}</p></li>
+                                                            <li><p class="caption mt-0 mb-0">Batas Upload Logbook Minggu ke-4 dari tanggal {{ $data['mulai_logbook_4'] }} sampai tanggal {{ $data['akhir_logbook_4'] }}</p></li>
+                                                            <li><p class="caption mt-0 mb-0">Maksimum ukuran file sebesar 5MB dengan format .pdf</p></li>
+                                                            <li><p class="caption mt-0 mb-0">Menyertakan tautan dokumentasi video kegiatan (1 video untuk 1 logbook mingguan) yang telah di unggah sesuai arahan panitia</p></li>
+                                                            <li><p class="caption mt-0 mb-0">Tautan yang disertakan mohon diisi dengan 1 tautan saja tanpa ada penambahan karakter lainnya. Contoh tautan: https://www.youtube.com</p></li>
+                                                        </ol>
+                                                    </div>
+                                                    <!--end::Card body-->
+                                                    <!--begin::Card footer-->
+                                                    <div class="card-footer pt-4" id="kt_chat_messenger_footer">
+                                                            <!--begin::Send-->
+                                                            <a href="{" class="btn btn-primary" target="blank">Unduh Format Logbook</a>
+                                                            <!--end::Send-->
+                                                        <!--end::Toolbar-->
+                                                    </div>
+                                                    <!--end::Card footer-->
+                                                    <!--begin::Card body-->
+                                                    <div class="card-body" id="kt_chat_messenger_body">
+                                                        <div class="table-responsive">
+                                                            <!--begin::Table-->
+                                                            <table class="table align-middle gs-0 gy-4">
+                                                                <!--begin::Table body-->
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Upload Logbook Minggu ke-1</td>
+                                                                        <td>: </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Upload Logbook Minggu ke-2</td>
+                                                                        <td>: </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Upload Logbook Minggu ke-3</td>
+                                                                        <td>: </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Upload Logbook Minggu ke-4</td>
+                                                                        <td>: </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                                <!--end::Table body-->
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <!--end::Card body-->
+                                                </div>
+
+                                                <div id="upload-laporan" class="content-section">
+                                                    <!--begin::Card header-->
+                                                    <div class="card-header" id="kt_chat_messenger_header">
+                                                        <!--begin::Title-->
+                                                        <div class="card-title">
+                                                            <!--begin::User-->
+                                                            <div class="d-flex justify-content-center flex-column me-3">
+                                                                <a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1">Ketentuan Mengunggah laporan Akhir Program Kerja Kelompok</a>
+                                                            </div>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Title-->
+                                                    </div>
+                                                    <!--end::Card header-->
+                                                    <!--begin::Card body-->
+                                                    <div class="card-body" id="kt_chat_messenger_body">
+                                                        <ol class="caption mt-0">
+                                                            <li><p class="caption mt-0 mb-0">Batas Unggah Proposal Program Kerja Kelompok dari tanggal {{ $data['mulai_laporan'] }} sampai tanggal {{ $data['akhir_laporan'] }} </p></li>
+                                                            <li><p class="caption mt-0 mb-0">Maksimum ukuran file sebesar 10MB dengan format .pdf</p></li>
+                                                            <li><p class="caption mt-0 mb-0">Laporan Akhir Program Kerja Kelompok hanya dapat di unggah oleh ketua kelompok</p></li>
+                                                        </ol>
+                                                    </div>
+                                                    <!--end::Card body-->
+                                                    <!--begin::Card footer-->
+                                                    <div class="card-footer pt-4" id="kt_chat_messenger_footer">
+                                                            <!--begin::Send-->
+                                                            <a href="" class="btn btn-primary" target="blank">Unduh Dokumen</a>
+                                                            <!--end::Send-->
+                                                        <!--end::Toolbar-->
+                                                    </div>
+                                                    <!--end::Card footer-->
+                                                </div>
+
+                                                <div id="nilai-akhir" class="content-section">
+                                                    <!--begin::Card header-->
+                                                    <div class="card-header" id="kt_chat_messenger_header">
+                                                        <!--begin::Title-->
+                                                        <div class="card-title">
+                                                            <!--begin::User-->
+                                                            <div class="d-flex justify-content-center flex-column me-3">
+                                                                <a href="#" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 mb-2 lh-1">Nilai Akhir {{ $data['nama_periode'] }}</a>
+                                                            </div>
+                                                            <!--end::User-->
+                                                        </div>
+                                                        <!--end::Title-->
+                                                    </div>
+                                                    <!--end::Card header-->
+                                                    <!--begin::Card body-->
+                                                    <div class="card-body" id="kt_chat_messenger_body">
+                                                        <div class="table-responsive">
+                                                            @if($data['status_nilai_mhs'] != 0)
+                                                                <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                                                                    <thead class="bg-gray-100">
+                                                                        <tr>
+                                                                            <th data-field="id">NIM</th>
+                                                                            <th data-field="id">Nama</th>
+                                                                            <th data-field="price">Fakultas / Prodi</th>
+                                                                            <th data-field="id">Nilai Akhir</th>
+                                                                            <th data-field="id">Predikat Nilai</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="table_mhs">
+                                                                        <tr>
+                                                                            <td>{{ $data['nim'] }}</td>
+                                                                            <td>{{ $data['nama'] }}</td>
+                                                                            <td>{{ $data['fakultas'] }} / {{ $data['jurusan'] }}</td>
+                                                                            @if($data['nilai_mhs'])
+                                                                                <td>{{ $data['nilai_mhs']->nilai_des }}</td>
+                                                                                <td>{{ $data['nilai_mhs']->nilai }}</td>
+                                                                            @else
+                                                                                <td colspan="2" style="text-align: center;">Nilai Tidak Tersedia</td>
+                                                                            @endif
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            @else
+                                                                <table class="bordered responsive-table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th data-field="id">NIM</th>
+                                                                            <th data-field="id">Nama</th>
+                                                                            <th data-field="price">Fakultas / Prodi</th>
+                                                                            <th data-field="id">Nilai Akhir</th>
+                                                                            <th data-field="id">Predikat Nilai</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody id="table_mhs">
+                                                                        <tr>
+                                                                            <td colspan="5" style="text-align: center;">Nilai Belum Diumumkan</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <!--end::Card body-->
+                                                </div>
+                                            </div>
 										</div>
 										<!--end::Content-->
 									</div>
@@ -347,6 +675,51 @@
     </div>
     <!--end::Scrolltop-->
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuItems = document.querySelectorAll('.menu-link');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            // Function to hide all content sections
+            function hideAllSections() {
+                contentSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+            }
+
+            // Function to show the target section
+            function showSection(target) {
+                document.getElementById(target).style.display = 'block';
+            }
+
+            // Function to remove active class from all menu items
+            function removeActiveClass() {
+                menuItems.forEach(item => {
+                    item.classList.remove('active');
+                });
+            }
+
+            // Add event listener to each menu item
+            menuItems.forEach(item => {
+                item.addEventListener('click', function (event) {
+                    // Check if the menu link has a data-target attribute
+                    if (this.hasAttribute('data-target')) {
+                        event.preventDefault();
+                        hideAllSections();
+                        showSection(this.getAttribute('data-target'));
+                        removeActiveClass();
+                        this.classList.add('active');
+                    }
+                });
+            });
+
+            // Show the first section by default and set the first menu item as active
+            hideAllSections();
+            showSection('beranda');
+            menuItems[0].classList.add('active');
+        });
+    </script>
+
     <!--begin::Javascript-->
     <script>var hostUrl = "assets/";</script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
@@ -354,25 +727,12 @@
     <script src="assets/js/scripts.bundle.js"></script>
     <!--end::Global Javascript Bundle-->
     <!--begin::Vendors Javascript(used for this page only)-->
-    <script src="assets/plugins/custom/fullcalendar/fullcalendar.bundle.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/usaLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZonesLow.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/geodata/worldTimeZoneAreasLow.js"></script>
     <script src="assets/plugins/custom/datatables/datatables.bundle.js"></script>
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
     <script src="assets/js/widgets.bundle.js"></script>
     <script src="assets/js/custom/widgets.js"></script>
-    <script src="assets/js/custom/apps/chat/chat.js"></script>
-    <script src="assets/js/custom/utilities/modals/upgrade-plan.js"></script>
     <script src="assets/js/custom/utilities/modals/create-app.js"></script>
     <script src="assets/js/custom/utilities/modals/users-search.js"></script>
     <!--end::Custom Javascript-->

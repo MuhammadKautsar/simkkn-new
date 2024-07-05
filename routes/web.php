@@ -10,11 +10,6 @@ use App\Http\Controllers\DaftarKknController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Models\Dosen;
-
-Route::get('/coba', function () {
-    return view('cobajs');
-});
 
 Route::get('/', function () {
     return view('landing');
@@ -46,24 +41,11 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa');
     Route::get('/cetak-pdf/{nim13}/{periode}', [MahasiswaController::class, 'cetakPdf'])->name('cetak.pdf');
     // Route::get('/cetak-pdf/{nim}', [MahasiswaController::class, 'generatePdf'])->name('cetak.pdf');
-
-    Route::get('/kelompok', [MahasiswaController::class, 'kelompok'])->name('kelompok');
-    Route::get('/upload-berkas', [MahasiswaController::class, 'upload_berkas'])->name('upload-berkas');
-    Route::get('/upload-proposal', [MahasiswaController::class, 'upload_proposal'])->name('upload-proposal');
-    Route::get('/upload-logbook', [MahasiswaController::class, 'upload_logbook'])->name('upload-logbook');
-    Route::get('/upload-laporan', [MahasiswaController::class, 'upload_laporan'])->name('upload-laporan');
-    Route::get('/nilai-akhir', [MahasiswaController::class, 'nilai_akhir'])->name('nilai-akhir');
 });
 
 Route::prefix('dosen')->middleware(['checkWebServiceSession'])->group(function () {
     Route::get('beranda', [DosenController::class, 'index'])->name('dosen.beranda');
     Route::get('data_kelompok/{id_kelompok?}', [DosenController::class, 'data_kelompok'])->name('data_kelompok');
-
-    Route::get('profil_desa', [DosenController::class, 'profil_desa'])->name('profil_desa');
-    Route::get('survey_lapangan', [DosenController::class, 'survey_lapangan'])->name('survey_lapangan');
-    Route::get('monev', [DosenController::class, 'monev'])->name('monev');
-    Route::get('dokumen_kelompok', [DosenController::class, 'dokumen_kelompok'])->name('dokumen_kelompok');
-    Route::get('nilai', [DosenController::class, 'nilai'])->name('nilai');
 
     Route::get('/download/{filename}', [DosenController::class, 'downloadPanduan'])->name('download.panduan');
 });
