@@ -63,10 +63,9 @@ if (isset($_COOKIE["sidebar_minimize_state"]) && $_COOKIE["sidebar_minimize_stat
                     </div>
                     <!--end:Menu item-->
                     <!--begin:Menu item-->
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                    {{-- <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                         <!--begin:Menu link-->
                         <a class="menu-link @if(request()->routeIs('berkas')) active @endif" href="{{ route('berkas') }}">
-                        {{-- <span class="menu-link"> --}}
                             <span class="menu-icon">
                                 <i class="ki-duotone ki-file fs-2">
                                     <span class="path1"></span>
@@ -74,16 +73,14 @@ if (isset($_COOKIE["sidebar_minimize_state"]) && $_COOKIE["sidebar_minimize_stat
                                 </i>
                             </span>
                             <span class="menu-title">Pengumuman dan Berkas</span>
-                        {{-- </span> --}}
                         <!--end:Menu link-->
                         </a>
-                    </div>
+                    </div> --}}
                     <!--end:Menu item-->
                     <!--begin:Menu item-->
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                    {{-- <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                         <!--begin:Menu link-->
                         <a class="menu-link @if(request()->routeIs('jenis.kkn')) active @endif" href="{{ route('jenis.kkn') }}">
-                        {{-- <span class="menu-link"> --}}
                             <span class="menu-icon">
                                 <i class="ki-duotone ki-menu fs-2">
                                     <span class="path1"></span>
@@ -93,10 +90,9 @@ if (isset($_COOKIE["sidebar_minimize_state"]) && $_COOKIE["sidebar_minimize_stat
                                 </i>
                             </span>
                             <span class="menu-title">Jenis KKN</span>
-                        {{-- </span> --}}
                         </a>
                         <!--end:Menu link-->
-                    </div>
+                    </div> --}}
                     <!--end:Menu item-->
                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion @if(request()->routeIs('users-management')) here show @elseif(request()->routeIs('roles')) here show @endif">
                         <!--begin:Menu link-->

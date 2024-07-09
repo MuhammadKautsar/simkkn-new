@@ -57,7 +57,7 @@
                                 <select name="level" id="level" class="form-select bg-transparent">
                                     <option disabled selected>Login sebagai:</option>
                                     <option value="panitia">Panitia USK</option>
-                                    <option value="admin_non_usk">Admin Non USK</option>
+                                <!--    <option value="admin_non_usk">Admin Non USK</option>    -->
                                 </select>
                                 <!--end::Level-->
                             </div>

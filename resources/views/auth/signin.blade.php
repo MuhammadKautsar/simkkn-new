@@ -58,7 +58,7 @@
                                     <option disabled selected>Login sebagai:</option>
                                     <option value="mahasiswa">Mahasiswa USK</option>
                                     <option value="dosen">Dosen (DPL/Korcam)</option>
-                                    <option value="mhs_non_usk">Mahasiswa Non USK</option>
+                                    <!--    <option value="mhs_non_usk">Mahasiswa Non USK</option>  -->
                                 </select>
                                 <!--end::Level-->
                             </div>

@@ -10,11 +10,9 @@ class DashboardController extends Controller
 {
     public function dashboard_panitia(Request $request)
     {
-        $nip = session()->get('nip');
-
         // $kkns = Periode::orderBy('id', 'desc')->paginate(10);
         $kkns = Periode::with(['lokasi_mappings.regency'])->orderBy('id', 'desc')->where('status', '<>', 2)->get();
 
-        return view('panitia.dashboard', compact('kkns', 'nip'));
+        return view('panitia.dashboard', compact('kkns'));
     }
 }

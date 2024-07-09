@@ -50,28 +50,28 @@ class LoginModel extends Model
     //     return false;
     // }
 
-    public static function loginMahasiswa($nim, $password)
-    {
-        $url = 'http://ws.usk.ac.id/webservice/mahasiswa/cmahasiswa/login';
+    // public static function loginMahasiswa($nim, $password)
+    // {
+    //     $url = 'http://ws.usk.ac.id/webservice/mahasiswa/cmahasiswa/login';
 
-        $data = [
-            'nim' => $nim,
-            'password' => $password
-        ];
+    //     $data = [
+    //         'nim' => $nim,
+    //         'password' => $password
+    //     ];
 
-        // Lakukan request ke Web Service dengan HTTP Client Laravel
-        $response = Http::asForm()->post($url, $data);
+    //     // Lakukan request ke Web Service dengan HTTP Client Laravel
+    //     $response = Http::asForm()->post($url, $data);
 
-        // Handle response
-        if ($response->successful()) {
-            $result = self::parseXmlResponse($response->body());
-            if ($result && isset($result->status_info_login) && $result->status_info_login == 2) {
-                return true; // Login berhasil
-            }
-        }
+    //     // Handle response
+    //     if ($response->successful()) {
+    //         $result = self::parseXmlResponse($response->body());
+    //         if ($result && isset($result->status_info_login) && $result->status_info_login == 2) {
+    //             return true; // Login berhasil
+    //         }
+    //     }
 
-        return false; // Login gagal
-    }
+    //     return false; // Login gagal
+    // }
 
     public static function loginStaf($nip, $password)
     {

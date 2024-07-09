@@ -93,51 +93,49 @@
                                 @foreach ($kkns as $kkn)
                                 <tr>
                                     <td class="mb-0 text-sm">{{ $kkn->masa_periode }}</td>
-                                    {{-- <td class="text-center mb-0 text-sm">{{ $kkn->jenisKkn->kategori }}</td> --}}
                                     @if ($kkn->jenis_kkn == '0')
-                                    <td class="text-center mb-0 text-sm">Tidak Ada</td>
+                                        <td class="text-center mb-0 text-sm">Tidak Ada</td>
                                     @else
-                                    <td class="text-center mb-0 text-sm">{{ $kkn->jenisKkn->kategori }}</td>
+                                        <td class="text-center mb-0 text-sm">{{ $kkn->jenisKkn->kategori }}</td>
                                     @endif
                                     @if ($kkn->lokasi != '0')
-                                    <td class="text-center mb-0 text-sm">{{ $kkn->lokasi }}</td>
+                                        <td class="text-center mb-0 text-sm">{{ $kkn->lokasi }}</td>
                                     @else
-                                    {{-- <td class="text-center mb-0 text-sm">
-                                        @foreach ($kkn->lokasi_mappings as $lokasi)
-                                            {{ $lokasi->province ? ucwords(strtolower($lokasi->province->name)) : 'N/A' }} - {{ $lokasi->regency ? ucwords(strtolower($lokasi->regency->name)) : 'N/A' }} #
-                                        @endforeach
-                                    </td> --}}
-                                    <td class="text-center mb-0 text-sm">
-                                        @php
-                                            $count = count($kkn->lokasi_mappings);
-                                            $i = 0;
-                                        @endphp
-                                        @foreach ($kkn->lokasi_mappings as $lokasi)
-                                            {{ $lokasi->province ? ucwords(strtolower($lokasi->province->name)) : 'N/A' }} - {{ $lokasi->regency ? ucwords(strtolower($lokasi->regency->name)) : 'N/A' }}
-                                            @php $i++; @endphp
-                                            @if ($i < $count)
-                                                #
-                                            @endif
-                                        @endforeach
-                                    </td>
+                                        <td class="text-center mb-0 text-sm">
+                                            @php
+                                                $count = count($kkn->lokasi_mappings);
+                                                $i = 0;
+                                            @endphp
+                                            @foreach ($kkn->lokasi_mappings as $lokasi)
+                                                {{ $lokasi->province ? ucwords(strtolower($lokasi->province->name)) : 'N/A' }} - {{ $lokasi->regency ? ucwords(strtolower($lokasi->regency->name)) : 'N/A' }}
+                                                @php $i++; @endphp
+                                                @if ($i < $count)
+                                                    #
+                                                @endif
+                                            @endforeach
+                                        </td>
                                     @endif
-                                    <td class="mb-0 text-sm">{{ $kkn->ket }}</td>
-                                    {{-- <td class="mb-0 text-sm">{{ $kkn->status }}</td> --}}
+                                        <td class="mb-0 text-sm">{{ $kkn->ket }}</td>
                                     @if($kkn->status === 1)
                                         <td class="text-center"><span class="badge badge-primary">Aktif</span></td>
-                                        {{-- <td class="text-center">
-                                            @if(auth()->user()->level !== "1")
-                                                <a href="" data-value="{{ $kkn->id }}" class="kkn_selesai"><i class="fas fa-check"></i></a> <a href="" class="kkn_nonaktif" data-value="{{ $kkn->id }}"><i class="fas fa-ban"></i></a>
+                                        <td class="text-center">
+                                            @if (session('level') !== "1")
+                                                <a href="{{ route('kkn.edit', ['id' => $kkn->id]) }}" class="konfigurasi_kkn"><i class="fas fa-cog"></i></a>
+                                                <a href="" data-value="{{ $kkn->id }}" class="kkn_selesai"><i class="fas fa-check"></i></a>
+                                                <a href="" data-value="{{ $kkn->id }}" class="kkn_nonaktif" ><i class="fas fa-ban"></i></a>
                                             @endif
-                                        </td> --}}
+                                        </td>
                                     @elseif ($kkn->status === 2)
                                         <td class="text-center"><span class="badge badge-danger">Nonaktif</span></td>
+                                        <td class="text-center">
+                                            <a href="{{ route('kkn.edit', ['id' => $kkn->id]) }}" class="konfigurasi_kkn"><i class="fas fa-cog"></i></a>
+                                        </td>
                                     @else
                                         <td class="text-center"><span class="badge badge-success">Selesai</span></td>
+                                        <td class="text-center">
+                                            <a href="{{ route('kkn.edit', ['id' => $kkn->id]) }}" class="konfigurasi_kkn"><i class="fas fa-cog"></i></a>
+                                        </td>
                                     @endif
-                                    <td class="text-center">
-                                        <a href="{{ route('kkn.edit', ['id' => $kkn->id]) }}" class="konfigurasi_kkn"><i class="fas fa-cog"></i></a>
-                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -153,4 +151,61 @@
         <!--end::Content-->
     </div>
     <!--end::Content wrapper-->
+
+    <script>
+        var BASE_URL = "{{ url('/') }}/";
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const buttons = document.querySelectorAll('.kkn_selesai, .kkn_nonaktif');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const id_periode = this.dataset.value;
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                    let url = '';
+
+                    if (this.classList.contains('kkn_selesai')) {
+                        url = BASE_URL + "Kkn/kkn_selesai";
+                    } else if (this.classList.contains('kkn_nonaktif')) {
+                        url = BASE_URL + "Kkn/kkn_nonaktif";
+                    }
+
+                    Swal.fire({
+                        title: 'Apakah Anda yakin ingin melakukan perubahan ini?',
+                        text: "Data yang telah diubah tidak bisa dikembalikan",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, ubah!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: url,
+                                method: "POST",
+                                headers: {
+                                    'X-CSRF-TOKEN': csrfToken
+                                },
+                                data: { id_periode: id_periode },
+                                cache: false,
+                                dataType: "json",
+                                success: function (data) {
+                                    Swal.fire('Sukses!', data.message, 'success').then(() => {
+                                        // Reload the page to reflect changes
+                                        location.reload();
+                                    });
+                                },
+                                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                    Swal.fire('Error!', "Status: " + textStatus + " Error: " + errorThrown, 'error');
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 @endsection

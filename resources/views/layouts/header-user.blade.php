@@ -135,14 +135,14 @@
                         <div class="separator my-2"></div>
                         <!--end::Menu separator-->
                         <!--begin::Menu item-->
-                        <div class="menu-item px-5">
+                        {{-- <div class="menu-item px-5">
                             <a href="account/overview.html" class="menu-link px-5">My Profile</a>
-                        </div>
+                        </div> --}}
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
-                        <div class="menu-item px-5 my-1">
+                        {{-- <div class="menu-item px-5 my-1">
                             <a href="account/settings.html" class="menu-link px-5">Account Settings</a>
-                        </div>
+                        </div> --}}
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                             <div class="menu-item px-5">

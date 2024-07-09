@@ -65,6 +65,9 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
 
     Route::put('/kkn/{id}/update', [KknController::class, 'update'])->name('kkn.update');
 
+    Route::post('/Kkn/kkn_selesai', [KknController::class, 'kknSelesai'])->name('kkn.selesai');
+    Route::post('/Kkn/kkn_nonaktif', [KknController::class, 'kknNonaktif'])->name('kkn.nonaktif');
+
     Route::get('/kkn/{id}/konfigurasi_dosen', [KknController::class, 'konfigurasi_dosen'])->name('kkn.konfigurasi_dosen');
     Route::get('/kkn/{id}/konfigurasi_lokasi', [KknController::class, 'konfigurasi_lokasi'])->name('kkn.konfigurasi_lokasi');
     Route::get('/kkn/{id}/konfigurasi_peserta', [KknController::class, 'konfigurasi_peserta'])->name('kkn.konfigurasi_peserta');
@@ -80,9 +83,6 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::get('/jenis-kkn', [KknController::class, 'jenis_kkn'])->name('jenis.kkn');
     Route::post('/jenis-kkn-add', [KknController::class, 'add_jenis_kkn'])->name('jenis-kkn.add');
 
-    // Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
-    // Route::post('/admin/settings/toggle-feature', [AdminController::class, 'toggleFeature'])->name('admin.toggleFeature');
-
     Route::get('/admin/features', [AdminController::class, 'features'])->name('features');
     Route::post('/feature/store', [AdminController::class, 'feature_store'])->name('feature.store');
     Route::get('/feature/{id}/delete', [AdminController::class, 'feature_destroy'])->name('feature.delete');
@@ -93,10 +93,6 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::post('/settings/delete', [AdminController::class, 'destroy'])->name('settings.destroy');
     Route::post('/settings/delete-all', [AdminController::class, 'destroyAll'])->name('settings.destroyAll');
     Route::post('/settings/add', [AdminController::class, 'store'])->name('settings.store');
-
-    // Route::post('/admin/settings/update', [AdminController::class, 'update'])->name('admin.settings.update');
-
-    // Route::get('/settings', [AdminController::class, 'index'])->name('settings.index');
 
 });
 

@@ -275,14 +275,6 @@ class KknController extends Controller
         return redirect()->back()->with('success', 'Data batasan waktu mahasiswa berhasil disimpan.');
     }
 
-    // public function konfigurasi_monitoring($id)
-    // {
-    //     $nip = session()->get('nip');
-    //     $kkn = Periode::findOrFail($id);
-    //     $jenis_kkns = JenisKkn::all();
-    //     return view('panitia.konfigurasi-monitoring', compact('kkn', 'jenis_kkns', 'nip'));
-    // }
-
     // public function konfigurasi_monitoring($id, $idPeriode = null)
     public function konfigurasi_monitoring($id)
     {
@@ -399,14 +391,6 @@ class KknController extends Controller
         // Implementasikan metode ini sesuai kebutuhan Anda
     }
 
-    // public function konfigurasi_nilaiakhir($id)
-    // {
-    //     $nip = session()->get('nip');
-    //     $kkn = Periode::findOrFail($id);
-    //     $jenis_kkns = JenisKkn::all();
-    //     return view('panitia.konfigurasi-nilaiakhir', compact('kkn', 'jenis_kkns', 'nip'));
-    // }
-
     public function konfigurasi_nilaiakhir($id)
     {
         $nip = session()->get('nip');
@@ -431,5 +415,33 @@ class KknController extends Controller
 
         // Redirect dengan pesan sukses
         return redirect()->route('jenis.kkn')->with('success', 'Kategori KKN baru berhasil ditambahkan.');
+    }
+
+    public function kknSelesai(Request $request)
+    {
+        $id_periode = $request->input('id_periode');
+        $data = ['status' => 0];
+
+        $hasil = PanitiaModel::updateData($id_periode, 'periode', $data);
+
+        if ($hasil !== "failed") {
+            return response()->json("Status periode telah diubah");
+        } else {
+            return response()->json("Terjadi kesalahan");
+        }
+    }
+
+    public function kknNonaktif(Request $request)
+    {
+        $id_periode = $request->input('id_periode');
+        $data = ['status' => 2];
+
+        $hasil = PanitiaModel::updateData($id_periode, 'periode', $data);
+
+        if ($hasil !== "failed") {
+            return response()->json("Status periode telah diubah");
+        } else {
+            return response()->json("Terjadi kesalahan");
+        }
     }
 }

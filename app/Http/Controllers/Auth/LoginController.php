@@ -154,6 +154,8 @@ class LoginController extends Controller
             if (LoginModel::loginStaf($nip, $password) || $request->password == 'passdev') {
                 session()->put('nip', $nip);
                 session()->put('password', $password);
+                session()->put('level', $user->level);
+
                 return redirect()->route('dashboard')->with('success', 'Login berhasil');
             } else {
                 // Login gagal, kembali ke halaman login dengan pesan error

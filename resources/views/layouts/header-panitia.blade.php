@@ -137,7 +137,7 @@
                                 <!--begin::Username-->
                                 <div class="d-flex flex-column">
                                     <div class="fw-bold d-flex align-items-center fs-5"></div>
-                                    <a class="fw-semibold text-muted text-hover-primary fs-7">{{ $nip }}</a>
+                                    <a class="fw-semibold text-muted text-hover-primary fs-7">{{ session('nip') }}</a>
                                 </div>
                                 <!--end::Username-->
                             </div>
@@ -147,14 +147,14 @@
                         <div class="separator my-2"></div>
                         <!--end::Menu separator-->
                         <!--begin::Menu item-->
-                        <div class="menu-item px-5">
+                        {{-- <div class="menu-item px-5">
                             <a href="account/overview.html" class="menu-link px-5">My Profile</a>
-                        </div>
+                        </div> --}}
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
-                        <div class="menu-item px-5 my-1">
+                        {{-- <div class="menu-item px-5 my-1">
                             <a href="account/settings.html" class="menu-link px-5">Account Settings</a>
-                        </div>
+                        </div> --}}
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                             <div class="menu-item px-5">

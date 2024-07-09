@@ -185,4 +185,10 @@ class PanitiaModel extends Model
 
         return $status == "1"; // Jika status adalah "1", return true, jika tidak return false.
     }
+
+    public static function updateData($id_periode, $table, $data)
+    {
+        $result = DB::table($table)->where('id', $id_periode)->update($data);
+        return $result ? "success" : "failed";
+    }
 }
