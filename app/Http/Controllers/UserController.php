@@ -12,14 +12,14 @@ class UserController extends Controller
     {
         $nip = $request->session()->get('nip');
         $users = User::all();
-        return view('panitia.users-management', compact('users', 'nip'));
+        return view('admin.users-management', compact('users', 'nip'));
     }
 
     public function roles(Request $request)
     {
         $nip = $request->session()->get('nip');
         $roles = Level::all();
-        return view('panitia.roles', compact('roles', 'nip'));
+        return view('admin.roles', compact('roles', 'nip'));
     }
 
     public function store(Request $request)

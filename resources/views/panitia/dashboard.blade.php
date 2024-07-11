@@ -92,7 +92,11 @@
                             <tbody class="fw-semibold text-gray-600">
                                 @foreach ($kkns as $kkn)
                                 <tr>
-                                    <td class="mb-0 text-sm">{{ $kkn->masa_periode }}</td>
+                                    @if ($kkn->nama_kkn != null)
+                                        <td class="mb-0 text-sm">{{ $kkn->nama_kkn }}</td>
+                                    @else
+                                        <td class="mb-0 text-sm">{{ $kkn->masa_periode }}</td>
+                                    @endif
                                     @if ($kkn->jenis_kkn == '0')
                                         <td class="text-center mb-0 text-sm">Tidak Ada</td>
                                     @else
@@ -100,6 +104,8 @@
                                     @endif
                                     @if ($kkn->lokasi != '0')
                                         <td class="text-center mb-0 text-sm">{{ $kkn->lokasi }}</td>
+                                    @elseif (count($kkn->lokasi_mappings) == 0)
+                                        <td class="text-center mb-0 text-sm">-</td>
                                     @else
                                         <td class="text-center mb-0 text-sm">
                                             @php
@@ -115,7 +121,11 @@
                                             @endforeach
                                         </td>
                                     @endif
+                                    @if ($kkn->ket == null)
+                                        <td class="mb-0 text-sm">{{ $kkn->masa_periode }}</td>
+                                    @else
                                         <td class="mb-0 text-sm">{{ $kkn->ket }}</td>
+                                    @endif
                                     @if($kkn->status === 1)
                                         <td class="text-center"><span class="badge badge-primary">Aktif</span></td>
                                         <td class="text-center">

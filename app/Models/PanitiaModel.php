@@ -191,4 +191,9 @@ class PanitiaModel extends Model
         $result = DB::table($table)->where('id', $id_periode)->update($data);
         return $result ? "success" : "failed";
     }
+
+    public static function getPersyaratan($id_periode)
+    {
+        return DB::table('persyaratan')->where('id_periode', $id_periode)->get();
+    }
 }

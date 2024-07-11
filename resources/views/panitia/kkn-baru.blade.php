@@ -103,7 +103,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="text" class="form-control form-control-solid"
-                                                    name="masa_kkn" placeholder="Contoh: Januari 2020-Februari 2020" />
+                                                    name="masa_periode" placeholder="Contoh: Januari 2020-Februari 2020" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -166,8 +166,8 @@
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text" class="form-control form-control-solid" name="tahun"
-                                                    placeholder="" />
+                                                <input type="text" class="form-control form-control-solid" name="tahun_ajaran"
+                                                    placeholder="Contoh: 2023/2024" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -210,7 +210,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_mulai" placeholder="" />
+                                                    name="tgl_mulai_daftar" placeholder="" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -227,7 +227,7 @@
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
                                                 <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_akhir" placeholder="" />
+                                                    name="tgl_akhir_daftar" placeholder="" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -299,7 +299,7 @@
                             <!--end::Card body-->
                         </div>
 
-                        <div class="card card-flush mt-8">
+                        {{-- <div class="card card-flush mt-8">
                             <!--begin::Header-->
                             <div class="card-header pt-5">
                                 <!--begin::Title-->
@@ -359,7 +359,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <!--end::Col-->
                 </div>

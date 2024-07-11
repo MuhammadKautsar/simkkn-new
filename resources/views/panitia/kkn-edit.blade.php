@@ -127,6 +127,7 @@
                                 <!--begin::Form-->
                                 <form class="form" action="/kkn/{{ $kkn->id }}/update" method="POST">
                                     @csrf
+                                    @method('PUT')
                                     <!--begin::Row-->
                                     <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
                                         <!--begin::Col-->
@@ -138,13 +139,11 @@
                                                     <span>Nama Kegiatan/Periode KKN:</span>
                                                 </label>
                                                 <!--end::Label-->
-                                                <!--begin::Input-->
-                                                <input required type="text" class="form-control form-control-solid"
-                                                    name="nama_kkn" placeholder="Contoh: KKN Reguler Periode XVIII" value="{{ $kkn->masa_periode }}"/>
-                                                <!--end::Input-->
-                                                @error('masa_periode')
-                                                    <span class="error-message text-danger">{{ $message }}</span>
-                                                @enderror
+                                                @if ($kkn->nama_kkn != null)
+                                                    <input required type="text" class="form-control form-control-solid" name="nama_kkn" placeholder="Contoh: KKN Reguler Periode XVIII" value="{{ $kkn->nama_kkn }}"/>
+                                                @else
+                                                    <input required type="text" class="form-control form-control-solid" name="nama_kkn" placeholder="Contoh: KKN Reguler Periode XVIII" value="{{ $kkn->masa_periode }}"/>
+                                                @endif
                                             </div>
                                             <!--end::Input group-->
                                         </div>
@@ -159,8 +158,11 @@
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text" class="form-control form-control-solid"
-                                                    name="masa_kkn" placeholder="Contoh: Januari 2020-Februari 2020" value="{{ $kkn->ket }}" />
+                                                @if ($kkn->ket == null)
+                                                    <input required type="text" class="form-control form-control-solid" name="masa_periode" placeholder="Contoh: KKN Reguler Periode XVIII" value="{{ $kkn->masa_periode }}"/>
+                                                @else
+                                                    <input type="text" class="form-control form-control-solid" name="masa_periode" placeholder="Contoh: Januari 2020-Februari 2020" value="{{ $kkn->ket }}" />
+                                                @endif
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -183,9 +185,10 @@
                                                     <!--begin::Select2-->
                                                     <select id="kt_ecommerce_select2_country" required
                                                         class="form-select form-select-solid" name="jenis_kkn">
-                                                        <option disabled selected>- Pilih -</option>
+                                                        <option disabled>- Pilih -</option>
                                                         @foreach ($jenis_kkns as $item)
-                                                            <option value="{{ $item->id }}">{{ $item->kategori }}
+                                                            <option value="{{ $item->id }}" {{ $item->id == $kkn->jenis_kkn ? 'selected' : '' }}>
+                                                                {{ $item->kategori }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -226,8 +229,7 @@
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="text" class="form-control form-control-solid" name="tahun"
-                                                    placeholder="" />
+                                                <input type="text" class="form-control form-control-solid" name="tahun_ajaran" value="{{ $kkn->tahun_ajaran }}" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -244,10 +246,9 @@
                                                 <!--end::Label-->
                                                 <div class="w-100">
                                                     <!--begin::Select2-->
-                                                    <select id="kt_ecommerce_select2_country" required
-                                                        class="form-select form-select-solid" name="semester">
-                                                        <option value="3">Genap</option>
-                                                        <option value="1">Ganjil</option>
+                                                    <select id="kt_ecommerce_select2_country" required class="form-select form-select-solid" name="semester">
+                                                        <option value="3" {{ substr($kkn->semester_reg, -1) == '3' ? 'selected' : '' }}>Genap</option>
+                                                        <option value="1" {{ substr($kkn->semester_reg, -1) == '1' ? 'selected' : '' }}>Ganjil</option>
                                                     </select>
                                                     <!--end::Select2-->
                                                 </div>
@@ -269,8 +270,7 @@
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_mulai" placeholder="" />
+                                                <input type="date" class="form-control form-control-solid" name="tgl_mulai_daftar" value="{{ $kkn->tgl_mulai_daftar }}" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -286,8 +286,7 @@
                                                 </label>
                                                 <!--end::Label-->
                                                 <!--begin::Input-->
-                                                <input type="date" class="form-control form-control-solid"
-                                                    name="tgl_akhir" placeholder="" />
+                                                <input type="date" class="form-control form-control-solid" name="tgl_akhir_daftar" value="{{ $kkn->tgl_akhir_daftar }}" />
                                                 <!--end::Input-->
                                             </div>
                                             <!--end::Input group-->
@@ -370,8 +369,9 @@
                             </div>
                             <!--end::Header-->
                             <div class="card-body pt-5">
-                                <form class="form" action="/kkn/{{ $kkn->id }}/update" method="POST">
+                                <form action="{{ route('kkn.tambahPersyaratan') }}" method="POST">
                                     @csrf
+                                    <input type="hidden" name="id_periode" value="{{ $kkn->id }}">
                                     <!--begin::Input group-->
                                     <div class="fv-row mb-7">
                                         <!--begin::Label-->
@@ -380,8 +380,7 @@
                                         </label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="text" class="form-control form-control-solid" name="poin_persyaratan"
-                                            value="" />
+                                        <input type="text" class="form-control form-control-solid" name="nama_persyaratan" required/>
                                         <!--end::Input-->
                                     </div>
                                     <!--end::Input group-->
@@ -404,18 +403,26 @@
                                 </form>
                             </div>
                             <div class="card-body pt-0">
-                                <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
+                                <table class="table align-middle table-row-dashed fs-6 mb-0" id="kt_permissions_table">
                                     <thead>
                                         <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                             <th class="min-w-125px">Poin Persyaratan</th>
-                                            <th class="text-end min-w-100px">Aksi</th>
+                                            <th class="min-w-125px text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
+                                        @foreach($persyaratan as $item)
                                         <tr>
-                                            <td class="mb-0 text-sm"></td>
-                                            <td class="mb-0 text-sm"></td>
+                                            <td class="mb-0 text-sm">{{ $item->nama_persyaratan }}</td>
+                                            <td class="mb-0 text-sm text-center">
+                                                <form action="{{ route('kkn.hapusPersyaratan', $item->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin mau dihapus ?')"><i class="fas fa-trash"></i></button>
+                                                </form>
+                                            </td>
                                         </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

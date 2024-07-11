@@ -34,7 +34,6 @@ Route::get('/logout', [LoginController::class, 'logout'])
 
 Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::get('/beranda', [DaftarKknController::class, 'index'])->name('beranda');
-    // Route::get('/daftarkkn', [DaftarKknController::class, 'daftar'])->name('daftar');
     Route::get('/daftarkkn/{id}', [DaftarKknController::class, 'daftar'])->name('daftar');
     Route::post('/submit_registrasi', [DaftarKknController::class, 'submit_registrasi'])->name('submit_registrasi');
 
@@ -94,6 +93,8 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::post('/settings/delete-all', [AdminController::class, 'destroyAll'])->name('settings.destroyAll');
     Route::post('/settings/add', [AdminController::class, 'store'])->name('settings.store');
 
+    Route::post('/kkn/tambah-persyaratan', [KknController::class, 'tambahPersyaratan'])->name('kkn.tambahPersyaratan');
+    Route::delete('/kkn/hapus-persyaratan/{id}', [KknController::class, 'hapusPersyaratan'])->name('kkn.hapusPersyaratan');
 });
 
 Route::middleware(['checkWebServiceSession', 'checkFeature:user-management'])->group(function () {
