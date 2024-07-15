@@ -45,8 +45,6 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
 Route::prefix('dosen')->middleware(['checkWebServiceSession'])->group(function () {
     Route::get('beranda', [DosenController::class, 'index'])->name('dosen.beranda');
     Route::get('data_kelompok/{id_kelompok?}', [DosenController::class, 'data_kelompok'])->name('data_kelompok');
-
-    Route::get('/download/{filename}', [DosenController::class, 'downloadPanduan'])->name('download.panduan');
 });
 
 Route::get('panitia/sign-in', [LoginController::class, 'panitia_index'])
@@ -92,9 +90,14 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::post('/settings/delete', [AdminController::class, 'destroy'])->name('settings.destroy');
     Route::post('/settings/delete-all', [AdminController::class, 'destroyAll'])->name('settings.destroyAll');
     Route::post('/settings/add', [AdminController::class, 'store'])->name('settings.store');
+    Route::get('/settings', [AdminController::class, 'index'])->name('settings.index');
 
     Route::post('/kkn/tambah-persyaratan', [KknController::class, 'tambahPersyaratan'])->name('kkn.tambahPersyaratan');
     Route::delete('/kkn/hapus-persyaratan/{id}', [KknController::class, 'hapusPersyaratan'])->name('kkn.hapusPersyaratan');
+
+    Route::post('/hapus-dosen', [KknController::class, 'hapusDosen'])->name('hapus.dosen');
+    Route::post('/kkn/set_lokasi', [KknController::class, 'setLokasi'])->name('kkn.set_lokasi');
+    Route::post('/get-kabupaten-tersedia', [KknController::class, 'getKabupatenTersedia'])->name('kkn.get_kabupaten_tersedia');
 });
 
 Route::middleware(['checkWebServiceSession', 'checkFeature:user-management'])->group(function () {

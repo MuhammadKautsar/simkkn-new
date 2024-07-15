@@ -43,7 +43,8 @@
 		<script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
 		<!--end::Vendors Javascript-->
 		<!--begin::Custom Javascript(used for this page only)-->
-		<script src="assets/js/custom/apps/user-management/permissions/list.js"></script>
+		<script src="{{ asset('assets/js/custom/apps/user-management/permissions/list.js') }}"></script>
+        <script src="{{ asset('assets/js/custom/apps/user-management/users/list/table.js') }}"></script>
 		<script src="assets/js/custom/apps/user-management/permissions/add-permission.js"></script>
 		<script src="assets/js/custom/apps/user-management/permissions/update-permission.js"></script>
 		<script src="assets/js/widgets.bundle.js"></script>

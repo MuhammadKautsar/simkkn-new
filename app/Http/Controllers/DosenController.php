@@ -241,20 +241,6 @@ class DosenController extends Controller
         return view('dosen.unggah-nilai', compact('nip'));
     }
 
-    public function downloadPanduan($filename)
-    {
-        // Tentukan path file
-        $path = storage_path('app/public/' . $filename);
-
-        // Periksa apakah file ada
-        if (!file_exists($path)) {
-            abort(404);
-        }
-
-        // Kirim respons download
-        return response()->download($path, $filename);
-    }
-
     public function store(Request $request)
     {
         // Validasi input

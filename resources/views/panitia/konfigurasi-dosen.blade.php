@@ -122,12 +122,12 @@
                                 <!--end::Title-->
                                 <div class="d-flex justify-content-start">
                                     <!--begin::Button-->
-                                    <button type="button" class="btn btn-light-primary"><i class="ki-duotone ki-cloud-download fs-3">
-                                        <span class="path1"></span>
-                                        <span class="path2"></span>
-                                    </i>File Format InputDosen.xlsx
-                                    </button>
-                                    <!--end::Button-->
+                                    <a href="{{ url('berkas/FORMAT_DATA_DOSEN.xlsx') }}" class="btn btn-light-primary">
+                                        <i class="ki-duotone ki-cloud-download fs-3">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                        </i>File Format InputDosen.xlsx
+                                    </a>
                                 </div>
                             </div>
                             <!--end::Header-->
@@ -217,7 +217,7 @@
                                             <th class="min-w-125px">Fakultas</th>
                                             <th class="min-w-125px">DPL/Korcam</th>
                                             <th class="min-w-125px">No HP</th>
-                                            <th class="text-end min-w-100px">Aksi</th>
+                                            <th class="min-w-100px">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
@@ -229,11 +229,21 @@
                                                 <td class="mb-0 text-sm">{{ $d->fakultas }}</td>
                                                 <td class="mb-0 text-sm">{{ strtoupper($d->status) }}</td>
                                                 <td class="mb-0 text-sm">{{ $d->no_hp }}</td>
+                                                @if (session('level') != 1 && session('status') == 1)
+                                                    <td class="mb-0 text-sm">
+                                                        {{-- <form action="{{ route('kkn.hapusPersyaratan', $item->id) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin mau dihapus ?')"><i class="fas fa-trash"></i></button>
+                                                        </form> --}}
+                                                        <button class="btn btn-danger hapus-dosen" data-id="{{ $d->id }}" data-periode="{{ $d->id_periode }}"><i class="fas fa-trash"></i></button>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
-                                {{ $dosen->links() }}
+                                {{-- {{ $dosen->links() }} --}}
                             </div>
                         </div>
                     </div>
@@ -246,4 +256,64 @@
         <!--end::Content-->
     </div>
     <!--end::Content wrapper-->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.hapus-dosen').click(function (e) {
+                e.preventDefault();
+
+                var id_dosen = $(this).data('id');
+                var id_periode = $(this).data('periode');
+
+                Swal.fire({
+                    title: 'Apakah Anda yakin ingin menghapus dosen ini?',
+                    text: "Data yang telah dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '{{ route("hapus.dosen") }}',
+                            type: 'POST',
+                            data: {
+                                id_dosen: id_dosen,
+                                id_periode: id_periode,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function (response) {
+                                if (response.status) {
+                                    Swal.fire(
+                                        'Berhasil!',
+                                        response.message,
+                                        'success'
+                                    ).then(() => {
+                                        location.reload(); // Reload halaman setelah menghapus
+                                    });
+                                } else {
+                                    Swal.fire(
+                                        'Gagal!',
+                                        response.message,
+                                        'error'
+                                    );
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                Swal.fire(
+                                    'Error!',
+                                    'Terjadi kesalahan: ' + error,
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

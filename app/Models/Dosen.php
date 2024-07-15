@@ -14,13 +14,13 @@ class Dosen extends Model
     protected $table = 'dosen';
     public $timestamps = false;
 
-    public static function getDosen($id, $perPage = 10)
+    public static function getDosen($id)
     {
         return self::select('dosen.*', 'fakultas_dosen.nama_fakultas as fakultas')
             ->leftJoin('fakultas_dosen', 'dosen.fakultas', '=', 'fakultas_dosen.kd_fakultas')
             ->where('dosen.id_periode', $id)
             ->where('dosen.status', '<>', 'verifikator')
-            ->paginate($perPage);
+            ->get();
     }
 
     public static function getDosen2($nip)

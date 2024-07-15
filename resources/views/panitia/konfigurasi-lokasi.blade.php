@@ -126,7 +126,7 @@
                             </div>
                             <!--end::Header-->
                             <div class="card-body pt-5">
-                                <form class="form" action="/kkn/{{ $kkn->id }}/update" method="POST">
+                                <form id="form_lokasi">
                                     @csrf
                                     <!--begin::Input group-->
                                     <div class="fv-row mb-3">
@@ -135,16 +135,20 @@
                                             <span>Provinsi:</span>
                                         </label>
                                         <!--end::Label-->
-                                        <select id="kt_ecommerce_select2_country" required class="form-select form-select-solid" name="semester">
-                                            <option value="">Pilih Provinsi</option>
+                                        <input name="id_periode" id="id_periode" style="display: none" value="{{ $kkn->id }}" >
+                                        <select id="provinsi" required class="provinsi form-select form-select-solid" name="provinsi" data-target="#kabupaten">
+                                            <option value="" disabled selected>Pilih Provinsi</option>
+                                                @foreach($provinsi as $prov)
+                                                    <option value="{{ $prov->id }}">{{ ucwords(strtolower($prov->name)) }}</option>
+                                                @endforeach
                                         </select>
                                         <!--begin::Label-->
                                         <label class="fs-6 fw-semibold form-label mt-3">
                                             <span>Kabupaten:</span>
                                         </label>
                                         <!--end::Label-->
-                                        <select id="kt_ecommerce_select2_country" required class="form-select form-select-solid" name="semester">
-                                            <option value="">Pilih Provinsi</option>
+                                        <select id="kabupaten" required class="kabupaten form-select form-select-solid" name="kabupaten">
+                                            <option value="">Pilih Kabupaten</option>
                                         </select>
                                     </div>
                                     <!--end::Input group-->
@@ -363,7 +367,6 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                {{ $desa->links() }}
                             </div>
                         </div>
 
@@ -385,7 +388,7 @@
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                         </i>
-                                        <input type="text" data-kt-permissions-table-filter="search"
+                                        <input type="text" data-kt-user-table-filter="search"
                                             class="form-control form-control-solid w-250px ps-13"
                                             placeholder="Search" />
                                     </div>
@@ -408,7 +411,7 @@
                             </div>
                             <!--end::Header-->
                             <div class="card-body pt-0">
-                                <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
+                                <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_table_users">
                                     <thead>
                                         <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                             <th class="min-w-125px">Provinsi - Kabupaten</th>
@@ -432,7 +435,6 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                {{ $desa->links() }}
                             </div>
                         </div>
 
@@ -494,6 +496,43 @@
                                 </table>
                             </div>
                         </div>
+
+                        {{-- <div class="row">
+                            <!-- ============================================================== -->
+                            <!-- basic table  -->
+                            <!-- ============================================================== -->
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="card">
+                                    <h5 class="card-header">Daftar Provinsi dan Kabupaten</h5>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="regencies_table" class="table table-striped table-bordered provinsi" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Provinsi</th>
+                                                        <th>Kabupaten</th>
+                                                        <th>Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Provinsi</th>
+                                                        <th>Kabupaten</th>
+                                                        <th>Aksi</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ============================================================== -->
+                            <!-- end basic table  -->
+                            <!-- ============================================================== -->
+                        </div> --}}
+
                     </div>
                     <!--end::Col-->
                 </div>
@@ -504,4 +543,188 @@
         <!--end::Content-->
     </div>
     <!--end::Content wrapper-->
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Setting up CSRF token for AJAX requests -->
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
+
+<!-- Handling province change and fetching regencies -->
+<script>
+    $(document).ready(function () {
+        $('body').on('change', '.provinsi', function () {
+            var id_provinsi = $(this).val();
+            var targetDropdown = $(this).data('target');
+
+            $.ajax({
+                url: '/get-kabupaten',
+                type: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    id_provinsi: id_provinsi
+                },
+                success: function (data) {
+                    $(targetDropdown).empty();
+                    $.each(data, function (key, value) {
+                        $(targetDropdown).append($('<option>').val(value.id).text(value.kabupaten));
+                    });
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+</script>
+
+<!-- Handling form submission for setting location -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('form_lokasi').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var form = this;
+            var formData = new FormData(form);
+
+            fetch('{{ route('kkn.set_lokasi') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === false) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: data.message, // Update to use the message from the server
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Kabupaten berhasil ditambahkan',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                }
+                setRegenciesTable();
+                // getAvailableRegencies();
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat mengirim data',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+        });
+    });
+</script>
+
+{{-- <script>
+    $(document).ready(function() {
+        setRegenciesTable();
+    });
+
+    function setRegenciesTable() {
+        $.ajax({
+            type: "POST",
+            url: '{{ route('kkn.get_kabupaten_tersedia') }}',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id_periode: $('#id_periode').val()
+            },
+            cache: false,
+            success: function(data) {
+                var t = $('#regencies_table').DataTable();
+                t.clear();
+                $.each(data, function(i, item) {
+                    var aksi = '';
+                    if(item.status && item.level){
+                        aksi = '<td><a href="#" class="btn btn-danger delete-data" data-doc="kabupaten" data-val="' + item.id + '"><i class="fas fa-trash"></i></a></td>';
+                    }
+                    t.row.add([
+                        item.provinsi,
+                        item.kabupaten,
+                        aksi
+                    ]).draw(false);
+                });
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Status: " + textStatus);
+                alert("Error: " + errorThrown);
+            }
+        });
+    }
+</script> --}}
+
+{{-- <script>
+    $(document).ready(function () {
+    // getAvailableRegencies();
+    // getAvailableDistricts();
+    setRegenciesTable();
+    // setDistrictsTable();
+    // setVillagesTable();
+
+    $(document).on('click', ".delete-data", function(event) {
+        event.preventDefault();
+        let id_data = $(this).data("val");
+        let jenis_dokumen = $(this).data("doc");
+
+        swal({
+            title: 'Apakah Anda yakin ingin menghapus data ini?',
+            text: "Menghapus kabupaten/kecamatan akan menghapus semua data di kabupaten/kecamatan tersebut",
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/hapus-data",
+                    data: {
+                        id_data: id_data,
+                        id_periode: id_periode,
+                        jenis_doc: jenis_dokumen,
+                        _token: $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (data) {
+                        if(data.status){
+                            swal(data.message, {
+                                icon: "success",
+                            });
+                        } else {
+                            swal(data.message, {
+                                icon: "error",
+                            });
+                        }
+                        setRegenciesTable();
+                        // setDistrictsTable();
+                        // setVillagesTable();
+                        // getAvailableRegencies();
+                        // getAvailableDistricts();
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("Status: " + textStatus);
+                        alert("Error: " + errorThrown);
+                    }
+                });
+            }
+        })
+    });
+});
+</script> --}}
+
 @endsection

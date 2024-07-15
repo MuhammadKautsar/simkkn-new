@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BatasanWaktu;
-use App\Models\Dosen;
+use DB;
 use App\Models\Kkn;
+use App\Models\Dosen;
 use App\Models\Periode;
 use App\Models\JenisKkn;
+use App\Models\Provinsi;
 use App\Models\MasterDesa;
+use App\Models\BatasanWaktu;
 use App\Models\PanitiaModel;
 use Illuminate\Http\Request;
-use DB;
 
 class KknController extends Controller
 {
@@ -164,26 +165,100 @@ class KknController extends Controller
         // $dosen = $this->getDosen($id);
 
         // Atau menggunakan metode Eloquent
-        $perPage = 10;
-        $dosen = Dosen::getDosen($id, $perPage);
+        // $perPage = 10;
+        $dosen = Dosen::getDosen($id);
 
         return view('panitia.konfigurasi-dosen', compact('kkn', 'dosen', 'jenis_kkns', 'nip'));
+    }
+
+    public function hapusDosen(Request $request)
+    {
+        $id_dosen = $request->input('id_dosen');
+        $id_periode = $request->input('id_periode');
+        $panitiaModel = new PanitiaModel();
+        $cek_dosen = $panitiaModel->checkDosenDplKorcam($id_dosen, $id_periode); // cek apakah dosen sudah terpilih menjadi dpl atau korcam
+
+        if ($cek_dosen) {
+            $result = [
+                'status' => false,
+                'message' => "Dosen ini sudah menjadi DPL/Korcam. Silahkan hapus lokasi berkaitan dengan dosen ini terlebih dahulu untuk menghapus dosen dari sistem"
+            ];
+        } else {
+            $hasil = $panitiaModel->deleteData('dosen', $id_dosen);
+            if ($hasil) {
+                $result = [
+                    'status' => true,
+                    'message' => "Data berhasil dihapus",
+                ];
+            } else {
+                $result = [
+                    'status' => false,
+                    'message' => "Terjadi kesalahan"
+                ];
+            }
+        }
+        return response()->json($result);
     }
 
     public function konfigurasi_lokasi($id)
     {
         $nip = session()->get('nip');
         $kkn = Periode::findOrFail($id);
-        $jenis_kkns = JenisKkn::all();
-        $desa = $kkn->masterDesas()->whereNotNull('nama_desa')->paginate(10);
-        return view('panitia.konfigurasi-lokasi', compact('kkn', 'jenis_kkns', 'nip', 'desa'));
+        $provinsi = Provinsi::all();
+        $desa = $kkn->masterDesas()->whereNotNull('nama_desa')->get();
+
+        return view('panitia.konfigurasi-lokasi', compact('kkn', 'provinsi', 'nip', 'desa'));
+    }
+
+    public function setLokasi(Request $request)
+    {
+        $request->validate([
+            'id_periode' => 'required|integer',
+            'kabupaten' => 'required|integer',
+        ]);
+
+        // Check if the kabupaten already exists for the given periode
+        $exists = PanitiaModel::cekKabupaten($request->id_periode, $request->kabupaten);
+
+        if ($exists) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Duplikat nama kabupaten atau kota untuk provinsi yang sama'
+            ]);
+        }
+
+        // Create new record
+        $data_lokasi = [
+            'id_periode' => $request->id_periode,
+            'id_kabupaten' => $request->kabupaten,
+        ];
+
+        $insert = DB::table('lokasi_kkn')->insert($data_lokasi);
+
+        if ($insert) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Data berhasil dimasukkan'
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan'
+            ]);
+        }
+    }
+
+    public function getKabupatenTersedia(Request $request)
+    {
+        $idPeriode = $request->input('id_periode');
+        $dataKabupaten = PanitiaModel::getKabupatenPerPeriode($idPeriode);
+        return response()->json($dataKabupaten);
     }
 
     public function konfigurasi_peserta($id)
     {
         $nip = session()->get('nip');
         $kkn = Periode::findOrFail($id);
-        $jenis_kkns = JenisKkn::all();
 
         // Menghitung jumlah peserta berdasarkan id periode dan status_reg = 1
         $jumlah_peserta = Kkn::where('periode', $id)
@@ -206,7 +281,7 @@ class KknController extends Controller
         ->count('kd_fjjp7');
 
         $peserta = Kkn::where('periode', $id)->orderBy('status_reg', 'asc')->paginate(25);
-        return view('panitia.konfigurasi-peserta', compact('kkn', 'jenis_kkns', 'nip', 'peserta', 'jumlah_peserta', 'peserta_laki', 'peserta_perempuan', 'total_prodi'));
+        return view('panitia.konfigurasi-peserta', compact('kkn', 'nip', 'peserta', 'jumlah_peserta', 'peserta_laki', 'peserta_perempuan', 'total_prodi'));
     }
 
     public function konfigurasi_bataswaktu($id)

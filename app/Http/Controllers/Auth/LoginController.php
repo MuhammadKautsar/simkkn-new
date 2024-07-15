@@ -155,6 +155,7 @@ class LoginController extends Controller
                 session()->put('nip', $nip);
                 session()->put('password', $password);
                 session()->put('level', $user->level);
+                session()->put('status', $user->status);
 
                 return redirect()->route('dashboard')->with('success', 'Login berhasil');
             } else {

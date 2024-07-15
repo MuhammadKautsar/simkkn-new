@@ -73,7 +73,7 @@
                                             <div class="card-footer pt-2 pb-7">
                                                 <div class="row">
                                                     <div class="col">
-                                                        <a href="{{ route('download.panduan', ['filename' => 'PANDUAN-PENGGUNAAN-SISTEM-APLIKASI-KULIAH-KERJA-NYATA.pdf']) }}" class="btn btn-primary px-3 mb-0"><i class="ki-solid ki-cloud-download fs-2x"></i>Unduh Panduan</a>
+                                                        <a href="{{ url('berkas/PANDUAN-PENGGUNAAN-SISTEM-APLIKASI-KULIAH-KERJA-NYATA.pdf') }}" class="btn btn-primary px-3 mb-0" target="blank"><i class="ki-solid ki-cloud-download fs-2x"></i>Unduh Panduan</a>
                                                     </div>
                                                 </div>
                                             </div>

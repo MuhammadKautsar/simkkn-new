@@ -134,10 +134,10 @@ class PanitiaModel extends Model
         return $data_row;
     }
 
-    private function getStatusPeriode($id_periode)
-    {
-        // Implementasi fungsi ini sesuai kebutuhan
-    }
+    // private function getStatusPeriode($id_periode)
+    // {
+    //     // Implementasi fungsi ini sesuai kebutuhan
+    // }
 
     private function getNamaDosen($nip, $periode)
     {
@@ -195,5 +195,90 @@ class PanitiaModel extends Model
     public static function getPersyaratan($id_periode)
     {
         return DB::table('persyaratan')->where('id_periode', $id_periode)->get();
+    }
+
+    public function checkDosenDplKorcam($id_dosen, $id_periode)
+    {
+        $sql = "SELECT * FROM master_desa m
+                LEFT JOIN dosen d ON m.nip_dpl = d.nip OR m.nip_korcam = d.nip
+                WHERE d.id = ? AND m.periode = ?";
+        $query_result = DB::select($sql, [$id_dosen, $id_periode]);
+
+        return !empty($query_result);
+    }
+
+    public function deleteData($table, $id)
+    {
+        return DB::table($table)->where('id', $id)->delete();
+    }
+
+    public static function cekKabupaten($id_periode, $id_kabupaten)
+    {
+        $result = DB::table('lokasi_kkn')
+                    ->where('id_periode', $id_periode)
+                    ->where('id_kabupaten', $id_kabupaten)
+                    ->first();
+        return $result;
+    }
+
+    public static function getKabupatenPerPeriode($idPeriode)
+    {
+        $lokasiKkn = DB::table('lokasi_kkn')->where('id_periode', $idPeriode)->get();
+
+        if ($lokasiKkn->count() > 0) {
+            $dataRow = [];
+            foreach ($lokasiKkn as $data) {
+                $kabupaten = DB::table('regencies')
+                    ->join('provinces', 'regencies.province_id', '=', 'provinces.id')
+                    ->where('regencies.id', $data->id_kabupaten)
+                    ->select('regencies.id as id', 'regencies.name as kabupaten', 'provinces.name as provinsi')
+                    ->first();
+
+                if ($kabupaten) {
+                    $dataColumn = [
+                        'id' => ucwords(strtolower($kabupaten->id)),
+                        'kabupaten' => ucwords(strtolower($kabupaten->kabupaten)),
+                        'provinsi' => ucwords(strtolower($kabupaten->provinsi)),
+                        'status' => self::getStatusPeriode($idPeriode),
+                        'level' => (session('level') === '3')
+                    ];
+                    $dataRow[] = $dataColumn;
+                }
+            }
+            return $dataRow;
+        } else {
+            $masterDesa = DB::table('master_desa')->where('periode', $idPeriode)->distinct()->get(['kd_kabkota']);
+
+            if ($masterDesa->count() > 0) {
+                $dataRow = [];
+                foreach ($masterDesa as $data) {
+                    if ($data->kd_kabkota !== 0 && $data->kd_kabkota !== NULL) {
+                        $query3 = DB::table('lokasi')->where('id', $data->kd_kabkota)->first();
+
+                        $dataColumn = [
+                            'id' => '',
+                            'kabupaten' => ucwords(strtolower($query3->nama_lokasi)),
+                            'provinsi' => 'Aceh',
+                            'status' => self::getStatusPeriode($idPeriode),
+                            'level' => (session('level') !== '1')
+                        ];
+                        $dataRow[] = $dataColumn;
+                    }
+                }
+                return $dataRow;
+            } else {
+                return [];
+            }
+        }
+    }
+
+    public static function getStatusPeriode($idPeriode)
+    {
+        $query = DB::table('periode')->where('id', $idPeriode)->first();
+        if ($query->status == 1) {
+            return "Aktif";
+        } else {
+            return "";
+        }
     }
 }
