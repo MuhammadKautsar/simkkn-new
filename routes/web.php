@@ -97,7 +97,10 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
 
     Route::post('/hapus-dosen', [KknController::class, 'hapusDosen'])->name('hapus.dosen');
     Route::post('/kkn/set_lokasi', [KknController::class, 'setLokasi'])->name('kkn.set_lokasi');
-    Route::post('/get-kabupaten-tersedia', [KknController::class, 'getKabupatenTersedia'])->name('kkn.get_kabupaten_tersedia');
+    Route::post('/kkn/set_kecamatan', [KknController::class, 'setKecamatan'])->name('kkn.set_kecamatan');
+    Route::post('/kkn/set_desa', [KknController::class, 'setDesa'])->name('kkn.set_desa');
+    // Route::post('/get-kabupaten-tersedia', [KknController::class, 'getKabupatenTersedia'])->name('kkn.get_kabupaten_tersedia');
+    Route::post('/hapus-data', [KknController::class, 'hapusData'])->name('hapus_data');
 });
 
 Route::middleware(['checkWebServiceSession', 'checkFeature:user-management'])->group(function () {
@@ -119,3 +122,4 @@ Route::put('/user-profile/update', [ProfileController::class, 'update'])->name('
 
 Route::post('/get-kabupaten', [DaftarKknController::class, 'getKabupaten']);
 Route::post('/get-kecamatan', [DaftarKknController::class, 'getKecamatan']);
+Route::post('/get-desa', [DaftarKknController::class, 'getDesa']);

@@ -186,35 +186,46 @@
                                     </div>
                                     <!--end::Header-->
                                     <div class="card-body pt-5">
-                                        <form class="form" action="/kkn/{{ $kkn->id }}/update" method="POST">
+                                        <form id="form_kecamatan">
                                             @csrf
                                             <!--begin::Input group-->
+                                            <input name="id_periode" id="id_periode" style="display: none" value="{{ $kkn->id }}" >
                                             <div class="fv-row mb-3">
                                                 <label class="fs-6 fw-semibold form-label mt-3">
                                                     <span>Pilih Kabupaten:</span>
                                                 </label>
-                                                <select id="kt_ecommerce_select2_province" required class="form-select form-select-solid" name="province">
-                                                    <option value="">Pilih Kabupaten</option>
+                                                <select id="kabupaten" required class="kabupaten form-select form-select-solid" name="kabupaten" data-target="#kecamatan">
+                                                    <option value="" disabled selected>Pilih Kabupaten</option>
+                                                    @foreach ($kabupaten_data as $dk)
+                                                        <option value="{{ $dk['id'] }}">{{ $dk['kabupaten'] }}</option>
+                                                    @endforeach
                                                 </select>
                                                 <label class="fs-6 fw-semibold form-label mt-3">
                                                     <span>Nama Kecamatan:</span>
                                                 </label>
-                                                <select id="kt_ecommerce_select2_province" required class="form-select form-select-solid" name="province">
+                                                <select id="kecamatan" required class="kecamatan form-select form-select-solid" name="nama_kecamatan">
                                                     <option value="">Pilih Kecamatan</option>
                                                 </select>
                                                 <label class="fs-6 fw-semibold form-label mt-3">
                                                     <span>Nama Camat:</span>
                                                 </label>
-                                                <input type="text" class="form-control form-control-solid" name="poin_persyaratan" value="-" />
+                                                <input type="text" class="form-control form-control-solid" name="nama_camat" value="-" />
                                                 <label class="fs-6 fw-semibold form-label mt-3">
                                                     <span>No Handphone Camat:</span>
                                                 </label>
-                                                <input type="text" class="form-control form-control-solid" name="poin_persyaratan" value="-" />
+                                                <input type="text" class="form-control form-control-solid" name="no_hp_camat" value="-" />
                                                 <label class="fs-6 fw-semibold form-label mt-3">
                                                     <span>Nama Koordinator Kecamatan:</span>
                                                 </label>
-                                                <select id="kt_ecommerce_select2_province" required class="form-select form-select-solid" name="province">
-                                                    <option value="">Pilih Korcam</option>
+                                                <select id="kt_ecommerce_select2_province" required class="form-select form-select-solid" name="korcam">
+                                                    @if (!$data['data_korcam'])
+                                                        <option value="" disabled selected>Belum ada korcam yang diinput</option>
+                                                    @else
+                                                        <option value="" disabled selected>Pilih Korcam</option>
+                                                        @foreach ($data['data_korcam'] as $k)
+                                                            <option value="{{ $k->id }}">{{ ucwords(strtolower($k->nama)) }}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                             <!--end::Input group-->
@@ -248,36 +259,47 @@
                                     </div>
                                     <!--end::Header-->
                                     <div class="card-body pt-5">
-                                        <form class="form" action="/kkn/{{ $kkn->id }}/update" method="POST">
+                                        <form id="form_desa">
                                             @csrf
                                             <!--begin::Input group-->
+                                            <input name="id_periode" id="id_periode" style="display: none" value="{{ $kkn->id }}" >
                                             <div class="fv-row mb-3">
                                                 <!--begin::Label-->
                                                 <label class="fs-6 fw-semibold form-label mt-3">
                                                     <span>Pilih Kecamatan:</span>
                                                 </label>
-                                                <select id="kt_ecommerce_select2_province" required class="form-select form-select-solid" name="province">
-                                                    <option value="">Pilih Kecamatan</option>
+                                                <select id="kecamatan" required class="kecamatan form-select form-select-solid" name="kecamatan" data-target="#desa">
+                                                    <option value="" disabled selected>Pilih Kecamatan</option>
+                                                    @foreach ($kecamatan_data as $dk)
+                                                        <option value="{{ $dk['kd_kecamatan'] }}">{{ $dk['nama_kecamatan'] }}</option>
+                                                    @endforeach
                                                 </select>
                                                 <label class="fs-6 fw-semibold form-label mt-3">
                                                     <span>Nama Desa:</span>
                                                 </label>
-                                                <select id="kt_ecommerce_select2_province" required class="form-select form-select-solid" name="province">
+                                                <select id="desa" required class="desa form-select form-select-solid" name="nama_desa">
                                                     <option value="">Pilih Desa</option>
                                                 </select>
                                                 <label class="fs-6 fw-semibold form-label mt-3">
                                                     <span>Nama Kepala Desa:</span>
                                                 </label>
-                                                <input type="text" class="form-control form-control-solid" name="poin_persyaratan" value="-" />
+                                                <input type="text" class="form-control form-control-solid" name="nama_kepala_desa" value="-" />
                                                 <label class="fs-6 fw-semibold form-label mt-3">
                                                     <span>No Handphone Kepala Desa:</span>
                                                 </label>
-                                                <input type="text" class="form-control form-control-solid" name="poin_persyaratan" value="-" />
+                                                <input type="text" class="form-control form-control-solid" name="no_kepala_desa" value="-" />
                                                 <label class="fs-6 fw-semibold form-label mt-3">
                                                     <span>Nama DPL:</span>
                                                 </label>
-                                                <select id="kt_ecommerce_select2_province" required class="form-select form-select-solid" name="province">
-                                                    <option value="">Pilih DPL</option>
+                                                <select id="kt_ecommerce_select2_province" required class="form-select form-select-solid" name="dpl">
+                                                    @if (!$data['data_dpl'])
+                                                        <option value="" disabled selected>Belum ada korcam yang diinput</option>
+                                                    @else
+                                                        <option value="" disabled selected>Pilih Korcam</option>
+                                                        @foreach ($data['data_dpl'] as $d)
+                                                            <option value="{{ $d->id }}">{{ ucwords(strtolower($d->nama)) }}</option>
+                                                        @endforeach
+                                                    @endif
                                                 </select>
                                             </div>
                                             <!--end::Input group-->
@@ -354,15 +376,21 @@
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
-                                        @foreach ($desa as $d)
+                                        @foreach ($desa_data as $data)
                                             <tr>
-                                                <td class="mb-0 text-sm">{{ $d->nama_kecamatan }}</td>
-                                                <td class="mb-0 text-sm">{{ $d->nama_desa }}</td>
-                                                <td class="mb-0 text-sm">{{ $d->nama_geuchik }}</td>
-                                                <td class="mb-0 text-sm">{{ $d->no_hp_geuchik }}</td>
-                                                <td class="mb-0 text-sm">{{ $d->nip_korcam }}</td>
-                                                <td class="mb-0 text-sm">{{ $d->nip_dpl }}</td>
-                                                <td class="mb-0 text-sm">{{ $d->kd_kelompok }}</td>
+                                                <td>{{ $data['nama_kecamatan'] }}</td>
+                                                <td>{{ $data['nama_desa'] }}</td>
+                                                <td>{{ $data['nama_kepala_desa'] }}</td>
+                                                <td>{{ $data['no_kepala_desa'] }}</td>
+                                                <td>{{ $data['nama_korcam'] }}</td>
+                                                <td>{{ $data['nama_dpl'] }}</td>
+                                                <td>{{ $data['kd_kelompok'] }}</td>
+                                                <td class="text-end">
+                                                    <a href="{{ route('hapus_data', ['id' => $data['id']]) }}" class="delete-data" data-val="{{ $data['id'] }}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                    <a href="" data-toggle="modal" data-target="#korcamModal" data-id ='.$data->id.' data-kecamatan ="'.$data_column["nama_kecamatan"].'" class="ganti-korcam"><i class="fas fa-cog"></i></a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -423,14 +451,19 @@
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
-                                        @foreach ($desa as $d)
+                                        @foreach ($kecamatan_data as $data)
                                             <tr>
-                                                <td class="mb-0 text-sm">{{ $d->kd_prov }}</td>
-                                                <td class="mb-0 text-sm">{{ $d->nama_kecamatan }}</td>
-                                                <td class="mb-0 text-sm">{{ $d->nama_camat }}</td>
-                                                <td class="mb-0 text-sm">{{ $d->no_hp_camat }}</td>
-                                                <td class="mb-0 text-sm">{{ $d->nip_korcam }}</td>
-                                                <td class="mb-0 text-sm"></td>
+                                                <td>{{ $data['provinsi'] }}</td>
+                                                <td>{{ $data['nama_kecamatan'] }}</td>
+                                                <td>{{ $data['nama_camat'] }}</td>
+                                                <td>{{ $data['no_hp_camat'] }}</td>
+                                                <td>{{ $data['nama_korcam'] }}</td>
+                                                <td class="text-end">
+                                                    <a href="{{ route('hapus_data', ['id' => $data['id']]) }}" class="delete-data" data-doc="kecamatan" data-val="{{ $data['id'] }}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                    <a href="" data-toggle="modal" data-target="#korcamModal" data-id ='.$data->id.' data-kecamatan ="'.$data_column["nama_kecamatan"].'" class="ganti-korcam"><i class="fas fa-cog"></i></a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -488,10 +521,19 @@
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
-                                        <tr>
-                                            <td class="mb-0 text-sm"></td>
-                                            <td class="mb-0 text-sm"></td>
-                                        </tr>
+                                        @foreach ($kabupaten_data as $data)
+                                            <tr>
+                                                <td>{{ $data['provinsi'] }}</td>
+                                                <td>{{ $data['kabupaten'] }}</td>
+                                                <td class="text-end">
+                                                    @if ($data['status'])
+                                                        <a href="{{ route('hapus_data', ['id' => $data['id']]) }}" class="delete-data" data-doc="kabupaten" data-val="{{ $data['id'] }}">
+                                                            <i class="fas fa-trash"></i>
+                                                        </a>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -581,6 +623,45 @@
                 }
             });
         });
+
+        $('body').on('change', '.kabupaten', function () {
+            var id_kabupaten = $(this).val();
+            var targetDropdown = $(this).data('target');
+            $.ajax({
+                url: '/get-kecamatan',
+                type: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    id_kabupaten: id_kabupaten
+                },
+                success: function (data) {
+                    $(targetDropdown).empty();
+                    // $(targetDropdown).append($('<option>').val('').text('Pilih Kecamatan'));
+                    $.each(data, function (key, value) {
+                        $(targetDropdown).append($('<option>').val(value.id).text(value.kecamatan));
+                    });
+                }
+            });
+        });
+
+        $('body').on('change', '.kecamatan', function () {
+            var id_kecamatan = $(this).val();
+            var targetDropdown = $(this).data('target');
+            $.ajax({
+                url: '/get-desa',
+                type: 'POST',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    id_kecamatan: id_kecamatan
+                },
+                success: function (data) {
+                    $(targetDropdown).empty();
+                    $.each(data, function (key, value) {
+                        $(targetDropdown).append($('<option>').val(value.id).text(value.desa));
+                    });
+                }
+            });
+        });
     });
 </script>
 
@@ -615,9 +696,92 @@
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
+                    location.reload();
                 }
-                setRegenciesTable();
+                // setRegenciesTable();
                 // getAvailableRegencies();
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat mengirim data',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+        });
+        document.getElementById('form_kecamatan').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var form = this;
+            var formData = new FormData(form);
+
+            fetch('{{ route('kkn.set_kecamatan') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === false) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: data.message, // Update to use the message from the server
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Kecamatan berhasil ditambahkan',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat mengirim data',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+        });
+        document.getElementById('form_desa').addEventListener('submit', function (event) {
+            event.preventDefault();
+            var form = this;
+            var formData = new FormData(form);
+
+            fetch('{{ route('kkn.set_desa') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === false) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: data.message, // Update to use the message from the server
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Desa berhasil ditambahkan',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    location.reload();
+                }
             })
             .catch(error => {
                 console.error("Error:", error);
@@ -726,5 +890,61 @@
     });
 });
 </script> --}}
+
+<script>
+    $(document).ready(function () {
+        $(document).on('click', ".delete-data", function(event) {
+            event.preventDefault();
+            let id_data = $(this).data("val");
+            let jenis_dokumen = $(this).data("doc");
+            let id_periode = $('#id_periode').val();
+            Swal.fire({
+                title: 'Apakah Anda yakin ingin menghapus data ini?',
+                text: "Menghapus kabupaten/kecamatan akan menghapus semua data di kabupaten/kecamatan tersebut",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('hapus_data') }}",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            id_data: id_data,
+                            id_periode: id_periode,
+                            jenis_doc: jenis_dokumen
+                        },
+                        success: function (data) {
+                            if (data.status) {
+                                Swal.fire({
+                                    title: 'Berhasil!',
+                                    text: data.message,
+                                    icon: 'success'
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Gagal!',
+                                    text: data.message,
+                                    icon: 'error'
+                                });
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Status: ' + textStatus + ' Error: ' + errorThrown,
+                                icon: 'error'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
 
 @endsection

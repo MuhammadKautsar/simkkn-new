@@ -7,11 +7,11 @@ use App\Models\Kkn;
 use App\Models\Dosen;
 use App\Models\Periode;
 use App\Models\JenisKkn;
-use App\Models\Provinsi;
 use App\Models\MasterDesa;
 use App\Models\BatasanWaktu;
 use App\Models\PanitiaModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class KknController extends Controller
 {
@@ -202,12 +202,17 @@ class KknController extends Controller
 
     public function konfigurasi_lokasi($id)
     {
-        $nip = session()->get('nip');
         $kkn = Periode::findOrFail($id);
-        $provinsi = Provinsi::all();
-        $desa = $kkn->masterDesas()->whereNotNull('nama_desa')->get();
+        $provinsi = DB::table('provinces')->get();
 
-        return view('panitia.konfigurasi-lokasi', compact('kkn', 'provinsi', 'nip', 'desa'));
+        $data['data_korcam'] = PanitiaModel::getKorcam($id);
+        $data['data_dpl'] = PanitiaModel::getDpl($id);
+
+        $data_kabupaten = PanitiaModel::getKabupatenPerPeriode($id);
+        $data_kecamatan = PanitiaModel::getKecamatanPerPeriode($id);
+        $data_desa = PanitiaModel::getDesaPerPeriode($id);
+
+        return view('panitia.konfigurasi-lokasi', ['kabupaten_data' => $data_kabupaten, 'kecamatan_data' => $data_kecamatan, 'desa_data' => $data_desa], compact('kkn', 'provinsi', 'data'));
     }
 
     public function setLokasi(Request $request)
@@ -248,11 +253,221 @@ class KknController extends Controller
         }
     }
 
-    public function getKabupatenTersedia(Request $request)
+    // public function getKabupatenTersedia(Request $request)
+    // {
+    //     $idPeriode = $request->input('id_periode');
+    //     $dataKabupaten = PanitiaModel::getKabupatenPerPeriode($idPeriode);
+    //     return response()->json($dataKabupaten);
+    // }
+
+    public function hapusData(Request $request)
     {
-        $idPeriode = $request->input('id_periode');
-        $dataKabupaten = PanitiaModel::getKabupatenPerPeriode($idPeriode);
-        return response()->json($dataKabupaten);
+        $id_data = $request->input('id_data');
+        $id_periode = $request->input('id_periode');
+        $jenis_dokumen = $request->input('jenis_doc');
+        $hasil = true;
+
+        if ($jenis_dokumen === "kabupaten") {
+            $data_kelompok = PanitiaModel::getKelompokPerKabupaten($id_periode, $id_data);
+            if ($data_kelompok->count() > 0) {
+                foreach ($data_kelompok as $data) {
+                    $hasil = PanitiaModel::updateData2("kelompok", $data->id, "kkn", ['kelompok' => ""]);
+                    if ($hasil !== "success") {
+                        $hasil = false;
+                        break;
+                    }
+                }
+            } else {
+                $hasil = true;
+            }
+            if ($hasil) {
+                $hasil = PanitiaModel::deleteData2("lokasi_kkn", ["id_kabupaten" => $id_data, "id_periode" => $id_periode]);
+                if ($hasil) {
+                    $hasil = PanitiaModel::deleteData2("master_desa", ["periode" => $id_periode, "kd_kabkota" => $id_data]);
+                }
+            }
+        } elseif ($jenis_dokumen === "kecamatan") {
+            $data_kecamatan = PanitiaModel::getDeleteKecamatan($id_data);
+            $data_kelompok = PanitiaModel::getKelompokPerKecamatan($id_periode, $data_kecamatan['kd_kabkota'], $data_kecamatan['kd_kecamatan']);
+            if ($data_kelompok->count() > 0) {
+                foreach ($data_kelompok as $data) {
+                    $hasil = PanitiaModel::updateData2("kelompok", $data->id, "dbkkn.kkn", ['kelompok' => ""]);
+                    if ($hasil !== "success") {
+                        $hasil = false;
+                        break;
+                    }
+                }
+            }
+            if ($hasil) {
+                $hasil = PanitiaModel::deleteData2("master_desa", ["periode" => $id_periode, "kd_kabkota" => $data_kecamatan['kd_kabkota'], "kd_kecamatan" => $data_kecamatan['kd_kecamatan']]);
+            }
+        } else {
+            $hasil = PanitiaModel::deleteData2("master_desa", ["id" => $id_data]);
+            if ($hasil) {
+                // $hasil = PanitiaModel::updateData2("kelompok", $id_data, "dbkkn.kkn", ['kelompok' => ""]);
+                // if ($hasil !== "success") {
+                //     $hasil = false;
+                // }
+                PanitiaModel::updateData2("kelompok", $id_data, "dbkkn.kkn", ['kelompok' => ""]);
+            }
+        }
+
+        return response()->json([
+            'status' => $hasil,
+            'message' => $hasil ? "Data berhasil dihapus" : "Terjadi kesalahan"
+        ]);
+    }
+
+    public function setKecamatan(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id_periode' => 'required',
+            'korcam' => 'required',
+            'kabupaten' => 'required',
+            'nama_kecamatan' => 'required',
+            'nama_camat' => 'required',
+            'no_hp_camat' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => false, 'message' => 'Validation failed'], 400);
+        }
+
+        $id_periode = $request->input('id_periode');
+        $korcam = $request->input('korcam');
+        $kabupaten = $request->input('kabupaten');
+        $nama_kecamatan = $request->input('nama_kecamatan');
+        $nama_camat = $request->input('nama_camat');
+        $no_hp_camat = $request->input('no_hp_camat');
+
+        if (PanitiaModel::cekKecamatan($id_periode, $nama_kecamatan, $kabupaten)->count() > 0) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Duplikat nama kecamatan untuk kabupaten atau kota yang sama'
+            ]);
+        } else {
+            $nip_korcam = PanitiaModel::getNipDosen($korcam);
+            $jenis_kkn = PanitiaModel::getPeriodeJenisKkn($id_periode);
+            $kecamatan = \DB::table('districts')
+                ->join('regencies', 'districts.regency_id', '=', 'regencies.id')
+                ->select('districts.id as id', 'districts.name as kecamatan', 'regencies.name as provinsi')
+                ->where('districts.id', $nama_kecamatan)
+                ->orderBy('districts.name')
+                ->first();
+
+            $data_kecamatan = [
+                'nip_korcam' => $nip_korcam,
+                'periode' => $id_periode,
+                'kd_kabkota' => $kabupaten,
+                'kd_kecamatan' => $nama_kecamatan,
+                'nama_kecamatan' => strtolower($kecamatan->kecamatan),
+                'nama_camat' => strtolower($nama_camat),
+                'no_hp_camat' => $no_hp_camat,
+                'kd_kelompok' => "",
+                'jumlah_terisi' => 0,
+                'jenis_kkn' => $jenis_kkn
+            ];
+
+            $hasil = PanitiaModel::insertData('master_desa', $data_kecamatan);
+            if ($hasil) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil dimasukkan'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Terjadi kesalahan'
+                ]);
+            }
+        }
+    }
+
+    public function setDesa(Request $request)
+    {
+        // Validasi form
+        $validator = Validator::make($request->all(), [
+            'id_periode' => 'required|integer',
+            'dpl' => 'nullable|string',
+            'kecamatan' => 'required|string',
+            'nama_desa' => 'required|string',
+            'nama_kepala_desa' => 'nullable|string',
+            'no_kepala_desa' => 'nullable|string',
+            // 'verifikator' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first()
+            ]);
+        }
+
+        $nip_dpl = PanitiaModel::getNipDosen($request->dpl);
+        // $nip_verifikator = PanitiaModel::getNipDosen($request->verifikator ?? 'NULL');
+        $data_kecamatan = PanitiaModel::getKecamatan($request->kecamatan);
+        $id_desa = $request->nama_desa;
+        $id_periode = $request->id_periode;
+
+        if (PanitiaModel::cekDesa($id_desa, $data_kecamatan->kd_kecamatan, $data_kecamatan->kd_kabkota, $id_periode)->count() > 0) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Duplikat nama desa untuk kecamatan yang sama'
+            ]);
+        } else {
+            $kd_kelompok_terakhir = PanitiaModel::cekKdKelompokTerbaru($request->id_periode);
+            // $kode_periode = PanitiaModel::getPeriode($request->id_periode);
+            $kode = PanitiaModel::getPeriodeKodeKkn($request->id_periode);
+            $desa = DB::table('villages')
+                ->join('districts', 'villages.district_id', '=', 'districts.id')
+                ->where('villages.id', $id_desa)
+                ->select('villages.id', 'villages.name as desa', 'districts.name as kecamatan')
+                ->first();
+
+            if ($kd_kelompok_terakhir !== null) {
+                // $nomor_kelompok = str_replace($kode_periode->kode, "", $kd_kelompok_terakhir);
+                $nomor_kelompok = str_replace($kode, "", $kd_kelompok_terakhir);
+                $urutan_kelompok = (int)$nomor_kelompok;
+                // $kd_kelompok = $kode_periode->kode . ($urutan_kelompok + 1);
+                $kd_kelompok = $kode . ($urutan_kelompok + 1);
+            } else {
+                // $kd_kelompok = $kode_periode->kode . "1";
+                $kd_kelompok = $kode . "1";
+            }
+
+            $data = [
+                'nip_dpl' => $nip_dpl,
+                'nip_korcam' => $data_kecamatan->nip_korcam,
+                // 'nip_verifikator' => $nip_verifikator,
+                'nama_camat' => $data_kecamatan->nama_camat,
+                'no_hp_camat' => $data_kecamatan->no_hp_camat,
+                'periode' => $request->id_periode,
+                'kd_kabkota' => $data_kecamatan->kd_kabkota,
+                'kd_kecamatan' => $request->kecamatan,
+                'nama_kecamatan' => $data_kecamatan->nama_kecamatan,
+                'nama_geuchik' => strtolower($request->nama_kepala_desa),
+                'no_hp_geuchik' => $request->no_kepala_desa,
+                'kd_desa' => $request->nama_desa,
+                'nama_desa' => strtolower($desa->desa),
+                'kd_kelompok' => $kd_kelompok,
+                'jumlah_terisi' => 0,
+                'jenis_kkn' => $data_kecamatan->jenis_kkn
+            ];
+
+            $hasil = PanitiaModel::updateDataDesa($request->nama_desa, $id_periode, $data);
+
+            if ($hasil) {
+                return response()->json([
+                    'status' => true,
+                    'message' => "Data berhasil dimasukkan"
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Terjadi kesalahan'
+                ]);
+            }
+        }
     }
 
     public function konfigurasi_peserta($id)
@@ -405,12 +620,6 @@ class KknController extends Controller
         }
 
         return $dataDosen;
-    }
-
-    private function getNamaDosen($nipDpl, $idPeriode)
-    {
-        // Implementasikan logika untuk mendapatkan nama dosen
-        return "Nama Dosen"; // Ganti dengan logika yang sesuai
     }
 
     private function getMahasiswa($idPeriode)

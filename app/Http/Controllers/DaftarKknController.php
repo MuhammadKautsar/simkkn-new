@@ -262,4 +262,20 @@ class DaftarKknController extends Controller
 
         return response()->json($data_row);
     }
+
+    public function getDesa(Request $request)
+    {
+        $id_kecamatan = $request->post('id_kecamatan');
+        $data_kecamatan = DaftarModel::getDesa($id_kecamatan);
+        $data_row = array();
+
+        foreach ($data_kecamatan as $data) {
+            $data_column = array();
+            $data_column['id'] = $data->id;
+            $data_column['desa'] = ucwords(strtolower($data->name));
+            $data_row[] = $data_column;
+        }
+
+        return response()->json($data_row);
+    }
 }

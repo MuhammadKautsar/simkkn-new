@@ -231,11 +231,6 @@
                                                 <td class="mb-0 text-sm">{{ $d->no_hp }}</td>
                                                 @if (session('level') != 1 && session('status') == 1)
                                                     <td class="mb-0 text-sm">
-                                                        {{-- <form action="{{ route('kkn.hapusPersyaratan', $item->id) }}" method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin mau dihapus ?')"><i class="fas fa-trash"></i></button>
-                                                        </form> --}}
                                                         <button class="btn btn-danger hapus-dosen" data-id="{{ $d->id }}" data-periode="{{ $d->id_periode }}"><i class="fas fa-trash"></i></button>
                                                     </td>
                                                 @endif

@@ -91,4 +91,11 @@ class DaftarModel extends Model
             ->where('regency_id', $id_kabupaten)
             ->get();
     }
+
+    public static function getDesa($id_kecamatan)
+    {
+        return DB::table('villages')
+            ->where('district_id', $id_kecamatan)
+            ->get();
+    }
 }
