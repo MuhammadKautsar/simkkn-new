@@ -117,7 +117,7 @@ class DaftarKknController extends Controller
         $kkn->save();
 
         // Redirect dengan pesan sukses
-        return redirect('/beranda')->with('success', 'KKN berhasil didaftarkan.');
+        return redirect('/mahasiswa')->with('success', 'KKN berhasil didaftarkan.');
     }
 
     // public function submit_registrasi(Request $request)

@@ -12,7 +12,6 @@ class DosenController extends Controller
 {
     public function index()
     {
-        // $nip_dpl = session('username');
         $nip = session()->get('nip');
 
         $data['data_dosen'] = Dosen::getDosen2($nip);
@@ -26,55 +25,6 @@ class DosenController extends Controller
 
         return view('dosen.daftar_kelompok_dosen', compact('data', 'nip'));
     }
-
-    // public function data_kelompok($idKelompok = null)
-    // {
-    //     $nip = session()->get('nip');
-
-    //     session(['id_kelompok' => $idKelompok]);
-
-    //     $dosenModel = new Dosen();
-    //     // $verifikatorModel = new Verifikator();
-    //     $panitiaModel = new PanitiaModel();
-    //     $berandaModel = new BerandaModel();
-
-    //     $dataKelompok = $dosenModel->getKelompok($idKelompok);
-    //     // $data['jenis_kkn'] = $verifikatorModel->getJenisKkn($dataKelompok->jenis_kkn);
-    //     // $kodeKkn = $verifikatorModel->getJenisKkn($dataKelompok->jenis_kkn);
-    //     // $data['jenis_kkn_kode'] = $verifikatorModel->getJenisKknKode($dataKelompok->jenis_kkn);
-    //     $data['nama_geuchik'] = ucwords(strtolower($dataKelompok->nama_geuchik));
-    //     $data['no_hp_geuchik'] = ucwords(strtolower($dataKelompok->no_hp_geuchik));
-    //     $data['kd_kel'] = $dataKelompok->kd_kelompok;
-    //     $data['id_kel'] = $dataKelompok->id;
-    //     $data['proposal'] = $dataKelompok->proposal_kkn;
-    //     // if ($kodeKkn->id == 10) {
-    //     //     $data['penetapan'] = $dataKelompok->penetapan_kkn;
-    //     // }
-    //     $data['laporan'] = $dataKelompok->laporan_kkn;
-    //     $lokasi = $dosenModel->getLokasi($dataKelompok->kd_kabkota);
-    //     $data['lokasi_penempatan'] = ucwords(strtolower($dataKelompok->nama_desa)) . ", Kecamatan " . ucwords(strtolower($dataKelompok->nama_kecamatan)) . ", " . $lokasi;
-
-    //     $dataPeriode = $dosenModel->getPeriode($dataKelompok->periode);
-    //     $data['id_periode'] = $dataKelompok->periode;
-    //     $data['nama_periode'] = "Periode " . preg_replace("/\((.*?)\)/", "", $dataPeriode->masa_periode);
-
-    //     $data['status_dosen'] = $dosenModel->getStatusDosen($nip, $dataKelompok->periode);
-    //     $generatorStatus = $panitiaModel->getStatusGenerator($data['id_periode']);
-    //     if ($generatorStatus) {
-    //         return "Anda belum memiliki akses halaman ini";
-    //     } else {
-    //         $data['mhs_kelompok'] = $dosenModel->getMhs($idKelompok);
-
-    //         if (is_null($dataPeriode->batasan_waktu)) {
-    //             $data = array_merge($data, $this->getDefaultWaktuData());
-    //         } else {
-    //             $dataWaktuMhs = $berandaModel->getBatasanWaktu($dataPeriode->batasan_waktu);
-    //             $data = array_merge($data, $this->getWaktuData($dataWaktuMhs, date("d-m-Y")));
-    //         }
-
-    //         return view('dosen.data-kelompok', compact('data', 'nip'));
-    //     }
-    // }
 
     public function data_kelompok($idKelompok = null)
     {

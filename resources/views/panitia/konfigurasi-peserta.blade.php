@@ -189,6 +189,8 @@
                                         <div class="d-flex align-items-center">
                                             <select id="kt_ecommerce_select2_country" required class="form-select form-select-solid me-3" name="semester">
                                                 <option value="">Prodi</option>
+                                                <option value="">Fakultas</option>
+                                                <option value="">Kelompok</option>
                                             </select>
                                             <button type="submit" data-kt-contacts-type="submit" class="btn btn-primary">
                                                 <span class="indicator-label">Submit</span>
@@ -232,7 +234,7 @@
                             </div>
                             <!--end::Header-->
                             <div class="card-body pt-0">
-                                <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
+                                <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="">
                                     <thead>
                                         <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                             <th class="min-w-125px">Indikator Filter</th>
@@ -366,11 +368,11 @@
                                                 <td class="mb-0 text-sm">{{ $p->nim13 }}</td>
                                                 <td class="mb-0 text-sm">{{ $p->nama_mhs }}</td>
                                                 <td class="mb-0 text-sm">{{ $p->jenis_kelamin }}</td>
-                                                <td class="mb-0 text-sm">{{ $p->kd_fjjp7 }}</td>
-                                                <td class="mb-0 text-sm">{{ $p->kd_fakultas }}</td>
-                                                <td class="mb-0 text-sm"></td>
-                                                <td class="mb-0 text-sm"></td>
-                                                <td class="mb-0 text-sm"></td>
+                                                <td class="mb-0 text-sm">{{ $p->prodi }}</td>
+                                                <td class="mb-0 text-sm">{{ $p->fakultas }}</td>
+                                                <td class="mb-0 text-sm">{{ $p->kd_kelompok }}</td>
+                                                <td class="mb-0 text-sm">{{ $p->nama_kecamatan }}</td>
+                                                <td class="mb-0 text-sm">{{ $p->nama_desa }}</td>
                                                 @if ($p->status_reg == 1)
                                                 <td><span class="badge badge-success">Aktif</span></td>
                                                 @else
@@ -380,7 +382,6 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                {{ $peserta->links() }}
                             </div>
                         </div>
 
@@ -425,7 +426,7 @@
                             </div>
                             <!--end::Header-->
                             <div class="card-body pt-0">
-                                <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
+                                <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="">
                                     <thead>
                                         <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                             <th class="min-w-125px">NPM</th>
@@ -530,7 +531,7 @@
                             </div>
                             <!--end::Header-->
                             <div class="card-body pt-0">
-                                <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
+                                <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="">
                                     <thead>
                                         <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
                                             <th class="min-w-125px">Nim</th>

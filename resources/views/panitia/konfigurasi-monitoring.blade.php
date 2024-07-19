@@ -166,7 +166,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
-                                        @foreach($dataDosen as $d)
+                                        @foreach($data['data_dosen'] as $d)
                                             <tr>
                                                 {{-- <td>{{ $d->nama_dpl }}</td> --}}
                                                 <td>{{ $d->kd_kelompok }}</td>
@@ -214,7 +214,6 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                {{ $dataDosen->links() }}
                                 <div class="d-flex justify-content-start">
                                     <!--begin::Button-->
                                     <button class="btn btn-primary">
@@ -346,7 +345,7 @@
                             </div>
                             <!--end::Header-->
                             <div class="card-body pt-0">
-                                <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
+                                <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_table_users">
                                     <thead>
                                         <tr>
                                             <th rowspan="2">NIM</th>
@@ -369,7 +368,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
-                                        @foreach($dataMahasiswa as $m)
+                                        @foreach($data['data_mahasiswa'] as $m)
                                         <tr>
                                             <td>{{ $m->nim13 }}</td>
                                             <td>{{ $m->nama_mhs }}</td>
@@ -447,7 +446,6 @@
                                     @endforeach
                                     </tbody>
                                 </table>
-                                {{ $dataMahasiswa->links() }}
                                 <div class="d-flex justify-content-start">
                                     <!--begin::Button-->
                                     <button class="btn btn-primary">

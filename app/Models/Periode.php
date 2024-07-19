@@ -26,11 +26,6 @@ class Periode extends Model
 
     public $timestamps = false;
 
-    public function masterDesas()
-    {
-        return $this->hasMany(MasterDesa::class, 'periode', 'id');
-    }
-
     public function getBatasanWaktu()
     {
         $batasanWaktu = BatasanWaktu::find($this->batasan_waktu);

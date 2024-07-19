@@ -239,7 +239,7 @@
                                                                         <!--end::Label-->
                                                                         <div class="w-100">
                                                                             <!--begin::Select2-->
-                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="agama" data-placeholder="Pilih Agama">
+                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="agama" data-placeholder="Pilih Agama" required>
                                                                                 <option value="" disabled selected>Pilih Agama</option>
                                                                                 <option value="Islam">Islam</option>
                                                                                 <option value="Kristen Katolik">Kristen Katolik</option>
@@ -316,7 +316,7 @@
                                                                         <!--end::Label-->
                                                                         <div class="w-100">
                                                                             <!--begin::Select2-->
-                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="status" data-placeholder="Pilih Status">
+                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="status" data-placeholder="Pilih Status" required>
                                                                                 <option value="" disabled selected>Pilih Status</option>
                                                                                 <option value="Menikah">Menikah</option>
                                                                                 <option value="Belum Menikah">Belum Menikah</option>
@@ -513,7 +513,7 @@
                                                                         <!--end::Label-->
                                                                         <div class="w-100">
                                                                             <!--begin::Select2-->
-                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="informasi_lainnya" data-placeholder="Disabilitas">
+                                                                            <select id="kt_ecommerce_select2_country" class="form-select form-select-solid" name="informasi_lainnya" data-placeholder="Disabilitas" required>
                                                                                 <option value="" disabled selected>Pilih salah satu</option>
                                                                                 <option value="Ya">Ya</option>
                                                                                 <option value="Tidak">Tidak</option>

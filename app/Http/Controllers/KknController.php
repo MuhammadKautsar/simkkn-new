@@ -7,7 +7,6 @@ use App\Models\Kkn;
 use App\Models\Dosen;
 use App\Models\Periode;
 use App\Models\JenisKkn;
-use App\Models\MasterDesa;
 use App\Models\BatasanWaktu;
 use App\Models\PanitiaModel;
 use Illuminate\Http\Request;
@@ -472,7 +471,6 @@ class KknController extends Controller
 
     public function konfigurasi_peserta($id)
     {
-        $nip = session()->get('nip');
         $kkn = Periode::findOrFail($id);
 
         // Menghitung jumlah peserta berdasarkan id periode dan status_reg = 1
@@ -495,8 +493,11 @@ class KknController extends Controller
         ->distinct('kd_fjjp7')
         ->count('kd_fjjp7');
 
-        $peserta = Kkn::where('periode', $id)->orderBy('status_reg', 'asc')->paginate(25);
-        return view('panitia.konfigurasi-peserta', compact('kkn', 'nip', 'peserta', 'jumlah_peserta', 'peserta_laki', 'peserta_perempuan', 'total_prodi'));
+        // $peserta = Kkn::where('periode', $id)->orderBy('status_reg', 'asc')->paginate(25);
+        $peserta = PanitiaModel::getMhs($id);
+        // dd($peserta);
+
+        return view('panitia.konfigurasi-peserta', compact('kkn', 'peserta', 'jumlah_peserta', 'peserta_laki', 'peserta_perempuan', 'total_prodi'));
     }
 
     public function konfigurasi_bataswaktu($id)
@@ -583,114 +584,18 @@ class KknController extends Controller
         return redirect()->back()->with('success', 'Data batasan waktu mahasiswa berhasil disimpan.');
     }
 
-    // public function konfigurasi_monitoring($id, $idPeriode = null)
     public function konfigurasi_monitoring($id)
     {
-        $nip = session()->get('nip');
         $kkn = Periode::findOrFail($id);
-
-        // $dataPeriode = $idPeriode;
-        // $jenisKkn = Periode::find($idPeriode)->jenis_kkn;
-        // $status = Periode::find($idPeriode)->status;
-        // $dataMahasiswa = $this->getMahasiswa($idPeriode); // Anda perlu mengimplementasikan metode ini
-        // $dataMahasiswaLuarUsk = $this->getMahasiswaLuar($idPeriode); // Anda perlu mengimplementasikan metode ini
-        // $dataDosen = $this->getKelompok($idPeriode);
 
         $dataPeriode = $id;
         $jenisKkn = Periode::find($id)->jenis_kkn;
         $status = Periode::find($id)->status;
-        $dataMahasiswa = $this->getMahasiswa($id); // Anda perlu mengimplementasikan metode ini
-        $dataMahasiswaLuarUsk = $this->getMahasiswaLuar($id); // Anda perlu mengimplementasikan metode ini
-        $dataDosen = $this->getKelompok($id);
+        $data['data_mahasiswa'] = PanitiaModel::getMhs($id);
+        // $dataMahasiswaLuarUsk = $this->getMahasiswaLuar($id);
+        $data['data_dosen'] = PanitiaModel::getKelompok($id);
 
-        return view('panitia.konfigurasi-monitoring', compact('nip', 'kkn', 'dataPeriode', 'jenisKkn', 'status', 'dataMahasiswa', 'dataMahasiswaLuarUsk', 'dataDosen'));
-    }
-
-    private function getKelompok($idPeriode)
-    {
-        $dataDosen = MasterDesa::where('periode', $idPeriode)
-            ->whereNotNull('kd_kelompok')
-            ->where('kd_kelompok', '<>', '')
-            ->orderBy('kd_kecamatan')
-            // ->get();
-            ->paginate(25);
-
-        foreach ($dataDosen as $data) {
-            $data->nama_dpl = $data->nip_dpl ? $this->getNamaDosen($data->nip_dpl, $idPeriode) : "";
-        }
-
-        return $dataDosen;
-    }
-
-    private function getMahasiswa($idPeriode)
-    {
-        $dataMhs = Kkn::select(
-                'kkn.*',
-                'f.nama_fakultas as fakultas',
-                'p.nama_prodi as prodi',
-                'm.proposal_kkn',
-                'm.penetapan_kkn',
-                'm.laporan_kkn',
-                \DB::raw("IF(kkn.nim13 = m.nim_ketua, 'Ketua', 'Anggota') as status_keanggotaan"),
-                'm.nama_desa',
-                'm.nama_kecamatan',
-                'd.nama as nama_dpl',
-                'l.logbook_1',
-                'l.logbook_2',
-                'l.logbook_3',
-                'l.logbook_4',
-                'l.youtube_1',
-                'l.youtube_2',
-                'l.youtube_3',
-                'l.youtube_4',
-                'r.name as kabupaten_domisili',
-                'v.name as provinsi_domisili',
-                \DB::raw("concat(substring(m.kd_kelompok, 1, length(pr.kode)), lpad(substring(m.kd_kelompok, length(pr.kode)+1), 3, '0')) as kd_kelompok")
-            )
-            ->leftJoin('prodi as p', \DB::raw('substring(kkn.nim13, 3, 7)'), '=', 'p.kd_fjjp7')
-            ->leftJoin('fakultas as f', 'f.kd_fakultas2', '=', 'kkn.kd_fakultas')
-            ->leftJoin('master_desa as m', 'kkn.kelompok', '=', 'm.id')
-            ->leftJoin('dosen as d', function($join) {
-                $join->on('m.nip_dpl', '=', 'd.nip')
-                     ->on('d.id_periode', '=', 'kkn.periode');
-            })
-            ->leftJoin('logbook as l', 'kkn.logbook', '=', 'l.id')
-            ->leftJoin('regencies as r', 'r.id', '=', 'kkn.id_kabupaten')
-            ->leftJoin('provinces as v', 'v.id', '=', 'r.province_id')
-            ->leftJoin('periode as pr', 'pr.id', '=', 'kkn.periode')
-            ->where('kkn.periode', $idPeriode)
-            // ->get();
-            ->paginate(25);
-
-        foreach ($dataMhs as $data) {
-            if (empty($data->kelompok) || $data->kelompok === "X") {
-                $data->kd_kelompok = "Belum ada kelompok";
-                $data->kabupaten_penempatan = "";
-            } else {
-                if ($data->kelompok !== "Nonaktif") {
-                    $lokasi = MasterDesa::join('regencies', 'regencies.id', '=', 'master_desa.kd_kabkota')
-                        ->where('master_desa.id', $data->kelompok)
-                        ->first();
-                    $data->kabupaten_penempatan = $lokasi ? $lokasi->name : "";
-                }
-            }
-
-            if ($data->status_reg === "0") {
-                $data->kd_kelompok = "Nonaktif";
-            }
-
-            $data->link_1 = explode("; ", $data->youtube_1);
-            $data->link_2 = explode("; ", $data->youtube_2);
-            $data->link_3 = explode("; ", $data->youtube_3);
-            $data->link_4 = explode("; ", $data->youtube_4);
-        }
-
-        return $dataMhs;
-    }
-
-    private function getMahasiswaLuar($idPeriode)
-    {
-        // Implementasikan metode ini sesuai kebutuhan Anda
+        return view('panitia.konfigurasi-monitoring', compact('kkn', 'dataPeriode', 'jenisKkn', 'status', 'data'));
     }
 
     public function konfigurasi_nilaiakhir($id)

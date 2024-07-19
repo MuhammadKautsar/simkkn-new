@@ -134,7 +134,7 @@ class PanitiaModel extends Model
         return $data_row;
     }
 
-    public static function getNilaiAll($idPeriode, $perPage = 10)
+    public static function getNilaiAll($idPeriode)
     {
         $sql1 = DB::table('nilai_kkn as n')
             ->leftJoin('kkn as k', 'k.nim13', '=', 'n.nim13')
@@ -162,7 +162,7 @@ class PanitiaModel extends Model
                 'pt.nama_ptn as nama_fakultas', 'p.nama_prodi', 'm.kd_kelompok', 'd.nama as nama_dpl'
             );
 
-        $results = $sql1->union($sql2)->paginate($perPage);
+        $results = $sql1->union($sql2)->get();
 
         return $results;
     }
@@ -613,5 +613,69 @@ class PanitiaModel extends Model
             return DB::table('master_desa')
                 ->insert($data);
         }
+    }
+
+    public static function getMhs($id_periode)
+    {
+        $sql = "select k.*, f.nama_fakultas as fakultas, p.nama_prodi as prodi, concat(substring(m.kd_kelompok, 1, length(pr.kode)), lpad(substring(m.kd_kelompok, length(pr.kode)+1), 3, '0')) as kd_kelompok,
+                m.proposal_kkn, m.penetapan_kkn, m.laporan_kkn, IF(k.nim13 = m.nim_ketua, 'Ketua', 'Anggota') as status_keanggotaan, m.nama_desa, m.nama_kecamatan,
+                d.nama as nama_dpl, l.logbook_1, l.logbook_2, l.logbook_3, l.logbook_4, l.youtube_1, l.youtube_2, l.youtube_3, l.youtube_4, r.name as kabupaten_domisili,
+                v.name as provinsi_domisili from kkn k
+                left join prodi p on p.kd_fjjp7 = substring(k.nim13, 3, 7)
+                left join fakultas f on f.kd_fakultas2 = k.kd_fakultas
+                left join master_desa m on k.kelompok = m.id
+                left join dosen d on m.nip_dpl = d.nip and d.id_periode = k.periode
+                left join logbook l on k.logbook = l.id
+                left join regencies r on r.id = k.id_kabupaten
+                left join provinces v on v.id = r.province_id
+                left join periode pr on pr.id = k.periode
+                where k.periode = ?";
+
+        $data_mhs = DB::select($sql, [$id_periode]);
+
+        foreach ($data_mhs as &$data) {
+            if ($data->kelompok === "" || $data->kelompok === null || $data->kelompok === "X") {
+                $data->kd_kelompok = "Belum ada kelompok";
+                $data->kabupaten_penempatan = "";
+            } else {
+                if ($data->kelompok !== "Nonaktif") {
+                    $lokasi = DB::table('master_desa as m')
+                        ->leftJoin('regencies as r', 'r.id', '=', 'm.kd_kabkota')
+                        ->select('r.name as kabupaten_penempatan')
+                        ->where('m.id', $data->kelompok)
+                        ->first();
+                    $data->kabupaten_penempatan = $lokasi->kabupaten_penempatan ?? "";
+                }
+            }
+            if ($data->status_reg === "0") {
+                $data->kd_kelompok = "Nonaktif";
+            }
+            $data->link_1 = explode("; ", $data->youtube_1);
+            $data->link_2 = explode("; ", $data->youtube_2);
+            $data->link_3 = explode("; ", $data->youtube_3);
+            $data->link_4 = explode("; ", $data->youtube_4);
+        }
+
+        return $data_mhs;
+    }
+
+    public static function getKelompok($idPeriode)
+    {
+        $dataDosen = DB::table('master_desa')
+            ->where('periode', $idPeriode)
+            ->whereNotNull('kd_kelompok')
+            ->where('kd_kelompok', '<>', '')
+            ->orderBy('kd_kecamatan')
+            ->get();
+
+        foreach ($dataDosen as $data) {
+            if ($data->nip_dpl) {
+                $data->nama_dpl = self::getNamaDosen($data->nip_dpl, $idPeriode);
+            } else {
+                $data->nama_dpl = "";
+            }
+        }
+
+        return $dataDosen;
     }
 }

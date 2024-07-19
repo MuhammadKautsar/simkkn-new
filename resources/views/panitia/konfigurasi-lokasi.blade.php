@@ -1,9 +1,6 @@
 @extends('layouts.panitia-layout')
 
 @section('content')
-    {{-- @if (session('pesan'))
-    @dd("oke")
-@endif --}}
     <!--begin::Content wrapper-->
     <div class="d-flex flex-column flex-column-fluid">
         <!--begin::Toolbar-->

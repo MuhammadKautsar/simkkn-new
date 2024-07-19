@@ -188,9 +188,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-center">
-                                {{ $nilai->links() }}
-                            </div>
                         </div>
 
                     </div>
