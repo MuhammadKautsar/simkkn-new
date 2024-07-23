@@ -209,4 +209,11 @@ class Dosen extends Model
 
         return $result ? $result->kategori : "";
     }
+
+    public static function insertDokumen($column, $namaDoc, $idKelompok)
+    {
+        return DB::table('master_desa')
+            ->where('id', $idKelompok)
+            ->update([$column => $namaDoc]);
+    }
 }

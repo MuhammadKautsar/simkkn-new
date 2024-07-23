@@ -313,16 +313,39 @@
                                                             <li><p class="caption mt-0 mb-0">Batas Unggah Profil Desa dari tanggal {{ $data['mulai_laporan_survey'] }} sampai tanggal {{ $data['akhir_laporan_survey'] }}</p></li>
                                                             <li><p class="caption mt-0 mb-0">Maksimum ukuran file sebesar 10MB dengan format .pdf</p></li>
                                                         </ol>
-                                                        <input type="file" class="form-control form-control-solid" name="berkas" />
+                                                        @if ($dataKelompok->profil_desa == NULL)
+                                                            <a class="btn btn-primary text-end">Belum Ada Berkas Yang Diupload</a>
+                                                        @else
+                                                            <a href="{{ route('dosen.download-dokumen', ['id_kelompok' =>  $data['id_kel'], 'jenis_doc' => 'profil_desa']) }}" class="btn btn-primary">Anda Sudah Menggunggah Dokumen, Unduh Dokumen Disini</a>
+                                                        @endif
+                                                        @if ($data['laporan_survey_ongoing'] === TRUE)
+                                                            <form class="upload_dokumen" id="upload_dokumen_profil_desa" enctype="multipart/form-data" method="post" action="{{ route('dosen.uploadDokumen') }}">
+                                                                @csrf
+                                                                <div class="col m12 s12 l12 mt-5">
+                                                                    <div class="row">
+                                                                        <input name="id_kelompok" id="id_kel_accesable" value="{{ $data['id_kel'] }}" style="display: none">
+                                                                        <input name="jenis-doc" id="jenis-doc-profil-desa" value="profil_desa" style="display: none">
+                                                                        <div class="input-field col s12 m12 l12">
+                                                                            <input name="dokumen_file" type="file" id="input-file-max-fs" class="form-control form-control-solid" data-max-file-size="10M" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="input-field col s12 mt-3">
+                                                                            <button class="btn btn-primary float-end" type="submit" name="action">Submit
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        @else
+                                                            <div class="row">
+                                                                <div class="input-field col s12 mt-5">
+                                                                    <span>Masa unggah Profil Desa belum dimulai atau telah lewat</span>
+                                                                </div>
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                     <!--end::Card body-->
-                                                    <!--begin::Card footer-->
-                                                    <div class="card-footer pt-4" id="kt_chat_messenger_footer">
-                                                            <!--begin::Send-->
-                                                            <a href="" class="btn btn-primary text-end" target="blank">Belum Ada Berkas Yang Diupload</a>
-                                                            <!--end::Send-->
-                                                    </div>
-                                                    <!--end::Card footer-->
                                                 </div>
 
                                                 <div id="survey-lapangan" class="content-section">
@@ -345,16 +368,39 @@
                                                             <li><p class="caption mt-0 mb-0">Batas Unggah Laporan Survey Lapangan dari tanggal {{ $data['mulai_laporan_survey'] }} sampai tanggal {{ $data['akhir_laporan_survey'] }}</p></li>
                                                             <li><p class="caption mt-0 mb-0">Maksimum ukuran file sebesar 10MB dengan format .pdf</p></li>
                                                         </ol>
-                                                        <input type="file" class="form-control form-control-solid" name="berkas" />
+                                                        @if ($dataKelompok->laporan_survey == NULL)
+                                                            <a class="btn btn-primary text-end">Belum Ada Berkas Yang Diupload</a>
+                                                        @else
+                                                            <a href="{{ route('dosen.download-dokumen', ['id_kelompok' =>  $data['id_kel'], 'jenis_doc' => 'laporan_survey']) }}" class="btn btn-primary">Anda Sudah Menggunggah Dokumen, Unduh Dokumen Disini</a>
+                                                        @endif
+                                                        @if ($data['laporan_survey_ongoing'] === TRUE)
+                                                            <form class="upload_dokumen" id="upload_dokumen_laporan_survey" enctype="multipart/form-data" method="post" action="{{ route('dosen.uploadDokumen') }}">
+                                                                @csrf
+                                                                <div class="col m12 s12 l12 mt-5">
+                                                                    <div class="row">
+                                                                        <input name="id_kelompok" id="id_kel_accesable" value="{{ $data['id_kel'] }}" style="display: none">
+                                                                        <input name="jenis-doc" id="jenis-doc-laporan-survey" value="laporan_survey" style="display: none">
+                                                                        <div class="input-field col s12 m12 l12">
+                                                                            <input name="dokumen_file" type="file" id="input-file-max-fs" class="form-control form-control-solid" data-max-file-size="10M" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="input-field col s12 mt-3">
+                                                                            <button class="btn btn-primary float-end" type="submit" name="action">Submit
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        @else
+                                                            <div class="row">
+                                                                <div class="input-field col s12 mt-5">
+                                                                    <span>Masa unggah Laporan Survey belum dimulai atau telah lewat</span>
+                                                                </div>
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                     <!--end::Card body-->
-                                                    <!--begin::Card footer-->
-                                                    <div class="card-footer pt-4" id="kt_chat_messenger_footer">
-                                                            <!--begin::Send-->
-                                                            <a href="" class="btn btn-primary text-end" target="blank">Belum Ada Berkas Yang Diupload</a>
-                                                            <!--end::Send-->
-                                                    </div>
-                                                    <!--end::Card footer-->
                                                 </div>
 
                                                 <div id="monev" class="content-section">
@@ -377,16 +423,39 @@
                                                             <li><p class="caption mt-0 mb-0">Batas Unggah Laporan Monev dari tanggal {{ $data['mulai_monev'] }} sampai tanggal {{ $data['akhir_monev'] }}</p></li>
                                                             <li><p class="caption mt-0 mb-0">Maksimum ukuran file sebesar 10MB dengan format .pdf</p></li>
                                                         </ol>
-                                                        <input type="file" class="form-control form-control-solid" name="berkas" />
+                                                        @if ($dataKelompok->monev == NULL)
+                                                            <a class="btn btn-primary text-end">Belum Ada Berkas Yang Diupload</a>
+                                                        @else
+                                                            <a href="{{ route('dosen.download-dokumen', ['id_kelompok' =>  $data['id_kel'], 'jenis_doc' => 'monev']) }}" class="btn btn-primary">Anda Sudah Menggunggah Dokumen, Unduh Dokumen Disini</a>
+                                                        @endif
+                                                        @if ($data['monev_ongoing'] === TRUE)
+                                                            <form class="upload_dokumen" id="upload_dokumen_monev" enctype="multipart/form-data" method="post" action="{{ route('dosen.uploadDokumen') }}">
+                                                                @csrf
+                                                                <div class="col m12 s12 l12 mt-5">
+                                                                    <div class="row">
+                                                                        <input name="id_kelompok" id="id_kel_accesable" value="{{ $data['id_kel'] }}" style="display: none">
+                                                                        <input name="jenis-doc" id="jenis-doc-monev" value="monev" style="display: none">
+                                                                        <div class="input-field col s12 m12 l12">
+                                                                            <input name="dokumen_file" type="file" id="input-file-max-fs" class="form-control form-control-solid" data-max-file-size="10M" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="input-field col s12 mt-3">
+                                                                            <button class="btn btn-primary float-end" type="submit" name="action">Submit
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        @else
+                                                            <div class="row">
+                                                                <div class="input-field col s12 mt-5">
+                                                                    <span>Masa unggah Monev belum dimulai atau telah lewat</span>
+                                                                </div>
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                     <!--end::Card body-->
-                                                    <!--begin::Card footer-->
-                                                    <div class="card-footer pt-4" id="kt_chat_messenger_footer">
-                                                            <!--begin::Send-->
-                                                            <a href="" class="btn btn-primary text-end" target="blank">Belum Ada Berkas Yang Diupload</a>
-                                                            <!--end::Send-->
-                                                    </div>
-                                                    <!--end::Card footer-->
                                                 </div>
 
                                                 <div id="dokumen-kelompok" class="content-section">
@@ -793,6 +862,8 @@
     </div>
     <!--end::Scrolltop-->
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const menuItems = document.querySelectorAll('.menu-link');
@@ -836,6 +907,56 @@
             showSection('data-kelompok');
             menuItems[0].classList.add('active');
         });
+    </script>
+
+    <script>
+        var uploadDokumenUrl = "{{ route('dosen.uploadDokumen') }}";
+
+        $('.upload_dokumen').on('submit', function (event) {
+        event.preventDefault();
+        var formId = $(this).attr('id');
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: uploadDokumenUrl,
+            method: "POST",
+            data: formData,
+            contentType: false,
+            cache: false,
+            dataType: "json",
+            processData: false,
+            success: function (data) {
+                if (data.status) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: data.pesan,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload(); // Reload halaman setelah pesan sukses ditampilkan
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: data.pesan,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+                showDokumen(data.id_kelompok, data.jenis_doc);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: "Status: " + textStatus + "\nError: " + errorThrown,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
     </script>
 
     <!--begin::Javascript-->

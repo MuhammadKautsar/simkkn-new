@@ -45,6 +45,9 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
 Route::prefix('dosen')->middleware(['checkWebServiceSession'])->group(function () {
     Route::get('beranda', [DosenController::class, 'index'])->name('dosen.beranda');
     Route::get('data_kelompok/{id_kelompok?}', [DosenController::class, 'data_kelompok'])->name('data_kelompok');
+
+    Route::post('upload-dokumen', [DosenController::class, 'uploadDokumen'])->name('dosen.uploadDokumen');
+    Route::get('download-dokumen/{id_kelompok}/{jenis_doc}', [DosenController::class, 'downloadDokumen'])->name('dosen.download-dokumen');
 });
 
 Route::get('panitia/sign-in', [LoginController::class, 'panitia_index'])

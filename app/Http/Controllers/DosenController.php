@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BerandaModel;
 use App\Models\Kkn;
 use App\Models\Dosen;
+use App\Models\BerandaModel;
 use App\Models\PanitiaModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DosenController extends Controller
 {
@@ -68,10 +69,10 @@ class DosenController extends Controller
                 $data = array_merge($data, $this->getDefaultWaktuData());
             } else {
                 $dataWaktuMhs = $berandaModel->getBatasanWaktu($dataPeriode->batasan_waktu);
-                $data = array_merge($data, $this->getWaktuData($dataWaktuMhs, date("d-m-Y")));
+                $data = array_merge($data, $this->getWaktuData($dataWaktuMhs, date("Y-m-d")));
             }
 
-            return view('dosen.data-kelompok', compact('data', 'nip'));
+            return view('dosen.data-kelompok', compact('dataKelompok', 'data', 'nip'));
         }
     }
 
@@ -156,62 +157,66 @@ class DosenController extends Controller
         return ($currentDate >= $startDate && $currentDate <= $endDate);
     }
 
-    public function profil_desa()
+    public function uploadDokumen(Request $request)
     {
-        $nip = session()->get('nip');
+        $jenis_doc = $request->input('jenis-doc');
+        $id_kelompok = $request->input('id_kelompok');
 
-        return view('dosen.unggah-profil-desa', compact('nip'));
+        if ($request->hasFile('dokumen_file') && $request->file('dokumen_file')->isValid()) {
+            $file = $request->file('dokumen_file');
+            $filename = $jenis_doc . "_" . $id_kelompok . "." . $file->getClientOriginalExtension();
+
+            $path = $file->storeAs('uploads/' . $jenis_doc, $filename);
+
+            if ($path) {
+                $result = Dosen::insertDokumen($jenis_doc, $filename, $id_kelompok);
+
+                if($result){
+                    $response = [
+                        'status' => true,
+                        'id_kelompok'=> $id_kelompok,
+                        'jenis_doc' => $jenis_doc,
+                        'pesan' => 'Dokumen berhasil ditambahkan'
+                    ];
+                } else {
+                    $response = [
+                        'status' => false,
+                        'id_kelompok'=> $id_kelompok,
+                        'jenis_doc' => $jenis_doc,
+                        'pesan' => 'Terjadi kesalahan'
+                    ];
+                }
+            } else {
+                $response = [
+                    'status' => false,
+                    'id_kelompok'=> $id_kelompok,
+                    'jenis_doc' => $jenis_doc,
+                    'pesan' => 'Gagal mengunggah dokumen'
+                ];
+            }
+        } else {
+            $response = [
+                'status' => false,
+                'id_kelompok'=> $id_kelompok,
+                'jenis_doc' => $jenis_doc,
+                'pesan' => 'Terjadi kesalahan'
+            ];
+        }
+
+        return response()->json($response);
     }
 
-    public function survey_lapangan()
+    public function downloadDokumen($id_kelompok, $jenis_doc)
     {
-        $nip = session()->get('nip');
+        // Tentukan path file berdasarkan jenis_doc dan id_kelompok
+        $filePath = "uploads/{$jenis_doc}/{$jenis_doc}_{$id_kelompok}.pdf";
 
-        return view('dosen.unggah-survey', compact('nip'));
-    }
+        // Cek apakah file ada
+        if (!Storage::exists($filePath)) {
+            return redirect()->back()->with('error', 'File tidak ditemukan.');
+        }
 
-    public function monev()
-    {
-        $nip = session()->get('nip');
-
-        return view('dosen.unggah-monev', compact('nip'));
-    }
-
-    public function dokumen_kelompok()
-    {
-        $nip = session()->get('nip');
-
-        return view('dosen.dokumen-kelompok', compact('nip'));
-    }
-
-    public function nilai()
-    {
-        $nip = session()->get('nip');
-
-        return view('dosen.unggah-nilai', compact('nip'));
-    }
-
-    public function store(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'nama_kkn' => 'required|string|max:255',
-        ]);
-
-        // Simpan data KKN baru
-        $kkn = new Kkn();
-        $kkn->nama_kkn = $request->nama_kkn;
-        $kkn->masa_kegiatan = $request->masa_kegiatan;
-        $kkn->jenis_kkn = $request->jenis_kkn;
-        $kkn->masa_pendaftaran = $request->masa_pendaftaran;
-        $kkn->tahun_ajaran = $request->tahun_ajaran;
-        $kkn->semester = $request->semester;
-        $kkn->kode_kkn = $request->kode_kkn;
-        $kkn->minimal_sks = $request->minimal_sks;
-        $kkn->kuota_peserta = $request->kuota_peserta;
-        $kkn->save();
-
-        // Redirect dengan pesan sukses
-        return redirect()->route('dashboard')->with('success', 'KKN baru berhasil ditambahkan.');
+        // Download file
+        return Storage::download($filePath);
     }
 }
