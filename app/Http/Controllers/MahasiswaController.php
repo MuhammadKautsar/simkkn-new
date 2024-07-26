@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Kkn;
-use App\Models\Periode;
+use App\Models\Dosen;
 use App\Models\DaftarModel;
 use App\Models\BerandaModel;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 class MahasiswaController extends Controller
 {
@@ -44,13 +45,23 @@ class MahasiswaController extends Controller
 
         $data['periode'] = $dataMhs['periode'];
 
+        $datalb = [
+            'logbook1' => BerandaModel::getLogbook($nim, 1),
+            'logbook2' => BerandaModel::getLogbook($nim, 2),
+            'logbook3' => BerandaModel::getLogbook($nim, 3),
+            'logbook4' => BerandaModel::getLogbook($nim, 4),
+            'link1' => BerandaModel::getLinks($nim, 1),
+            'link2' => BerandaModel::getLinks($nim, 2),
+            'link3' => BerandaModel::getLinks($nim, 3),
+            'link4' => BerandaModel::getLinks($nim, 4),
+        ];
+
         // $data['format_logbook'] = $berandaModel->getFormatLogbook();
 
         //data periode
         $dataPeriode = $berandaModel->getPeriode($dataMhs['periode']);
         $data['id_periode'] = $dataMhs['periode'];
         // $data['kode_kkn'] = $berandaModel->getJenisKknPeriode($data['id_periode']);
-        $data['nama_periode'] = preg_replace("/\((.*?)\)/", "", $dataPeriode->masa_periode);
 
         // if ($dataPeriode->lokasi == 0) {
         //     $data['lokasi_kkn'] = "-";
@@ -64,8 +75,14 @@ class MahasiswaController extends Controller
             $data['jenis_kkn'] = $berandaModel->getJenisKkn($dataPeriode->jenis_kkn);
         }
 
-        preg_match('/\((.*?)\)/', $dataPeriode->masa_periode, $masaPeriode);
-        $data['masa_periode'] = $masaPeriode[1];
+        if ($dataPeriode->nama_kkn == NULL) {
+            $data['nama_periode'] = preg_replace("/\((.*?)\)/", "", $dataPeriode->masa_periode);
+            preg_match('/\((.*?)\)/', $dataPeriode->masa_periode, $masaPeriode);
+            $data['masa_periode'] = $masaPeriode[1];
+        } else {
+            $data['nama_kkn'] = $dataPeriode->nama_kkn;
+            $data['masa_periode'] = $dataPeriode->masa_periode;
+        }
 
         //data kelompok
         $data['id_kelompok'] = $dataMhs['kelompok'];
@@ -77,6 +94,9 @@ class MahasiswaController extends Controller
             $data['nama_dpl'] = '-';
             $data['desa_penempatan'] = '-';
             $data['mhs_kelompok'] = '0';
+
+            $data['profil_desa'] = '-';
+            $data['laporan_survey'] = '-';
         } else {
             $dataKelompok = (array) $berandaModel->getKelompok($dataMhs['kelompok']);
             $data['status'] = $berandaModel->getKetuaKelompok($dataMhs['kelompok'], $dataMhs['nim13']);
@@ -87,6 +107,11 @@ class MahasiswaController extends Controller
             $data['desa_penempatan'] = ucwords(strtolower($dataKelompok['nama_desa'])) . ", " . ucwords(strtolower($dataKelompok['nama_kecamatan'])) . ", " . $namaKabupaten;
             $data['nama_dpl'] = ucwords(strtolower($berandaModel->getDpl($dataKelompok['nip_dpl'], $dataKelompok['periode'])));
             $data['mhs_kelompok'] = $berandaModel->getMhsKel($dataMhs['kelompok']);
+
+            $data['profil_desa'] = $dataKelompok['profil_desa'];
+            $data['laporan_survey'] = $dataKelompok['laporan_survey'];
+            $data['proposal_kkn'] = $dataKelompok['proposal_kkn'];
+            $data['laporan_kkn'] = $dataKelompok['laporan_kkn'];
         }
 
         //data range waktu
@@ -136,7 +161,7 @@ class MahasiswaController extends Controller
         $data['nilai_mhs'] = $berandaModel->getNilaiMhs($data['id_periode'], $dataMhs['nim13']);
         $data['status_nilai_mhs'] = $dataPeriode->status_nilai_mhs;
 
-        return view('mahasiswa.kegiatan-kkn', compact('mahasiswa', 'data'));
+        return view('mahasiswa.kegiatan-kkn', compact('mahasiswa', 'data', 'datalb'));
     }
 
     private function checkNull($value)
@@ -163,79 +188,158 @@ class MahasiswaController extends Controller
         }
     }
 
-    public function upload_berkas()
+    // public function uploadBerkas(Request $request)
+    // {
+    //     $id_periode = $request->input('id_periode');
+    //     $nim = $request->input('nim');
+    //     $kode_kel = $request->input('kode_kel');
+    //     $id_kelompok = $request->input('id_kelompok');
+    //     $response = ['status' => false, 'pesan' => ''];
+
+    //     $dokumenTypes = ['berkas_kkn', 'proposal_kkn', 'laporan_kkn'];
+    //     foreach ($dokumenTypes as $type) {
+    //         if ($request->hasFile($type) && $request->file($type)->isValid()) {
+    //             $file = $request->file($type);
+
+    //             if ($type == 'berkas_kkn') {
+    //                 $fileName = $type . '_' . $nim . '_' . $id_periode . '.' . $file->getClientOriginalExtension();
+    //             } else {
+    //                 $fileName = $type . '_' . $kode_kel . '_' . $id_periode . '.' . $file->getClientOriginalExtension();
+    //             }
+    //             // Simpan file ke storage
+    //             $path = $file->storeAs('uploads/' . $type, $fileName);
+
+    //             if ($path) {
+    //                 // Update atau simpan informasi file ke database
+    //                 if ($type == 'laporan_kkn') {
+    //                     $data_upload = [$type => $fileName, 'user_uploadlaporan' => $nim];
+    //                 } else {
+    //                     $data_upload = [$type => $fileName];
+    //                 }
+
+    //                 if ($type == 'berkas_kkn') {
+    //                     $result = BerandaModel::insertBerkas($data_upload, $nim, $id_periode);
+    //                 } else {
+    //                     $result = BerandaModel::insertDokumen($data_upload, $id_kelompok);
+    //                 }
+
+    //                 if ($result) {
+    //                     $response['status'] = true;
+    //                     $response['pesan'] = 'Dokumen berhasil diupload';
+    //                 } else {
+    //                     $response['pesan'] = 'Gagal menyimpan data ' . $type;
+    //                     break;
+    //                 }
+    //             } else {
+    //                 $response['pesan'] = 'Gagal mengupload ' . $type;
+    //                 break;
+    //             }
+    //         }
+    //     }
+
+    //     return response()->json($response);
+    // }
+
+    public function uploadBerkas(Request $request)
     {
-        $nim = session()->get('nim');
+        $id_periode = $request->input('id_periode');
+        $nim = $request->input('nim');
+        $kode_kel = $request->input('kode_kel');
+        $id_kelompok = $request->input('id_kelompok');
+        $urutan_logbook = "logbook_" . $request->input('urutan_logbook');
+        $urutan_link = "youtube_" . $request->input('urutan_logbook');
+        $link = $request->input('link');
+        $response = ['status' => false, 'pesan' => ''];
 
-        $fields = ['npm', 'nama'];
-        $mahasiswa = DaftarModel::get_mhs($nim, $fields);
-        $data = Kkn::where('nim13', $nim)->where('status_reg', '1')->first();
+        $dokumenTypes = ['berkas_kkn', 'proposal_kkn', 'laporan_kkn', 'logbook'];
+        foreach ($dokumenTypes as $type) {
+            if ($request->hasFile($type) && $request->file($type)->isValid()) {
+                $file = $request->file($type);
 
-        return view('mahasiswa.upload-berkas', compact('mahasiswa', 'data'));
+                if ($type == 'berkas_kkn') {
+                    $fileName = $type . '_' . $nim . '_' . $id_periode . '.' . $file->getClientOriginalExtension();
+                } elseif ($type == 'logbook') {
+                    $fileName = $type . '_' . $nim . '_' . $request->input('urutan_logbook') . '_' . $id_periode . '.' . $file->getClientOriginalExtension();
+                } else {
+                    $fileName = $type . '_' . $kode_kel . '_' . $id_periode . '.' . $file->getClientOriginalExtension();
+                }
+                // Simpan file ke storage
+                $path = $file->storeAs('uploads/' . $type, $fileName);
+
+                if ($path) {
+                    // Update atau simpan informasi file ke database
+                    if ($type == 'laporan_kkn') {
+                        $data_upload = [$type => $fileName, 'user_uploadlaporan' => $nim];
+                    } elseif ($type == 'logbook') {
+                        $data_logbook = [$urutan_logbook => $fileName, $urutan_link => $link];
+                    } else {
+                        $data_upload = [$type => $fileName];
+                    }
+
+                    if ($type == 'berkas_kkn') {
+                        $result = BerandaModel::insertBerkas($data_upload, $nim, $id_periode);
+                    } elseif ($type == 'logbook') {
+                        $result = BerandaModel::insertLogbook($urutan_logbook, $data_logbook, $nim);
+                    } else {
+                        $result = BerandaModel::insertDokumen($data_upload, $id_kelompok);
+                    }
+
+                    if ($result) {
+                        $response['status'] = true;
+                        $response['pesan'] = 'Dokumen berhasil diupload';
+                    } else {
+                        $response['pesan'] = 'Gagal menyimpan data ' . $type;
+                        break;
+                    }
+                } else {
+                    $response['pesan'] = 'Gagal mengupload ' . $type;
+                    break;
+                }
+            }
+        }
+
+        return response()->json($response);
     }
 
-    public function upload_proposal()
+    public function downloadBerkas($nim, $jenis_doc, $id_periode)
     {
-        $nim = session()->get('nim');
+        // Tentukan path file berdasarkan jenis_doc, nim dan periode
+        $filePath = "uploads/{$jenis_doc}/{$jenis_doc}_{$nim}_{$id_periode}.pdf";
 
-        $fields = ['npm', 'nama'];
-        $mahasiswa = DaftarModel::get_mhs($nim, $fields);
-        $data = Kkn::where('nim13', $nim)->where('status_reg', '1')->first();
-        return view('mahasiswa.upload-proposal', compact('mahasiswa', 'data'));
+        // Cek apakah file ada
+        if (!Storage::exists($filePath)) {
+            return redirect()->back()->with('error', 'File tidak ditemukan.');
+        }
+
+        // Download file
+        return Storage::download($filePath);
     }
 
-    public function upload_logbook()
+    public function downloadDokumen($kode_kel, $jenis_doc, $id_periode)
     {
-        $nim = session()->get('nim');
+        // Tentukan path file berdasarkan jenis_doc, kode_kel dan periode
+        $filePath = "uploads/{$jenis_doc}/{$jenis_doc}_{$kode_kel}_{$id_periode}.pdf";
 
-        $fields = ['npm', 'nama'];
-        $mahasiswa = DaftarModel::get_mhs($nim, $fields);
-        $data = Kkn::where('nim13', $nim)->where('status_reg', '1')->first();
-        return view('mahasiswa.upload-logbook', compact('mahasiswa', 'data'));
+        // Cek apakah file ada
+        if (!Storage::exists($filePath)) {
+            return redirect()->back()->with('error', 'File tidak ditemukan.');
+        }
+
+        // Download file
+        return Storage::download($filePath);
     }
 
-    public function upload_laporan()
+    public function downloadLogbook($nim, $jenis_doc, $urutan_logbook, $id_periode)
     {
-        $nim = session()->get('nim');
+        $filePath = "uploads/{$jenis_doc}/{$jenis_doc}_{$nim}_{$urutan_logbook}_{$id_periode}.pdf";
 
-        $fields = ['npm', 'nama'];
-        $mahasiswa = DaftarModel::get_mhs($nim, $fields);
-        $data = Kkn::where('nim13', $nim)->where('status_reg', '1')->first();
-        return view('mahasiswa.upload-laporan', compact('mahasiswa', 'data'));
-    }
+        // Cek apakah file ada
+        if (!Storage::exists($filePath)) {
+            return redirect()->back()->with('error', 'File tidak ditemukan.');
+        }
 
-    public function nilai_akhir()
-    {
-        $nim = session()->get('nim');
-
-        $fields = ['npm', 'nama'];
-        $mahasiswa = DaftarModel::get_mhs($nim, $fields);
-        $data = Kkn::where('nim13', $nim)->where('status_reg', '1')->first();
-        return view('mahasiswa.nilai-akhir', compact('mahasiswa', 'data'));
-    }
-
-    public function store(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'nama_kkn' => 'required|string|max:255',
-        ]);
-
-        // Simpan data KKN baru
-        $kkn = new Kkn();
-        $kkn->nama_kkn = $request->nama_kkn;
-        $kkn->masa_kegiatan = $request->masa_kegiatan;
-        $kkn->jenis_kkn = $request->jenis_kkn;
-        $kkn->masa_pendaftaran = $request->masa_pendaftaran;
-        $kkn->tahun_ajaran = $request->tahun_ajaran;
-        $kkn->semester = $request->semester;
-        $kkn->kode_kkn = $request->kode_kkn;
-        $kkn->minimal_sks = $request->minimal_sks;
-        $kkn->kuota_peserta = $request->kuota_peserta;
-        $kkn->save();
-
-        // Redirect dengan pesan sukses
-        return redirect()->route('beranda')->with('success', 'Berhasil daftar KKN.');
+        // Download file
+        return Storage::download($filePath);
     }
 
     public function cetakPdf($nim13, $periode)

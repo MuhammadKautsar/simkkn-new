@@ -121,7 +121,11 @@
                                                         <tbody>
                                                             @foreach ($data['daftar_kelompok'] as $k)
                                                             <tr>
-                                                                <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->periode }}</td>
+                                                                @if ($k->periode != NULL)
+                                                                    <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->nama_kkn }} {{ $k->masa_periode }}</td>
+                                                                @else
+                                                                    <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->periode }}</td>
+                                                                @endif
                                                                 <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->kategori }}</td>
                                                                 <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->kd_kelompok }}</td>
                                                                 <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $k->ketua_kel }}</td>

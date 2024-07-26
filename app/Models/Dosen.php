@@ -37,6 +37,9 @@ class Dosen extends Model
                     CONCAT(SUBSTRING(m.kd_kelompok, 1, 3), LPAD(SUBSTRING(kd_kelompok, 4, 3), 3, '0')) AS kd_kelompok,
                     k.nama_mhs AS ketua_kel,
                     p.masa_periode,
+
+                    p.nama_kkn,
+
                     j.kategori,
                     m.kd_kabkota,
                     m.jumlah_terisi,
@@ -195,9 +198,9 @@ class Dosen extends Model
     {
         $query = DB::select("SELECT * FROM dbkkn.logbook WHERE id = ?", [$id]);
         if (count($query) > 0 && empty($query[0]->$column)) {
-            return "Belum diunggah";
+            return NULL;
         } else {
-            return $query[0]->$column ?? "Belum diunggah";
+            return $query[0]->$column ?? NULL;
         }
     }
 

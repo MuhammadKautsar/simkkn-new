@@ -486,11 +486,11 @@
                                                             <tbody>
                                                                 <tr class="bg-gray-100">
                                                                     <td>Proposal Kegiatan Kelompok</td>
-                                                                    <?php if(!$data['proposal'] ) {?>
-                                                                    <td class="td-align-right"><p><a href="" disabled="" class="btn btn-primary modal-trigger">Proposal belum diupload</a></p></td>
-                                                                    <?php } else { ?>
-                                                                    <td class="td-align-right"><p><a href="" data-jenis= "proposal" data-doc="<?php echo $data['proposal']?>" class="btn btn-primary modal-trigger download_dokumen">PDF</a></p></td>
-                                                                    <?php } ?>
+                                                                    @if( !$data['proposal'] )
+                                                                        <td class="td-align-right"><p><button disabled="" class="btn btn-dark float-end">Proposal belum diupload</button></p></td>
+                                                                    @else
+                                                                        <td class="td-align-right"><p><a href="{{ route('mahasiswa.download-dokumen', ['kode_kel' => $data['kd_kel'], 'jenis_doc' => 'proposal_kkn', 'id_periode' => $data['id_periode']]) }}" class="btn btn-primary float-end">PDF</a></p></td>
+                                                                    @endif
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Logbook</td>
@@ -537,12 +537,12 @@
                                                                                     <td><?php echo $m->npm." / ".$m->nama_mhs?></td>
                                                                                     <td><?php echo $m->fakultas?> / <?php echo $m->jurusan?></td>
                                                                                     <?php if($m->logbook_1 === NULL ) {?>
-                                                                                        <td><span  class="red-text">Belum di unggah</span></td>
+                                                                                        <td><span  class="text text-danger">Belum di unggah</span></td>
                                                                                     <?php } else { ?>
-                                                                                        <td><p><a href="" data-doc="<?php echo $m->logbook_1?>" data-jenis="logbook" class="btn btn-primary btn-sm modal-trigger download_dokumen">PDF</a></p></td>
+                                                                                        <td><p><a href="{{ route('mahasiswa.download-logbook', ['nim' => $m->npm, 'jenis_doc' => 'logbook', 'urutan_logbook' => 1, 'id_periode' => $data['id_periode']]) }}" class="btn btn-primary btn-sm">PDF</a></p></td>
                                                                                     <?php } ?>
                                                                                     <?php if($m->link_1 === NULL ) {?>
-                                                                                        <td><span  class="red-text">Belum ada link yang ditambahkan</span></td>
+                                                                                        <td><span  class="text text-danger">Belum ada link yang ditambahkan</span></td>
                                                                                     <?php } else { ?>
                                                                                         <td><p><a href="<?php echo $m->link_1?>" class="btn btn-primary btn-sm modal-trigger">Buka Tautan</a></p></td>
                                                                                     <?php } ?>
@@ -596,12 +596,12 @@
                                                                                         <td><?php echo $m->npm." / ".$m->nama_mhs?></td>
                                                                                         <td><?php echo $m->fakultas?> / <?php echo $m->jurusan?></td>
                                                                                         <?php if($m->logbook_2 === NULL ) {?>
-                                                                                            <td><span  class="red-text">Belum di unggah</span></td>
+                                                                                            <td><span  class="text text-danger">Belum di unggah</span></td>
                                                                                         <?php } else { ?>
-                                                                                            <td><p><a href="" data-doc="<?php echo $m->logbook_2?>" data-jenis="logbook" class="btn btn-primary btn-sm modal-trigger download_dokumen">PDF</a></p></td>
+                                                                                            <td><p><a href="{{ route('mahasiswa.download-logbook', ['nim' => $m->npm, 'jenis_doc' => 'logbook', 'urutan_logbook' => 2, 'id_periode' => $data['id_periode']]) }}" class="btn btn-primary btn-sm">PDF</a></p></td>
                                                                                         <?php } ?>
                                                                                         <?php if($m->link_2 === NULL ) {?>
-                                                                                            <td><span  class="red-text">Belum ada link yang ditambahkan</span></td>
+                                                                                            <td><span  class="text text-danger">Belum ada link yang ditambahkan</span></td>
                                                                                         <?php } else { ?>
                                                                                             <td><p><a href="<?php echo $m->link_2?>" class="btn btn-primary btn-sm modal-trigger">Buka Tautan</a></p></td>
                                                                                         <?php } ?>
@@ -655,12 +655,12 @@
                                                                                         <td><?php echo $m->npm." / ".$m->nama_mhs?></td>
                                                                                         <td><?php echo $m->fakultas?> / <?php echo $m->jurusan?></td>
                                                                                         <?php if($m->logbook_3 === NULL ) {?>
-                                                                                            <td><span  class="red-text">Belum di unggah</span></td>
+                                                                                            <td><span  class="text text-danger">Belum di unggah</span></td>
                                                                                         <?php } else { ?>
-                                                                                            <td><p><a href="" data-doc="<?php echo $m->logbook_3?>" data-jenis="logbook" class="btn btn-primary btn-sm modal-trigger download_dokumen">PDF</a></p></td>
+                                                                                            <td><p><a href="{{ route('mahasiswa.download-logbook', ['nim' => $m->npm, 'jenis_doc' => 'logbook', 'urutan_logbook' => 3, 'id_periode' => $data['id_periode']]) }}" class="btn btn-primary btn-sm">PDF</a></p></td>
                                                                                         <?php } ?>
                                                                                         <?php if($m->link_3 === NULL ) {?>
-                                                                                            <td><span  class="red-text">Belum ada link yang ditambahkan</span></td>
+                                                                                            <td><span  class="text text-danger">Belum ada link yang ditambahkan</span></td>
                                                                                         <?php } else { ?>
                                                                                             <td><p><a href="<?php echo $m->link_3?>" class="btn btn-primary btn-sm modal-trigger">Buka Tautan</a></p></td>
                                                                                         <?php } ?>
@@ -714,12 +714,12 @@
                                                                                         <td><?php echo $m->npm." / ".$m->nama_mhs?></td>
                                                                                         <td><?php echo $m->fakultas?> / <?php echo $m->jurusan?></td>
                                                                                         <?php if($m->logbook_4 === NULL ) {?>
-                                                                                            <td><span  class="red-text">Belum di unggah</span></td>
+                                                                                            <td><span  class="text text-danger">Belum di unggah</span></td>
                                                                                         <?php } else { ?>
-                                                                                            <td><p><a href="" data-doc="<?php echo $m->logbook_4?>" data-jenis="logbook" class="btn btn-primary btn-sm modal-trigger download_dokumen">PDF</a></p></td>
+                                                                                            <td><p><a href="{{ route('mahasiswa.download-logbook', ['nim' => $m->npm, 'jenis_doc' => 'logbook', 'urutan_logbook' => 4, 'id_periode' => $data['id_periode']]) }}" class="btn btn-primary btn-sm">PDF</a></p></td>
                                                                                         <?php } ?>
                                                                                         <?php if($m->link_4 === NULL ) {?>
-                                                                                            <td><span  class="red-text">Belum ada link yang ditambahkan</span></td>
+                                                                                            <td><span  class="text text-danger">Belum ada link yang ditambahkan</span></td>
                                                                                         <?php } else { ?>
                                                                                             <td><p><a href="<?php echo $m->link_4?>" class="btn btn-primary btn-sm modal-trigger">Buka Tautan</a></p></td>
                                                                                         <?php } ?>
@@ -737,11 +737,11 @@
                                                             <tbody class="bg-gray-100">
                                                                 <tr>
                                                                     <td>Laporan Akhir Kegiatan Kelompok</td>
-                                                                    <?php if(!$data['laporan']) {?>
-                                                                        <td class="td-align-right"><p><a href="" disabled="" class="btn btn-primary modal-trigger">Laporan belum diupload</a></p></td>
-                                                                    <?php } else { ?>
-                                                                        <td class="td-align-right"><p><a href="" data-jenis="laporan" data-doc="<?php echo $data['laporan'] ?>" class="btn btn-primary modal-trigger download_dokumen">PDF</a></p></td>
-                                                                    <?php } ?>
+                                                                    @if( !$data['laporan'] )
+                                                                        <td class="td-align-right"><p><button disabled="" class="btn btn-dark float-end">Laporan belum diupload</button></p></td>
+                                                                    @else
+                                                                        <td class="td-align-right"><p><a href="{{ route('mahasiswa.download-dokumen', ['kode_kel' => $data['kd_kel'], 'jenis_doc' => 'laporan_kkn', 'id_periode' => $data['id_periode']]) }}" class="btn btn-primary float-end">PDF</a></p></td>
+                                                                    @endif
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -770,12 +770,7 @@
                                                             <li><p class="caption mt-0 mb-0">Melampirkan dokumen bukti nilai untuk untuk setiap mahasiswa/mahasiswi pada kelompok tersebut yang disatukan dalam 1 dokumen</p></li>
                                                             <li><p class="caption mt-0 mb-0">Maksimum ukuran file sebesar 10MB dengan format .pdf</p></li>
                                                         </ol>
-                                                    </div>
-                                                    <div class="card-footer pt-4" id="kt_chat_messenger_footer">
-                                                            <!--begin::Send-->
-                                                            <a href="{" class="btn btn-primary" target="blank">Belum Ada Berkas Yang Diupload</a>
-                                                            <!--end::Send-->
-                                                        <!--end::Toolbar-->
+                                                        <a href="" class="btn btn-primary" target="blank">Belum Ada Berkas Yang Diupload</a>
                                                     </div>
                                                     <!--begin::Card body-->
                                                     <div class="card-body" id="kt_chat_messenger_body">

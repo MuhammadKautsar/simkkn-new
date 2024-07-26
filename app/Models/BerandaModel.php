@@ -158,4 +158,110 @@ class BerandaModel extends Model
         $query = DB::select("SELECT * FROM dbkkn.nilai_kkn WHERE periode = ? AND nim13 = ?", [$id_periode, $nim]);
         return $query ? $query[0] : null;
     }
+
+    public static function insertBerkas($data_dokumen, $nim, $periode)
+    {
+        DB::table('kkn')
+            ->where('nim13', $nim)
+            ->where('periode', $periode)
+            ->update($data_dokumen);
+
+        return true;
+    }
+
+    public static function insertDokumen($data_dokumen, $id_kelompok)
+    {
+        DB::table('master_desa')
+            ->where('id', $id_kelompok)
+            ->update($data_dokumen);
+
+        return true;
+    }
+
+    public static function insertLogbook($urutanLogbook, $logbookData, $nim)
+    {
+        // Ambil data mahasiswa
+        $dataMhs = DB::table('dbkkn.kkn')->where('nim13', $nim)->first();
+
+        if (!$dataMhs) {
+            return 0; // Mahasiswa tidak ditemukan
+        }
+
+        $idLogbook = $dataMhs->logbook;
+
+        if (is_null($idLogbook) || $idLogbook == 0) {
+            // Insert new logbook
+            $insertId = DB::table('logbook')->insertGetId($logbookData);
+
+            if ($insertId == 0) {
+                return 0; // Gagal menyimpan logbook
+            } else {
+                // Update mahasiswa dengan logbook ID baru
+                $updateResult = DB::table('dbkkn.kkn')
+                    ->where('nim13', $nim)
+                    ->where('periode', $dataMhs->periode)
+                    ->update(['logbook' => $insertId]);
+
+                return $updateResult ? 1 : 0;
+            }
+        } else {
+            // Update existing logbook
+            $updateResult = DB::table('logbook')
+                ->where('id', $idLogbook)
+                ->update($logbookData);
+
+            return $updateResult ? 1 : 0;
+        }
+    }
+
+    public static function getLogbook($nim, $urutanLogbook)
+    {
+        $dataMhs = DB::table('dbkkn.kkn')->where('nim13', $nim)->first();
+
+        if (!$dataMhs) {
+            return "";
+        }
+
+        $idLogbook = $dataMhs->logbook;
+
+        if (!is_null($idLogbook) && $idLogbook != "0") {
+            $data = DB::table('logbook')->where('id', $idLogbook)->first();
+
+            // if ($data) {
+            //     return $data->$urutanLogbook;
+            if ($data) {
+                $urutanField = "logbook_" . $urutanLogbook;
+                return $data->$urutanField ?? "";
+            } else {
+                return "";
+            }
+        } else {
+            return "";
+        }
+    }
+
+    public static function getLinks($nim, $urutanLink)
+    {
+        $dataMhs = DB::table('dbkkn.kkn')->where('nim13', $nim)->first();
+
+        if (!$dataMhs) {
+            return "";
+        }
+
+        $idLogbook = $dataMhs->logbook;
+
+        if (!is_null($idLogbook) && $idLogbook != "0") {
+            $data = DB::table('logbook')->where('id', $idLogbook)->first();
+
+            if ($data) {
+                $urutanField = "youtube_" . $urutanLink;
+                $linkStr = preg_replace("/\; /", "<br>", $data->$urutanField);
+                return $linkStr ?? "";
+            } else {
+                return "";
+            }
+        } else {
+            return "";
+        }
+    }
 }
