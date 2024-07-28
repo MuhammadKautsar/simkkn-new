@@ -123,9 +123,9 @@
                             </div>
                             <!--end::Header-->
                             <!--begin::Card body-->
-                            <div class="card-body pt-5">
+                            <div id="elementId1" class="card-body pt-5">
                                 <!--begin::Form-->
-                                <form action="{{ route('set.batas.waktu.dosen') }}" method="POST">
+                                <form id="submit_batas_waktu_dosen">
                                     @csrf
                                     <input type="hidden" name="id_periode" value="{{ $kkn->id }}">
                                     <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
@@ -304,9 +304,9 @@
                             </div>
                             <!--end::Header-->
                             <!--begin::Card body-->
-                            <div class="card-body pt-5">
+                            <div id="elementId2" class="card-body pt-5">
                                 <!--begin::Form-->
-                                <form action="{{ route('set.batas.waktu.mahasiswa') }}" method="POST">
+                                <form id="submit_batas_waktu_mahasiswa">
                                     @csrf
                                     <input type="hidden" name="id_periode_mhs" value="{{ $kkn->id }}">
                                     <div class="row row-cols-1 row-cols-sm-2 rol-cols-md-1 row-cols-lg-2">
@@ -556,4 +556,71 @@
         <!--end::Content-->
     </div>
     <!--end::Content wrapper-->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $('#submit_batas_waktu_dosen').on('submit', function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                url: "{{ route('set.batas.waktu.dosen') }}",
+                dataType: "JSON",
+                cache: false,
+                success: function(data) {
+                    if (data) {
+                        Swal.fire({
+                            title: 'Batas waktu berhasil diperbaharui',
+                            icon: 'success',
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Terjadi kesalahan',
+                            icon: 'error',
+                        });
+                    }
+                    setData(); // Update data if needed
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Status: " + textStatus);
+                    alert("Error: " + errorThrown);
+                }
+            });
+        });
+        $('#submit_batas_waktu_mahasiswa').on('submit', function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                url: "{{ route('set.batas.waktu.mahasiswa') }}",
+                dataType: "JSON",
+                cache: false,
+                success: function(data) {
+                    if (data) {
+                        Swal.fire({
+                            title: 'Batas waktu berhasil diperbaharui',
+                            icon: 'success',
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Terjadi kesalahan',
+                            icon: 'error',
+                        });
+                    }
+                    setData(); // Update data if needed
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Status: " + textStatus);
+                    alert("Error: " + errorThrown);
+                }
+            });
+        });
+    </script>
 @endsection

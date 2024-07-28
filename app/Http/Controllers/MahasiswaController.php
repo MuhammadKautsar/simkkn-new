@@ -139,23 +139,23 @@ class MahasiswaController extends Controller
             $dataWaktu = $berandaModel->getBatasanWaktu($dataPeriode->batasan_waktu);
             $data['mulai_proposal'] = $this->checkNull($dataWaktu->mulai_upload_proposal);
             $data['akhir_proposal'] = $this->checkNull($dataWaktu->akhir_upload_proposal);
-            $data['proposal_ongoing'] = $this->checkInRange(Carbon::now()->format('d-m-Y'), $data['mulai_proposal'], $data['akhir_proposal']);
-            $data['penetapan_ongoing'] = $this->checkInRange(Carbon::now()->format('d-m-Y'), $data['mulai_proposal'], $data['akhir_proposal']);
+            $data['proposal_ongoing'] = $this->checkInRange(date('Y-m-d'), $data['mulai_proposal'], $data['akhir_proposal']);
+            $data['penetapan_ongoing'] = $this->checkInRange(date('Y-m-d'), $data['mulai_proposal'], $data['akhir_proposal']);
             $data['mulai_logbook_1'] = $this->checkNull($dataWaktu->mulai_logbook_1);
             $data['akhir_logbook_1'] = $this->checkNull($dataWaktu->akhir_logbook_1);
-            $data['logbook_1_ongoing'] = $this->checkInRange(Carbon::now()->format('d-m-Y'), $data['mulai_logbook_1'], $data['akhir_logbook_1']);
+            $data['logbook_1_ongoing'] = $this->checkInRange(date('Y-m-d'), $data['mulai_logbook_1'], $data['akhir_logbook_1']);
             $data['mulai_logbook_2'] = $this->checkNull($dataWaktu->mulai_logbook_2);
             $data['akhir_logbook_2'] = $this->checkNull($dataWaktu->akhir_logbook_2);
-            $data['logbook_2_ongoing'] = $this->checkInRange(Carbon::now()->format('d-m-Y'), $data['mulai_logbook_2'], $data['akhir_logbook_2']);
+            $data['logbook_2_ongoing'] = $this->checkInRange(date('Y-m-d'), $data['mulai_logbook_2'], $data['akhir_logbook_2']);
             $data['mulai_logbook_3'] = $this->checkNull($dataWaktu->mulai_logbook_3);
             $data['akhir_logbook_3'] = $this->checkNull($dataWaktu->akhir_logbook_3);
-            $data['logbook_3_ongoing'] = $this->checkInRange(Carbon::now()->format('d-m-Y'), $data['mulai_logbook_3'], $data['akhir_logbook_3']);
+            $data['logbook_3_ongoing'] = $this->checkInRange(date('Y-m-d'), $data['mulai_logbook_3'], $data['akhir_logbook_3']);
             $data['mulai_logbook_4'] = $this->checkNull($dataWaktu->mulai_logbook_4);
             $data['akhir_logbook_4'] = $this->checkNull($dataWaktu->akhir_logbook_4);
-            $data['logbook_4_ongoing'] = $this->checkInRange(Carbon::now()->format('d-m-Y'), $data['mulai_logbook_4'], $data['akhir_logbook_4']);
+            $data['logbook_4_ongoing'] = $this->checkInRange(date('Y-m-d'), $data['mulai_logbook_4'], $data['akhir_logbook_4']);
             $data['mulai_laporan'] = $this->checkNull($dataWaktu->mulai_laporan);
             $data['akhir_laporan'] = $this->checkNull($dataWaktu->akhir_laporan);
-            $data['laporan_ongoing'] = $this->checkInRange(Carbon::now()->format('d-m-Y'), $data['mulai_laporan'], $data['akhir_laporan']);
+            $data['laporan_ongoing'] = $this->checkInRange(date('Y-m-d'), $data['mulai_laporan'], $data['akhir_laporan']);
         }
 
         $data['nilai_mhs'] = $berandaModel->getNilaiMhs($data['id_periode'], $dataMhs['nim13']);
@@ -166,79 +166,13 @@ class MahasiswaController extends Controller
 
     private function checkNull($value)
     {
-        if (is_null($value)) {
-            return "-";
-        } else {
-            return Carbon::parse($value)->format('d-m-Y');
-        }
+        return is_null($value) ? "-" : date('d-m-Y', strtotime($value));
     }
 
-    private function checkInRange($dateFromUser, $startDate, $endDate)
+    private function checkInRange($currentDate, $startDate, $endDate)
     {
-        if ($startDate === "-") {
-            return false;
-        } else {
-            // Convert to timestamp
-            $startTs = Carbon::createFromFormat('d-m-Y', $startDate)->timestamp;
-            $endTs = Carbon::createFromFormat('d-m-Y', $endDate)->timestamp;
-            $userTs = Carbon::createFromFormat('d-m-Y', $dateFromUser)->timestamp;
-
-            // Check that user date is between start & end
-            return (($userTs >= $startTs) && ($userTs <= $endTs));
-        }
+        return ($currentDate >= $startDate && $currentDate <= $endDate);
     }
-
-    // public function uploadBerkas(Request $request)
-    // {
-    //     $id_periode = $request->input('id_periode');
-    //     $nim = $request->input('nim');
-    //     $kode_kel = $request->input('kode_kel');
-    //     $id_kelompok = $request->input('id_kelompok');
-    //     $response = ['status' => false, 'pesan' => ''];
-
-    //     $dokumenTypes = ['berkas_kkn', 'proposal_kkn', 'laporan_kkn'];
-    //     foreach ($dokumenTypes as $type) {
-    //         if ($request->hasFile($type) && $request->file($type)->isValid()) {
-    //             $file = $request->file($type);
-
-    //             if ($type == 'berkas_kkn') {
-    //                 $fileName = $type . '_' . $nim . '_' . $id_periode . '.' . $file->getClientOriginalExtension();
-    //             } else {
-    //                 $fileName = $type . '_' . $kode_kel . '_' . $id_periode . '.' . $file->getClientOriginalExtension();
-    //             }
-    //             // Simpan file ke storage
-    //             $path = $file->storeAs('uploads/' . $type, $fileName);
-
-    //             if ($path) {
-    //                 // Update atau simpan informasi file ke database
-    //                 if ($type == 'laporan_kkn') {
-    //                     $data_upload = [$type => $fileName, 'user_uploadlaporan' => $nim];
-    //                 } else {
-    //                     $data_upload = [$type => $fileName];
-    //                 }
-
-    //                 if ($type == 'berkas_kkn') {
-    //                     $result = BerandaModel::insertBerkas($data_upload, $nim, $id_periode);
-    //                 } else {
-    //                     $result = BerandaModel::insertDokumen($data_upload, $id_kelompok);
-    //                 }
-
-    //                 if ($result) {
-    //                     $response['status'] = true;
-    //                     $response['pesan'] = 'Dokumen berhasil diupload';
-    //                 } else {
-    //                     $response['pesan'] = 'Gagal menyimpan data ' . $type;
-    //                     break;
-    //                 }
-    //             } else {
-    //                 $response['pesan'] = 'Gagal mengupload ' . $type;
-    //                 break;
-    //             }
-    //         }
-    //     }
-
-    //     return response()->json($response);
-    // }
 
     public function uploadBerkas(Request $request)
     {

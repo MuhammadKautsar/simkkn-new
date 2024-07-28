@@ -509,81 +509,6 @@ class KknController extends Controller
         return view('panitia.konfigurasi-bataswaktu', compact('kkn', 'nip', 'batasanWaktu'));
     }
 
-    public function setBatasWaktuDosen(Request $request)
-    {
-        $request->validate([
-            'id_periode' => 'required|integer',
-            'mulai_laporan_survey' => 'required|date',
-            'akhir_laporan_survey' => 'required|date',
-            'mulai_monev' => 'required|date',
-            'akhir_monev' => 'required|date',
-            'mulai_upload_nilai' => 'required|date',
-            'akhir_upload_nilai' => 'required|date',
-        ]);
-
-        $id_periode = $request->input('id_periode');
-        $data = $request->only([
-            'mulai_laporan_survey', 'akhir_laporan_survey',
-            'mulai_monev', 'akhir_monev',
-            'mulai_upload_nilai', 'akhir_upload_nilai'
-        ]);
-
-        $periode = Periode::findOrFail($id_periode);
-
-        if (!$periode->batasan_waktu) {
-            $batasanWaktu = BatasanWaktu::create($data);
-            $periode->batasan_waktu = $batasanWaktu->id;
-            $periode->save();
-        } else {
-            $batasanWaktu = BatasanWaktu::findOrFail($periode->batasan_waktu);
-            $batasanWaktu->update($data);
-        }
-
-        return redirect()->back()->with('success', 'Data batasan waktu dosen berhasil disimpan.');
-    }
-
-    public function setBatasWaktuMahasiswa(Request $request)
-    {
-        $request->validate([
-            'id_periode_mhs' => 'required|integer',
-            'mulai_upload_proposal' => 'required|date',
-            'akhir_upload_proposal' => 'required|date',
-            'mulai_logbook_1' => 'required|date',
-            'akhir_logbook_1' => 'required|date',
-            'mulai_logbook_2' => 'required|date',
-            'akhir_logbook_2' => 'required|date',
-            'mulai_logbook_3' => 'required|date',
-            'akhir_logbook_3' => 'required|date',
-            'mulai_logbook_4' => 'required|date',
-            'akhir_logbook_4' => 'required|date',
-            'mulai_laporan_akhir' => 'required|date',
-            'akhir_laporan_akhir' => 'required|date',
-        ]);
-
-        $id_periode = $request->input('id_periode_mhs');
-        $data = $request->only([
-            'mulai_upload_proposal', 'akhir_upload_proposal',
-            'mulai_logbook_1', 'akhir_logbook_1',
-            'mulai_logbook_2', 'akhir_logbook_2',
-            'mulai_logbook_3', 'akhir_logbook_3',
-            'mulai_logbook_4', 'akhir_logbook_4',
-            'mulai_laporan_akhir', 'akhir_laporan_akhir'
-        ]);
-
-        $periode = Periode::findOrFail($id_periode);
-
-        if (!$periode->batasan_waktu) {
-            $batasanWaktu = BatasanWaktu::create($data);
-            $periode->batasan_waktu = $batasanWaktu->id;
-            $periode->save();
-        } else {
-            $batasanWaktu = BatasanWaktu::findOrFail($periode->batasan_waktu);
-            $batasanWaktu->update($data);
-        }
-
-        return redirect()->back()->with('success', 'Data batasan waktu mahasiswa berhasil disimpan.');
-    }
-
     public function konfigurasi_monitoring($id)
     {
         $kkn = Periode::findOrFail($id);
@@ -658,4 +583,73 @@ class KknController extends Controller
     //     $data = PanitiaModel::getPersyaratan($id_periode);
     //     return response()->json($data);
     // }
+
+    public function setBatasWaktuDosen(Request $request)
+    {
+        // $request->validate([
+        //     'id_periode' => 'required|integer',
+        //     'mulai_laporan_survey' => 'required|date',
+        //     'akhir_laporan_survey' => 'required|date',
+        //     'mulai_monev' => 'required|date',
+        //     'akhir_monev' => 'required|date',
+        //     'mulai_upload_nilai' => 'required|date',
+        //     'akhir_upload_nilai' => 'required|date',
+        // ]);
+
+        $id_periode = $request->input('id_periode');
+        $mulai_laporan_survey = $request->input('mulai_laporan_survey');
+        $akhir_laporan_survey = $request->input('akhir_laporan_survey');
+        $mulai_monev = $request->input('mulai_monev');
+        $akhir_monev = $request->input('akhir_monev');
+        $mulai_upload_nilai = $request->input('mulai_upload_nilai');
+        $akhir_upload_nilai = $request->input('akhir_upload_nilai');
+
+        $data = [
+            'mulai_laporan_survey' => $mulai_laporan_survey,
+            'akhir_laporan_survey' => $akhir_laporan_survey,
+            'mulai_monev' => $mulai_monev,
+            'akhir_monev' => $akhir_monev,
+            'mulai_upload_nilai' => $mulai_upload_nilai,
+            'akhir_upload_nilai' => $akhir_upload_nilai
+        ];
+
+        $message = PanitiaModel::updateBatasWaktu($data, $id_periode);
+        return response()->json($message);
+    }
+
+    public function setBatasWaktuMahasiswa(Request $request)
+    {
+        $id_periode = $request->input('id_periode_mhs');
+        $mulai_upload_proposal = $request->input('mulai_upload_proposal');
+        $akhir_upload_proposal = $request->input('akhir_upload_proposal');
+        $mulai_logbook_1 = $request->input('mulai_logbook_1');
+        $akhir_logbook_1 = $request->input('akhir_logbook_1');
+        $mulai_logbook_2 = $request->input('mulai_logbook_2');
+        $akhir_logbook_2 = $request->input('akhir_logbook_2');
+        $mulai_logbook_3 = $request->input('mulai_logbook_3');
+        $akhir_logbook_3 = $request->input('akhir_logbook_3');
+        $mulai_logbook_4 = $request->input('mulai_logbook_4');
+        $akhir_logbook_4 = $request->input('akhir_logbook_4');
+        $mulai_laporan = $request->input('mulai_laporan');
+        $akhir_laporan = $request->input('akhir_laporan');
+
+        $data = [
+            'mulai_upload_proposal' => $mulai_upload_proposal,
+            'akhir_upload_proposal' => $akhir_upload_proposal,
+            'mulai_logbook_1' => $mulai_logbook_1,
+            'akhir_logbook_1' => $akhir_logbook_1,
+            'mulai_logbook_2' => $mulai_logbook_2,
+            'akhir_logbook_2' => $akhir_logbook_2,
+            'mulai_logbook_3' => $mulai_logbook_3,
+            'akhir_logbook_3' => $akhir_logbook_3,
+            'mulai_logbook_4' => $mulai_logbook_4,
+            'akhir_logbook_4' => $akhir_logbook_4,
+            'mulai_laporan' => $mulai_laporan,
+            'akhir_laporan' => $akhir_laporan
+        ];
+
+        $message = PanitiaModel::updateBatasWaktu($data, $id_periode);
+
+        return response()->json($message);
+    }
 }

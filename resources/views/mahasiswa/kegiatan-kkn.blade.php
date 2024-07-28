@@ -426,8 +426,8 @@
                                                                     @if ($data['profil_desa'] == '-')
                                                                         <td>: {{ $data['profil_desa'] }}</td>
                                                                     @elseif ($data['profil_desa'] == null)
-                                                                        <td>: <a class="btn btn-primary text-end">Profil
-                                                                                Desa Belum Di Upload</a></td>
+                                                                        <td>: <button disabled="" class="btn btn-dark">Profil
+                                                                            Desa Belum Di Upload</button></td>
                                                                     @else
                                                                         <td>: <a href="{{ route('dosen.download-dokumen', ['id_kelompok' => $data['kelompok'], 'jenis_doc' => 'profil_desa']) }}"
                                                                                 class="btn btn-primary">Unduh
@@ -439,8 +439,8 @@
                                                                     @if ($data['laporan_survey'] == '-')
                                                                         <td>: {{ $data['laporan_survey'] }}</td>
                                                                     @elseif ($data['laporan_survey'] == null)
-                                                                        <td>: <a class="btn btn-primary text-end">Laporan
-                                                                                Survey Dosen Belum Di Upload</a></td>
+                                                                        <td>: <button disabled="" class="btn btn-dark">Laporan
+                                                                            Survey Dosen Belum Di Upload</button></td>
                                                                     @else
                                                                         <td>: <a href="{{ route('dosen.download-dokumen', ['id_kelompok' => $data['kelompok'], 'jenis_doc' => 'laporan_survey']) }}"
                                                                                 class="btn btn-primary">Unduh
@@ -519,10 +519,11 @@
                                                         </li>
                                                     </ol>
                                                     @if ($data['berkas_kkn'] == NULL)
-                                                        <a class="btn btn-primary text-end">Belum Ada Berkas Yang Diupload</a>
+                                                        <button disabled class="btn btn-dark text-end">Belum Ada Berkas Yang Diupload</button>
                                                     @else
                                                         <a href="{{ route('mahasiswa.download-berkas', ['nim' =>  $data['nim'], 'jenis_doc' => 'berkas_kkn', 'id_periode' => $data['id_periode']]) }}" class="btn btn-primary">Unduh Dokumen</a>
                                                     @endif
+
                                                     <form class="submit_berkas" id="berkas" method="post"
                                                         enctype="multipart/form-data" action="{{ route('mahasiswa.upload-berkas') }}">
                                                         @csrf
@@ -587,38 +588,46 @@
                                                         </li>
                                                     </ol>
                                                     @if ($data['proposal_kkn'] == NULL)
-                                                        <a class="btn btn-primary text-end">Belum Ada Berkas Yang Diupload</a>
+                                                        <button disabled class="btn btn-dark text-end">Belum Ada Berkas Yang Diupload</button>
                                                     @else
                                                         <a href="{{ route('mahasiswa.download-dokumen', ['kode_kel' => $data['kode_kel'], 'jenis_doc' => 'proposal_kkn', 'id_periode' => $data['id_periode']]) }}" class="btn btn-primary">Unduh Dokumen</a>
                                                     @endif
-                                                    <form class="submit_berkas" id="proposal" method="post"
-                                                        enctype="multipart/form-data" action="{{ route('mahasiswa.upload-berkas') }}">
-                                                        @csrf
-                                                        <input type="hidden" name="id_periode"
-                                                            value="{{ $data['id_periode'] }}">
-                                                        <input type="hidden" name="kode_kel"
-                                                            value="{{ $data['kode_kel'] }}">
-                                                        <input type="hidden" name="id_kelompok"
-                                                            value="{{ $data['id_kelompok'] }}">
-                                                        <div class="col m12 s12 l12 mt-5">
-                                                            <div class="row">
-                                                                <div class="input-field col s12 m12 l12">
-                                                                    <input type="file" required name="proposal_kkn"
-                                                                        id="proposal_kkn"
-                                                                        class="form-control form-control-solid"
-                                                                        data-max-file-size="10MB"
-                                                                        accept="application/pdf" />
+                                                    @if ($data['status'] === "Ketua" && $data['proposal_ongoing'] === TRUE)
+                                                        <form class="submit_berkas" id="proposal" method="post"
+                                                            enctype="multipart/form-data" action="{{ route('mahasiswa.upload-berkas') }}">
+                                                            @csrf
+                                                            <input type="hidden" name="id_periode"
+                                                                value="{{ $data['id_periode'] }}">
+                                                            <input type="hidden" name="kode_kel"
+                                                                value="{{ $data['kode_kel'] }}">
+                                                            <input type="hidden" name="id_kelompok"
+                                                                value="{{ $data['id_kelompok'] }}">
+                                                            <div class="col m12 s12 l12 mt-5">
+                                                                <div class="row">
+                                                                    <div class="input-field col s12 m12 l12">
+                                                                        <input type="file" required name="proposal_kkn"
+                                                                            id="proposal_kkn"
+                                                                            class="form-control form-control-solid"
+                                                                            data-max-file-size="10MB"
+                                                                            accept="application/pdf" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="input-field col s12 mt-3">
+                                                                        <button class="btn btn-primary float-end"
+                                                                            type="submit" name="action">Submit
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="row">
-                                                                <div class="input-field col s12 mt-3">
-                                                                    <button class="btn btn-primary float-end"
-                                                                        type="submit" name="action">Submit
-                                                                    </button>
-                                                                </div>
+                                                        </form>
+                                                    @else
+                                                        <div class="row">
+                                                            <div class="input-field col s12 mt-5">
+                                                                <span>Anda Bukan Ketua Kelompok / Masa unggah Proposal Program Kerja telah lewat</span>
                                                             </div>
                                                         </div>
-                                                    </form>
+                                                    @endif
                                                 </div>
                                             </div>
 
@@ -717,43 +726,51 @@
                                                                     @else
                                                                         <a href="{{ route('mahasiswa.download-logbook', ['nim' => $data['nim'], 'jenis_doc' => 'logbook', 'urutan_logbook' => 1, 'id_periode' => $data['id_periode']]) }}" class="btn btn-primary">Unduh Dokumen</a>
                                                                     @endif
-                                                                    <form class="submit_berkas" id="logbook1" method="post"
-                                                                        enctype="multipart/form-data" action="{{ route('mahasiswa.upload-berkas') }}">
-                                                                        @csrf
-                                                                        <input type="hidden" name="id_periode"
-                                                                            value="{{ $data['id_periode'] }}">
-                                                                        <div class="col m12 s12 l12 mt-5">
-                                                                            <div class="row">
-                                                                                <div class="input-field col s12 m12 l12">
-                                                                                    <label for="">Tautan</label>
-                                                                                    <input type="hidden" name="urutan_link" value="1">
-                                                                                    <input type="text" name="link" required placeholder="Contohnya: https://www.youtube.com/"
-                                                                                        id="link"
-                                                                                        class="form-control form-control-solid"
-                                                                                        data-max-file-size="10MB"
-                                                                                        accept="application/pdf" />
+                                                                    @if ($data['logbook_1_ongoing'] === TRUE)
+                                                                        <form class="submit_berkas" id="logbook1" method="post"
+                                                                            enctype="multipart/form-data" action="{{ route('mahasiswa.upload-berkas') }}">
+                                                                            @csrf
+                                                                            <input type="hidden" name="id_periode"
+                                                                                value="{{ $data['id_periode'] }}">
+                                                                            <div class="col m12 s12 l12 mt-5">
+                                                                                <div class="row">
+                                                                                    <div class="input-field col s12 m12 l12">
+                                                                                        <label for="">Tautan</label>
+                                                                                        <input type="hidden" name="urutan_link" value="1">
+                                                                                        <input type="text" name="link" required placeholder="Contohnya: https://www.youtube.com/"
+                                                                                            id="link"
+                                                                                            class="form-control form-control-solid"
+                                                                                            data-max-file-size="10MB"
+                                                                                            accept="application/pdf" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row mt-5">
+                                                                                    <div class="input-field col s12 m12 l12">
+                                                                                        <input type="hidden" name="nim" value="{{ $data['nim'] }}">
+                                                                                        <input type="hidden" name="urutan_logbook" value="1">
+                                                                                        <input type="file" required name="logbook"
+                                                                                            id="logbook"
+                                                                                            class="form-control form-control-solid"
+                                                                                            data-max-file-size="10MB"
+                                                                                            accept="application/pdf" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="input-field col s12 mt-3">
+                                                                                        <button class="btn btn-primary float-end"
+                                                                                            type="submit" name="action">Submit
+                                                                                        </button>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="row mt-5">
-                                                                                <div class="input-field col s12 m12 l12">
-                                                                                    <input type="hidden" name="nim" value="{{ $data['nim'] }}">
-                                                                                    <input type="hidden" name="urutan_logbook" value="1">
-                                                                                    <input type="file" required name="logbook"
-                                                                                        id="logbook"
-                                                                                        class="form-control form-control-solid"
-                                                                                        data-max-file-size="10MB"
-                                                                                        accept="application/pdf" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="row">
-                                                                                <div class="input-field col s12 mt-3">
-                                                                                    <button class="btn btn-primary float-end"
-                                                                                        type="submit" name="action">Submit
-                                                                                    </button>
-                                                                                </div>
+                                                                        </form>
+                                                                    @else
+                                                                        <div class="row">
+                                                                            <div class="input-field col s12 mt-5">
+                                                                                <span>Masa unggah Logbook Minggu ke-1 telah lewat atau belum dimulai</span>
                                                                             </div>
                                                                         </div>
-                                                                    </form>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <!--end::Content-->
@@ -800,43 +817,51 @@
                                                                     @else
                                                                         <a href="{{ route('mahasiswa.download-logbook', ['nim' => $data['nim'], 'jenis_doc' => 'logbook', 'urutan_logbook' => 2, 'id_periode' => $data['id_periode']]) }}" class="btn btn-primary">Unduh Dokumen</a>
                                                                     @endif
-                                                                    <form class="submit_berkas" id="logbook2" method="post"
-                                                                        enctype="multipart/form-data" action="{{ route('mahasiswa.upload-berkas') }}">
-                                                                        @csrf
-                                                                        <input type="hidden" name="id_periode"
-                                                                            value="{{ $data['id_periode'] }}">
-                                                                        <div class="col m12 s12 l12 mt-5">
-                                                                            <div class="row">
-                                                                                <div class="input-field col s12 m12 l12">
-                                                                                    <label for="">Tautan</label>
-                                                                                    <input type="hidden" name="urutan_link" value="2">
-                                                                                    <input type="text" name="link" required placeholder="Contohnya: https://www.youtube.com/"
-                                                                                        id="link"
-                                                                                        class="form-control form-control-solid"
-                                                                                        data-max-file-size="10MB"
-                                                                                        accept="application/pdf" />
+                                                                    @if ($data['logbook_2_ongoing'] === TRUE)
+                                                                        <form class="submit_berkas" id="logbook2" method="post"
+                                                                            enctype="multipart/form-data" action="{{ route('mahasiswa.upload-berkas') }}">
+                                                                            @csrf
+                                                                            <input type="hidden" name="id_periode"
+                                                                                value="{{ $data['id_periode'] }}">
+                                                                            <div class="col m12 s12 l12 mt-5">
+                                                                                <div class="row">
+                                                                                    <div class="input-field col s12 m12 l12">
+                                                                                        <label for="">Tautan</label>
+                                                                                        <input type="hidden" name="urutan_link" value="2">
+                                                                                        <input type="text" name="link" required placeholder="Contohnya: https://www.youtube.com/"
+                                                                                            id="link"
+                                                                                            class="form-control form-control-solid"
+                                                                                            data-max-file-size="10MB"
+                                                                                            accept="application/pdf" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row mt-5">
+                                                                                    <div class="input-field col s12 m12 l12">
+                                                                                        <input type="hidden" name="nim" value="{{ $data['nim'] }}">
+                                                                                        <input type="hidden" name="urutan_logbook" value="2">
+                                                                                        <input type="file" required name="logbook"
+                                                                                            id="logbook"
+                                                                                            class="form-control form-control-solid"
+                                                                                            data-max-file-size="10MB"
+                                                                                            accept="application/pdf" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="input-field col s12 mt-3">
+                                                                                        <button class="btn btn-primary float-end"
+                                                                                            type="submit" name="action">Submit
+                                                                                        </button>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="row mt-5">
-                                                                                <div class="input-field col s12 m12 l12">
-                                                                                    <input type="hidden" name="nim" value="{{ $data['nim'] }}">
-                                                                                    <input type="hidden" name="urutan_logbook" value="2">
-                                                                                    <input type="file" required name="logbook"
-                                                                                        id="logbook"
-                                                                                        class="form-control form-control-solid"
-                                                                                        data-max-file-size="10MB"
-                                                                                        accept="application/pdf" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="row">
-                                                                                <div class="input-field col s12 mt-3">
-                                                                                    <button class="btn btn-primary float-end"
-                                                                                        type="submit" name="action">Submit
-                                                                                    </button>
-                                                                                </div>
+                                                                        </form>
+                                                                    @else
+                                                                        <div class="row">
+                                                                            <div class="input-field col s12 mt-5">
+                                                                                <span>Masa unggah Logbook Minggu ke-2 telah lewat atau belum dimulai</span>
                                                                             </div>
                                                                         </div>
-                                                                    </form>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <!--end::Content-->
@@ -883,43 +908,51 @@
                                                                     @else
                                                                         <a href="{{ route('mahasiswa.download-logbook', ['nim' => $data['nim'], 'jenis_doc' => 'logbook', 'urutan_logbook' => 3, 'id_periode' => $data['id_periode']]) }}" class="btn btn-primary">Unduh Dokumen</a>
                                                                     @endif
-                                                                    <form class="submit_berkas" id="logbook3" method="post"
-                                                                        enctype="multipart/form-data" action="{{ route('mahasiswa.upload-berkas') }}">
-                                                                        @csrf
-                                                                        <input type="hidden" name="id_periode"
-                                                                            value="{{ $data['id_periode'] }}">
-                                                                        <div class="col m12 s12 l12 mt-5">
-                                                                            <div class="row">
-                                                                                <div class="input-field col s12 m12 l12">
-                                                                                    <label for="">Tautan</label>
-                                                                                    <input type="hidden" name="urutan_link" value="3">
-                                                                                    <input type="text" name="link" required placeholder="Contohnya: https://www.youtube.com/"
-                                                                                        id="link"
-                                                                                        class="form-control form-control-solid"
-                                                                                        data-max-file-size="10MB"
-                                                                                        accept="application/pdf" />
+                                                                    @if ($data['logbook_3_ongoing'] === TRUE)
+                                                                        <form class="submit_berkas" id="logbook3" method="post"
+                                                                            enctype="multipart/form-data" action="{{ route('mahasiswa.upload-berkas') }}">
+                                                                            @csrf
+                                                                            <input type="hidden" name="id_periode"
+                                                                                value="{{ $data['id_periode'] }}">
+                                                                            <div class="col m12 s12 l12 mt-5">
+                                                                                <div class="row">
+                                                                                    <div class="input-field col s12 m12 l12">
+                                                                                        <label for="">Tautan</label>
+                                                                                        <input type="hidden" name="urutan_link" value="3">
+                                                                                        <input type="text" name="link" required placeholder="Contohnya: https://www.youtube.com/"
+                                                                                            id="link"
+                                                                                            class="form-control form-control-solid"
+                                                                                            data-max-file-size="10MB"
+                                                                                            accept="application/pdf" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row mt-5">
+                                                                                    <div class="input-field col s12 m12 l12">
+                                                                                        <input type="hidden" name="nim" value="{{ $data['nim'] }}">
+                                                                                        <input type="hidden" name="urutan_logbook" value="3">
+                                                                                        <input type="file" required name="logbook"
+                                                                                            id="logbook"
+                                                                                            class="form-control form-control-solid"
+                                                                                            data-max-file-size="10MB"
+                                                                                            accept="application/pdf" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="input-field col s12 mt-3">
+                                                                                        <button class="btn btn-primary float-end"
+                                                                                            type="submit" name="action">Submit
+                                                                                        </button>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="row mt-5">
-                                                                                <div class="input-field col s12 m12 l12">
-                                                                                    <input type="hidden" name="nim" value="{{ $data['nim'] }}">
-                                                                                    <input type="hidden" name="urutan_logbook" value="3">
-                                                                                    <input type="file" required name="logbook"
-                                                                                        id="logbook"
-                                                                                        class="form-control form-control-solid"
-                                                                                        data-max-file-size="10MB"
-                                                                                        accept="application/pdf" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="row">
-                                                                                <div class="input-field col s12 mt-3">
-                                                                                    <button class="btn btn-primary float-end"
-                                                                                        type="submit" name="action">Submit
-                                                                                    </button>
-                                                                                </div>
+                                                                        </form>
+                                                                    @else
+                                                                        <div class="row">
+                                                                            <div class="input-field col s12 mt-5">
+                                                                                <span>Masa unggah Logbook Minggu ke-3 telah lewat atau belum dimulai</span>
                                                                             </div>
                                                                         </div>
-                                                                    </form>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <!--end::Content-->
@@ -966,43 +999,51 @@
                                                                     @else
                                                                         <a href="{{ route('mahasiswa.download-logbook', ['nim' => $data['nim'], 'jenis_doc' => 'logbook', 'urutan_logbook' => 4, 'id_periode' => $data['id_periode']]) }}" class="btn btn-primary">Unduh Dokumen</a>
                                                                     @endif
-                                                                    <form class="submit_berkas" id="logbook4" method="post"
-                                                                        enctype="multipart/form-data" action="{{ route('mahasiswa.upload-berkas') }}">
-                                                                        @csrf
-                                                                        <input type="hidden" name="id_periode"
-                                                                            value="{{ $data['id_periode'] }}">
-                                                                        <div class="col m12 s12 l12 mt-5">
-                                                                            <div class="row">
-                                                                                <div class="input-field col s12 m12 l12">
-                                                                                    <label for="">Tautan</label>
-                                                                                    <input type="hidden" name="urutan_link" value="4">
-                                                                                    <input type="text" name="link" required placeholder="Contohnya: https://www.youtube.com/"
-                                                                                        id="link"
-                                                                                        class="form-control form-control-solid"
-                                                                                        data-max-file-size="10MB"
-                                                                                        accept="application/pdf" />
+                                                                    @if ($data['logbook_4_ongoing'] === TRUE)
+                                                                        <form class="submit_berkas" id="logbook4" method="post"
+                                                                            enctype="multipart/form-data" action="{{ route('mahasiswa.upload-berkas') }}">
+                                                                            @csrf
+                                                                            <input type="hidden" name="id_periode"
+                                                                                value="{{ $data['id_periode'] }}">
+                                                                            <div class="col m12 s12 l12 mt-5">
+                                                                                <div class="row">
+                                                                                    <div class="input-field col s12 m12 l12">
+                                                                                        <label for="">Tautan</label>
+                                                                                        <input type="hidden" name="urutan_link" value="4">
+                                                                                        <input type="text" name="link" required placeholder="Contohnya: https://www.youtube.com/"
+                                                                                            id="link"
+                                                                                            class="form-control form-control-solid"
+                                                                                            data-max-file-size="10MB"
+                                                                                            accept="application/pdf" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row mt-5">
+                                                                                    <div class="input-field col s12 m12 l12">
+                                                                                        <input type="hidden" name="nim" value="{{ $data['nim'] }}">
+                                                                                        <input type="hidden" name="urutan_logbook" value="4">
+                                                                                        <input type="file" required name="logbook"
+                                                                                            id="logbook"
+                                                                                            class="form-control form-control-solid"
+                                                                                            data-max-file-size="10MB"
+                                                                                            accept="application/pdf" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="input-field col s12 mt-3">
+                                                                                        <button class="btn btn-primary float-end"
+                                                                                            type="submit" name="action">Submit
+                                                                                        </button>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="row mt-5">
-                                                                                <div class="input-field col s12 m12 l12">
-                                                                                    <input type="hidden" name="nim" value="{{ $data['nim'] }}">
-                                                                                    <input type="hidden" name="urutan_logbook" value="4">
-                                                                                    <input type="file" required name="logbook"
-                                                                                        id="logbook"
-                                                                                        class="form-control form-control-solid"
-                                                                                        data-max-file-size="10MB"
-                                                                                        accept="application/pdf" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="row">
-                                                                                <div class="input-field col s12 mt-3">
-                                                                                    <button class="btn btn-primary float-end"
-                                                                                        type="submit" name="action">Submit
-                                                                                    </button>
-                                                                                </div>
+                                                                        </form>
+                                                                    @else
+                                                                        <div class="row">
+                                                                            <div class="input-field col s12 mt-5">
+                                                                                <span>Masa unggah Logbook Minggu ke-4 telah lewat atau belum dimulai</span>
                                                                             </div>
                                                                         </div>
-                                                                    </form>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                             <!--end::Content-->
@@ -1048,40 +1089,48 @@
                                                         </li>
                                                     </ol>
                                                     @if ($data['laporan_kkn'] == NULL)
-                                                        <a class="btn btn-primary text-end">Belum Ada Berkas Yang Diupload</a>
+                                                        <button disabled="" class="btn btn-dark">Belum Ada Berkas Yang Diupload</button>
                                                     @else
                                                         <a href="{{ route('mahasiswa.download-dokumen', ['jenis_doc' => 'laporan_kkn', 'kode_kel' => $data['kode_kel'], 'id_periode' => $data['id_periode']]) }}" class="btn btn-primary">Unduh Dokumen</a>
                                                     @endif
-                                                    <form class="submit_berkas" id="laporan" method="post"
-                                                        enctype="multipart/form-data" action="{{ route('mahasiswa.upload-berkas') }}">
-                                                        @csrf
-                                                        <input type="hidden" name="nim"
-                                                            value="{{ $data['nim'] }}">
-                                                        <input type="hidden" name="id_periode"
-                                                            value="{{ $data['id_periode'] }}">
-                                                        <input type="hidden" name="kode_kel"
-                                                            value="{{ $data['kode_kel'] }}">
-                                                        <input type="hidden" name="id_kelompok"
-                                                            value="{{ $data['id_kelompok'] }}">
-                                                        <div class="col m12 s12 l12 mt-5">
-                                                            <div class="row">
-                                                                <div class="input-field col s12 m12 l12">
-                                                                    <input type="file" required name="laporan_kkn"
-                                                                        id="laporan_kkn"
-                                                                        class="form-control form-control-solid"
-                                                                        data-max-file-size="10MB"
-                                                                        accept="application/pdf" />
+                                                    @if ($data['status'] === "Ketua" && $data['laporan_ongoing'] === TRUE)
+                                                        <form class="submit_berkas" id="laporan" method="post"
+                                                            enctype="multipart/form-data" action="{{ route('mahasiswa.upload-berkas') }}">
+                                                            @csrf
+                                                            <input type="hidden" name="nim"
+                                                                value="{{ $data['nim'] }}">
+                                                            <input type="hidden" name="id_periode"
+                                                                value="{{ $data['id_periode'] }}">
+                                                            <input type="hidden" name="kode_kel"
+                                                                value="{{ $data['kode_kel'] }}">
+                                                            <input type="hidden" name="id_kelompok"
+                                                                value="{{ $data['id_kelompok'] }}">
+                                                            <div class="col m12 s12 l12 mt-5">
+                                                                <div class="row">
+                                                                    <div class="input-field col s12 m12 l12">
+                                                                        <input type="file" required name="laporan_kkn"
+                                                                            id="laporan_kkn"
+                                                                            class="form-control form-control-solid"
+                                                                            data-max-file-size="10MB"
+                                                                            accept="application/pdf" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="input-field col s12 mt-3">
+                                                                        <button class="btn btn-primary float-end"
+                                                                            type="submit" name="action">Submit
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="row">
-                                                                <div class="input-field col s12 mt-3">
-                                                                    <button class="btn btn-primary float-end"
-                                                                        type="submit" name="action">Submit
-                                                                    </button>
-                                                                </div>
+                                                        </form>
+                                                    @else
+                                                        <div class="row">
+                                                            <div class="input-field col s12 mt-5">
+                                                                <span>Anda Bukan Ketua Kelompok / Masa unggah Laporan Akhir telah lewat</span>
                                                             </div>
                                                         </div>
-                                                    </form>
+                                                    @endif
                                                 </div>
                                             </div>
 

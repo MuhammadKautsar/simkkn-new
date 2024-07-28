@@ -314,7 +314,7 @@
                                                             <li><p class="caption mt-0 mb-0">Maksimum ukuran file sebesar 10MB dengan format .pdf</p></li>
                                                         </ol>
                                                         @if ($dataKelompok->profil_desa == NULL)
-                                                            <a class="btn btn-primary text-end">Belum Ada Berkas Yang Diupload</a>
+                                                            <button disabled class="btn btn-dark text-end">Belum Ada Berkas Yang Diupload</button>
                                                         @else
                                                             <a href="{{ route('dosen.download-dokumen', ['id_kelompok' =>  $data['id_kel'], 'jenis_doc' => 'profil_desa']) }}" class="btn btn-primary">Anda Sudah Menggunggah Dokumen, Unduh Dokumen Disini</a>
                                                         @endif
@@ -369,7 +369,7 @@
                                                             <li><p class="caption mt-0 mb-0">Maksimum ukuran file sebesar 10MB dengan format .pdf</p></li>
                                                         </ol>
                                                         @if ($dataKelompok->laporan_survey == NULL)
-                                                            <a class="btn btn-primary text-end">Belum Ada Berkas Yang Diupload</a>
+                                                            <button disabled class="btn btn-dark text-end">Belum Ada Berkas Yang Diupload</button>
                                                         @else
                                                             <a href="{{ route('dosen.download-dokumen', ['id_kelompok' =>  $data['id_kel'], 'jenis_doc' => 'laporan_survey']) }}" class="btn btn-primary">Anda Sudah Menggunggah Dokumen, Unduh Dokumen Disini</a>
                                                         @endif
@@ -424,7 +424,7 @@
                                                             <li><p class="caption mt-0 mb-0">Maksimum ukuran file sebesar 10MB dengan format .pdf</p></li>
                                                         </ol>
                                                         @if ($dataKelompok->monev == NULL)
-                                                            <a class="btn btn-primary text-end">Belum Ada Berkas Yang Diupload</a>
+                                                            <button disabled class="btn btn-dark text-end">Belum Ada Berkas Yang Diupload</button>
                                                         @else
                                                             <a href="{{ route('dosen.download-dokumen', ['id_kelompok' =>  $data['id_kel'], 'jenis_doc' => 'monev']) }}" class="btn btn-primary">Anda Sudah Menggunggah Dokumen, Unduh Dokumen Disini</a>
                                                         @endif

@@ -678,4 +678,19 @@ class PanitiaModel extends Model
 
         return $dataDosen;
     }
+
+    public static function updateBatasWaktu($data, $id_periode)
+    {
+        $data_periode = DB::table('periode')->where('id', $id_periode)->first();
+        $id_batas_waktu = $data_periode->batasan_waktu;
+
+        if (is_null($id_batas_waktu) || $id_batas_waktu == 0) {
+            $id_batas_waktu_baru = DB::table('batasan_waktu')->insertGetId($data);
+            $status = DB::table('periode')->where('id', $id_periode)->update(['batasan_waktu' => $id_batas_waktu_baru]);
+        } else {
+            $status = DB::table('batasan_waktu')->where('id', $id_batas_waktu)->update($data);
+        }
+
+        return $status !== false;
+    }
 }
