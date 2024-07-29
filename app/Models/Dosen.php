@@ -125,7 +125,7 @@ class Dosen extends Model
         return $data;
     }
 
-    public function getKelompok($idKelompok)
+    public static function getKelompok($idKelompok)
     {
         return DB::table('master_desa')->where('id', $idKelompok)->first();
     }
@@ -218,5 +218,121 @@ class Dosen extends Model
         return DB::table('master_desa')
             ->where('id', $idKelompok)
             ->update([$column => $namaDoc]);
+    }
+
+    public static function cekBatasWaktu($idPeriode)
+    {
+        $sql = "SELECT * FROM periode p
+                LEFT JOIN batasan_waktu b ON p.batasan_waktu = b.id
+                WHERE p.id = :id_periode";
+
+        $queryResult = DB::select($sql, ['id_periode' => $idPeriode]);
+
+        if (!empty($queryResult)) {
+            return $queryResult[0]; // Mengembalikan baris pertama hasil query
+        } else {
+            return false;
+        }
+    }
+
+    public static function getDataMhs($nim, $periode)
+    {
+        $query = DB::select("SELECT * FROM dbkkn.kkn WHERE nim13 = :nim AND periode = :periode", [
+            'nim' => $nim,
+            'periode' => $periode
+        ]);
+
+        return $query ? $query[0] : null;
+        // return $query ? (array)$query[0] : null; // Mengembalikan hasil sebagai array atau null jika tidak ada hasil
+    }
+
+    public static function updateData($column1, $id1, $column2, $id2, $table, $data)
+    {
+        DB::table($table)
+            ->where($column1, $id1)
+            ->where($column2, $id2)
+            ->update($data);
+
+        return true;
+    }
+
+    public static function getMhs3($id_kelompok)
+    {
+        $query1 = DB::table('dbkkn.kkn as k')
+            ->select('k.nim13 as npm', 'k.periode', 'k.nama_mhs', 'p.nama_prodi as jurusan', 'f.nama_fakultas as fakultas', 'k.jenis_kkn', DB::raw('1 as asal'))
+            ->leftJoin('prodi as p', DB::raw('substring(k.nim13, 3, 7)'), '=', 'p.kd_fjjp7')
+            ->leftJoin('fakultas as f', DB::raw('substring(k.nim13, 3, 2)'), '=', 'f.kd_fakultas2')
+            ->where('k.kelompok', $id_kelompok);
+
+        $query2 = DB::table('kkn_non_usk as k')
+            ->select('k.npm', 'k.id_periode as periode', 'k.nama_mhs', 'p.nama_prodi as jurusan', 'pt.nama_ptn as fakultas', DB::raw('1 as jenis_kkn'), DB::raw('2 as asal'))
+            ->leftJoin('prodi_non_usk as p', 'k.kode_prodi', '=', 'p.kode_prodi')
+            ->leftJoin('ptn as pt', 'p.kode_ptn', '=', 'pt.kode_ptn')
+            ->where('k.kelompok', $id_kelompok);
+
+        $results = $query1->union($query2)->get();
+
+        $data_row = [];
+        foreach ($results as $data) {
+            $jenis_user = session('jenis_user');
+            $jenis_kkn = ucwords(strtolower($data->jenis_kkn));
+
+            if ($data->asal == 1) {
+                if ($jenis_kkn == 10) {
+                    $nilai_dosen = self::getNilai($data->npm, $data->periode, 'nilai_dosen');
+                    $nilai_geuchik = self::getNilai($data->npm, $data->periode, 'nilai_geuchik');
+                    $nilai_sementara = self::getNilai($data->npm, $data->periode, 'nilai_des');
+                    $nilai_akhir = self::getNilai($data->npm, $data->periode, 'nilai_verified');
+                } else {
+                    $nilai_dosen = self::getNilai($data->npm, $data->periode, 'nilai_dosen');
+                    $nilai_geuchik = self::getNilai($data->npm, $data->periode, 'nilai_geuchik');
+                    $nilai_sementara = self::getNilai($data->npm, $data->periode, 'nilai_verified');
+                    $nilai_akhir = self::getNilai($data->npm, $data->periode, 'nilai_des');
+                }
+            } else {
+                $nilai_dosen = self::getNilaiNonUsk($data->npm, $data->periode, 'nilai_dosen');
+                $nilai_geuchik = self::getNilaiNonUsk($data->npm, $data->periode, 'nilai_geuchik');
+                $nilai_akhir = self::getNilaiNonUsk($data->npm, $data->periode, 'nilai_des');
+            }
+
+            $data_column = [
+                'npm' => $data->npm,
+                'nama_mhs' => $data->nama_mhs,
+                'jenis_kkn' => $jenis_kkn,
+                'jurusan' => $data->jurusan,
+                'fakultas' => $data->fakultas,
+                'asal' => $data->asal,
+                'jenis_user' => $jenis_user,
+                'nilai_geuchik' => $nilai_geuchik,
+                'nilai_sementara' => $jenis_kkn == 10 ? $nilai_sementara : null,
+                'nilai_akhir' => $nilai_akhir,
+            ];
+
+            $data_row[] = $data_column;
+        }
+
+        return $data_row;
+    }
+
+    public static function getNilai($nim, $id_periode, $column)
+    {
+        $query = DB::table('dbkkn.nilai_kkn')
+            ->where('nim13', $nim)
+            ->where('periode', $id_periode)
+            ->first();
+
+        $nilai = $query ? $query->$column : "";
+        return $nilai;
+    }
+
+    public static function getNilaiNonUsk($nim, $id_periode, $column)
+    {
+        $query = DB::table('dbkkn.nilai_kkn_non_usk')
+            ->where('npm', $nim)
+            ->where('id_periode', $id_periode)
+            ->first();
+
+        $nilai = $query ? $query->$column : "";
+        return $nilai;
     }
 }

@@ -75,12 +75,12 @@ class MahasiswaController extends Controller
             $data['jenis_kkn'] = $berandaModel->getJenisKkn($dataPeriode->jenis_kkn);
         }
 
+        $data['nama_kkn'] = $dataPeriode->nama_kkn;
         if ($dataPeriode->nama_kkn == NULL) {
             $data['nama_periode'] = preg_replace("/\((.*?)\)/", "", $dataPeriode->masa_periode);
             preg_match('/\((.*?)\)/', $dataPeriode->masa_periode, $masaPeriode);
             $data['masa_periode'] = $masaPeriode[1];
         } else {
-            $data['nama_kkn'] = $dataPeriode->nama_kkn;
             $data['masa_periode'] = $dataPeriode->masa_periode;
         }
 

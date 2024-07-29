@@ -156,6 +156,7 @@
                                 <table class="table align-middle table-row-dashed fs-6 gy-5 mb-0" id="kt_permissions_table">
                                     <thead>
                                         <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
+                                            <th class="min-w-125px">Nama DPL</th>
                                             <th class="min-w-125px">Kelompok</th>
                                             <th class="min-w-125px">Profil Desa</th>
                                             <th class="min-w-125px">Laporan Survey Dosen</th>
@@ -168,7 +169,7 @@
                                     <tbody class="fw-semibold text-gray-600">
                                         @foreach($data['data_dosen'] as $d)
                                             <tr>
-                                                {{-- <td>{{ $d->nama_dpl }}</td> --}}
+                                                <td>{{ $d->nama_dpl }}</td>
                                                 <td>{{ $d->kd_kelompok }}</td>
                                                 <td>
                                                     @if($d->profil_desa)

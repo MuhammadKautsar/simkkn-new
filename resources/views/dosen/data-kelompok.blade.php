@@ -770,11 +770,16 @@
                                                             <li><p class="caption mt-0 mb-0">Melampirkan dokumen bukti nilai untuk untuk setiap mahasiswa/mahasiswi pada kelompok tersebut yang disatukan dalam 1 dokumen</p></li>
                                                             <li><p class="caption mt-0 mb-0">Maksimum ukuran file sebesar 10MB dengan format .pdf</p></li>
                                                         </ol>
-                                                        <a href="" class="btn btn-primary" target="blank">Belum Ada Berkas Yang Diupload</a>
-                                                    </div>
-                                                    <!--begin::Card body-->
-                                                    <div class="card-body" id="kt_chat_messenger_body">
-                                                        <div class="table-responsive">
+                                                        @if ($dataKelompok->pdf_nilai_dpl == NULL)
+                                                            <button disabled class="btn btn-dark text-end">Belum Ada Berkas Yang Diupload</button>
+                                                        @else
+                                                            <a href="{{ route('dosen.download-nilai', ['kd_kelompok' =>  $data['kd_kel'], 'jenis_doc' => 'bukti_nilai', 'id_periode' =>  $data['id_periode']]) }}" class="btn btn-primary">Anda Sudah Menggunggah Dokumen, Unduh Dokumen Disini</a>
+                                                        @endif
+                                                            <form id="upload_nilai" enctype="multipart/form-data" method="post">
+                                                                @csrf
+                                                                <input style="display: none" value="{{ $data['id_periode'] }}" name="id_periode" type="text">
+                                                                <input style="display: none" value="{{ $data['kd_kel'] }}" name="kd_kelompok" type="text">
+                                                        <div class="table-responsive mt-5">
                                                             <!--begin::Table-->
                                                             <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
                                                                 <thead class="bg-gray-100">
@@ -788,25 +793,54 @@
                                                                 </thead>
                                                                 <tbody id="table_nilai">
                                                                 <?php
-                                                                foreach($data['mhs_kelompok'] as $m){
+                                                                foreach($data['nilai_kelompok'] as $m){
                                                                     ?>
                                                                     <tr>
-                                                                        <td><?php echo $m->npm?></td>
-                                                                        <td><?php echo $m->nama_mhs?></td>
-                                                                        <td><?php echo $m->jurusan?> / <?php echo $m->fakultas?> </td>
+                                                                        <td>{{ $m['npm'] }}</td>
+                                                                        <td>{{ $m['nama_mhs'] }}</td>
+                                                                        <td>{{ $m['jurusan'] }} / {{ $m['fakultas'] }} </td>
                         <!--												  <td><input required placeholder="Nilai Dosen" name= "nilai_dosen[]"  type="number"></td>-->
-                                                                            <input style="display: none" value="<?php echo $m->npm?>" name= "nim[]"  type="text">
-                                                                            <input style="display: none" value="<?php echo $m->asal?>" name= "asal[]"  type="text">
-                                                                        <td><input required placeholder="Nilai Geuchik" name= "nilai_geuchik[]" type="number"></td>
-                                                                        <td><input required placeholder="Nilai DPL" name= "nilai_akhir[]" type="number" step="any"></td>
-                                                                        <!-- <td><input required placeholder="Nilai Akhir" name= "nilai_akhir[]" type="number" step="any"></td> -->
+                                                                            <input style="display: none" value="{{ $m['npm'] }}" name= "nim[]"  type="text">
+                                                                            <input style="display: none" value="{{ $m['asal'] }}" name= "asal[]"  type="text">
+                                                                        <td><input required placeholder="Nilai Geuchik" value="{{ $m['nilai_geuchik'] }}" name= "nilai_geuchik[]" type="number"></td>
+                                                                        <td><input required placeholder="Nilai DPL" value="{{ $m['nilai_akhir'] }}" name= "nilai_akhir[]" type="number" step="any"></td>
                                                                     </tr>
                                                                 <?php  } ?>
                                                                 </tbody>
                                                             </table>
                                                         </div>
+                                                        @if ($data['upload_nilai_ongoing'] === TRUE)
+                                                                <div class="col m12 s12 l12 mt-5">
+                                                                    <div class="row">
+                                                                        <input name="id_kelompok" id="id_kel_accesable" value="{{ $data['id_kel'] }}" style="display: none">
+                                                                        <div class="input-field col s12 m12 l12">
+                                                                            <label class="fs-4 fw-bold text-gray-900 me-1 mb-2 lh-1 mt-3 mb-5">Dokumen Nilai Dosen</label>
+                                                                            <input name="nilai" type="file" id="input-file-max-fs" class="form-control form-control-solid" data-max-file-size="10M" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <input name="id_kelompok" id="id_kel_accesable" value="{{ $data['id_kel'] }}" style="display: none">
+                                                                        <div class="input-field col s12 m12 l12">
+                                                                            <label class="fs-4 fw-bold text-gray-900 me-1 mb-2 lh-1 mt-3 mb-5">Dokumen Nilai Geuchik</a></label>
+                                                                            <input name="nilai_geuchik" type="file" id="input-file-max-fs" class="form-control form-control-solid" data-max-file-size="10M" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="input-field col s12 mt-3">
+                                                                            <button class="btn btn-primary float-end" type="submit" name="action">Submit
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        @else
+                                                            <div class="row">
+                                                                <div class="input-field col s12 mt-5">
+                                                                    <span>Masa unggah nilai akhir belum dimulai atau telah lewat</span>
+                                                                </div>
+                                                            </div>
+                                                        @endif
                                                     </div>
-                                                    <!--end::Card body-->
                                                 </div>
 											</div>
 										</div>
@@ -952,6 +986,41 @@
             }
         });
     });
+    </script>
+
+    <script>
+        $('#upload_nilai').on('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                type: "POST",
+                data: formData,
+                contentType: false,
+                cache: false,
+                processData: false,
+                url: "{{ route('upload.nilai') }}", // Sesuaikan dengan route Anda
+                dataType: "JSON",
+                success: function(data) {
+                    if (data.status) {
+                        Swal.fire({
+                            title: data.pesan,
+                            icon: 'success',
+                        });
+                    } else {
+                        Swal.fire({
+                            title: data.pesan,
+                            icon: 'error',
+                        });
+                    }
+                    // setData(); // Panggil fungsi untuk memperbarui data jika diperlukan
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Status: " + textStatus);
+                    alert("Error: " + errorThrown);
+                }
+            });
+        });
     </script>
 
     <!--begin::Javascript-->

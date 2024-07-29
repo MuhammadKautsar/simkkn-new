@@ -53,6 +53,8 @@ Route::prefix('dosen')->middleware(['checkWebServiceSession'])->group(function (
 
     Route::post('upload-dokumen', [DosenController::class, 'uploadDokumen'])->name('dosen.uploadDokumen');
     Route::get('download-dokumen/{id_kelompok}/{jenis_doc}', [DosenController::class, 'downloadDokumen'])->name('dosen.download-dokumen');
+    Route::post('upload/nilai', [DosenController::class, 'uploadNilai'])->name('upload.nilai');
+    Route::get('download-nilai/{kd_kelompok}/{jenis_doc}/{id_periode}', [DosenController::class, 'downloadNilai'])->name('dosen.download-nilai');
 });
 
 Route::get('panitia/sign-in', [LoginController::class, 'panitia_index'])
@@ -109,6 +111,8 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::post('/kkn/set_desa', [KknController::class, 'setDesa'])->name('kkn.set_desa');
     // Route::post('/get-kabupaten-tersedia', [KknController::class, 'getKabupatenTersedia'])->name('kkn.get_kabupaten_tersedia');
     Route::post('/hapus-data', [KknController::class, 'hapusData'])->name('hapus_data');
+
+    Route::post('/kkn/publish-nilai-mhs', [KknController::class, 'publishNilaiMhs'])->name('kkn.publish_nilai');
 });
 
 Route::middleware(['checkWebServiceSession', 'checkFeature:user-management'])->group(function () {

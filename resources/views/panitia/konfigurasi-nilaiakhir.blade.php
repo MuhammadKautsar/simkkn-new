@@ -121,6 +121,15 @@
                                 <!--begin::Title-->
                                 <h3 class="card-title align-items-start flex-column">
                                     <span class="card-label fw-bold text-gray-800">Nilai Akhir KKN Mahasiswa/Mahasiswi</span>
+                                    @if($data['status_nilai_mhs'] == 1)
+                                        <button href="" id="publishNilaiAkhir" data-val="{{ $kkn->id }}" data-status='0' class="mt-5 btn btn-danger">
+                                            <i class="fas fa-upload"></i> Tutup Nilai Akhir KKN
+                                        </button>
+                                    @else
+                                        <button href="" id="publishNilaiAkhir" data-val="{{ $kkn->id }}" data-status='1' class="mt-5 btn btn-success">
+                                            <i class="fas fa-upload"></i> Umumkan Nilai Akhir KKN
+                                        </button>
+                                    @endif
                                 </h3>
                                 <!--end::Title-->
                             </div>
@@ -163,6 +172,7 @@
                                             <th class="min-w-125px">Nama</th>
                                             <th class="min-w-125px">Fakultas</th>
                                             <th class="min-w-125px">Jurusan</th>
+                                            <th class="min-w-125px">Kelompok</th>
                                             <th class="min-w-125px">Nama DPL</th>
                                             <th class="min-w-125px">Nilai Geuchik</th>
                                             <th class="min-w-125px">Nilai Akhir Angka</th>
@@ -176,6 +186,7 @@
                                             <td>{{ $n->nama_mhs }}</td>
                                             <td>{{ $n->nama_fakultas }}</td>
                                             <td>{{ $n->nama_prodi }}</td>
+                                            <td>{{ $n->kd_kelompok }}</td>
                                             <td>{{ $n->nama_dpl }}</td>
                                             <td>{{ $n->nilai_geuchik }}</td>
                                             {{-- <td>{{ $n->nilai_dosen }}</td> --}}
@@ -200,4 +211,67 @@
         <!--end::Content-->
     </div>
     <!--end::Content wrapper-->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+
+    <script>
+        $('#publishNilaiAkhir').on('click', function (event) {
+        event.preventDefault();
+        let id_periode = $(this).data("val");
+        let status = $(this).data("status");
+
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, lakukan!',
+            cancelButtonText: 'Tidak, batalkan!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ route('kkn.publish_nilai') }}",
+                    method: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    data: { id_periode: id_periode, status: status },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data === 'success') {
+                            Swal.fire({
+                                title: "Berhasil",
+                                text: "Perubahan berhasil disimpan!",
+                                icon: "success",
+                            }).then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Gagal",
+                                text: "Terjadi kesalahan",
+                                icon: "error",
+                            }).then(() => {
+                                location.reload();
+                            });
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        Swal.fire("Error", "Status: " + textStatus + ", Error: " + errorThrown, "error");
+                    }
+                });
+            }
+        });
+    });
+    </script>
 @endsection

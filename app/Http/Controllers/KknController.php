@@ -525,12 +525,28 @@ class KknController extends Controller
 
     public function konfigurasi_nilaiakhir($id)
     {
-        $nip = session()->get('nip');
         $kkn = Periode::findOrFail($id);
         $jenis_kkns = JenisKkn::all();
 
         $nilai = PanitiaModel::getNilaiAll($id);
-        return view('panitia.konfigurasi-nilaiakhir', compact('kkn', 'jenis_kkns', 'nip', 'nilai'));
+        $data['status_nilai_mhs'] = PanitiaModel::getStatusNilaiMhs($id);
+        return view('panitia.konfigurasi-nilaiakhir', compact('kkn', 'jenis_kkns', 'data', 'nilai'));
+    }
+
+    public function publishNilaiMhs(Request $request)
+    {
+        $id_periode = $request->input('id_periode');
+        $status = $request->input('status');
+
+        $result = DB::table('periode')
+            ->where('id', $id_periode)
+            ->update(['status_nilai_mhs' => $status]);
+
+        if ($result) {
+            return response()->json('success');
+        } else {
+            return response()->json('error');
+        }
     }
 
     public function add_jenis_kkn(Request $request)

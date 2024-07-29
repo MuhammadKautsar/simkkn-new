@@ -693,4 +693,14 @@ class PanitiaModel extends Model
 
         return $status !== false;
     }
+
+    public static function getStatusNilaiMhs($id_periode)
+    {
+        $query = DB::table('dbkkn.periode')
+            ->select('status_nilai_mhs')
+            ->where('id', $id_periode)
+            ->first();
+
+        return $query ? $query->status_nilai_mhs : null;
+    }
 }
