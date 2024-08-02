@@ -97,6 +97,8 @@ class MahasiswaController extends Controller
 
             $data['profil_desa'] = '-';
             $data['laporan_survey'] = '-';
+            $data['proposal_kkn'] = NULL;
+            $data['laporan_kkn'] = NULL;
         } else {
             $dataKelompok = (array) $berandaModel->getKelompok($dataMhs['kelompok']);
             $data['status'] = $berandaModel->getKetuaKelompok($dataMhs['kelompok'], $dataMhs['nim13']);

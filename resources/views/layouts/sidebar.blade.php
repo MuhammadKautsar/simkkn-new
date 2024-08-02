@@ -4,7 +4,7 @@
     <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
         <!--begin::Logo image-->
         <a href="index.html">
-            <img alt="Logo" src="{{ asset('assets/media/logos/logo.png') }}" class="h-80px app-sidebar-logo-default" />
+            <img alt="Logo" src="{{ asset('assets/media/logos/logo.svg') }}" class="h-80px app-sidebar-logo-default" />
             <img alt="Logo" src="{{ asset('assets/media/logos/favicon.png') }}" class="h-30px app-sidebar-logo-minimize" />
         </a>
         <!--end::Logo image-->

@@ -5,7 +5,7 @@
         <!--begin::Logo-->
         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0 me-lg-15">
             <a href="index.html">
-                <img alt="Logo" src="{{ asset('assets/media/logos/logo.png') }}" class="h-60px h-lg-90px app-sidebar-logo-default" />
+                <img alt="Logo" src="{{ asset('assets/media/logos/logo.svg') }}" class="h-60px h-lg-90px app-sidebar-logo-default" />
             </a>
         </div>
         <!--end::Logo-->

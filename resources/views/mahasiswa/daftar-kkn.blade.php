@@ -41,9 +41,10 @@
                                         <!--begin::Table widget 14-->
                                         <div class="card card-flush h-md-100">
 											<!--begin::Form-->
-											<form class="form" action="{{ route('submit_registrasi') }}" method="POST">
+											<form id="submit-registrasi" method="POST" enctype="multipart/form-data">
                                                 @csrf
-                                                <input type="hidden" name="periode" value="{{ $periodeId }}">
+                                                <input type="hidden" name="ip_address" value="{{ request()->ip() }}">
+                                                <input type="hidden" name="id_periode" value="{{ $periodeId }}">
                                                 <!--begin::Header-->
                                                 <div class="card-header pt-7">
                                                     <!--begin::Title-->
@@ -100,7 +101,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input type="text" class="form-control form-control-solid" name="nik" value="" />
+                                                                        <input readonly type="text" class="form-control form-control-solid" name="nik" value="{{ $mahasiswa['nik'] }}" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -120,7 +121,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input readonly type="text" class="form-control form-control-solid" name="tmp_lahir" value="{{ $mahasiswa['tempat_lahir'] }}" />
+                                                                        <input readonly type="text" class="form-control form-control-solid" name="tmp_lahir" value="{{ $mahasiswa['tmp_lahir'] }}" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -136,7 +137,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input readonly type="date" class="form-control form-control-solid" name="tgl_lahir" value="{{ $mahasiswa['tanggal_lahir'] }}" />
+                                                                        <input readonly type="date" class="form-control form-control-solid" name="tgl_lahir" value="{{ $mahasiswa['tgl_lahir'] }}" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -204,7 +205,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input type="number" class="form-control form-control-solid" name="no_hp" value="{{ $mahasiswa['no_tlp_mhs'] }}" />
+                                                                        <input type="number" class="form-control form-control-solid" name="no_hp" value="{{ $mahasiswa['no_hp'] }}" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -382,7 +383,7 @@
                                                                         <div class="w-100">
                                                                             <!--begin::Select2-->
                                                                             <select id="provinsi" class="provinsi form-select form-select-solid"
-                                                                            name="id_provinsi" data-placeholder="Pilih Provinsi" data-target="#kabupaten">
+                                                                            name="provinsi" data-placeholder="Pilih Provinsi" data-target="#kabupaten">
                                                                                 <option value="" disabled selected>Pilih Provinsi</option>
                                                                                 @foreach($provinsi as $prov)
                                                                                     <option value="{{ $prov->id }}">{{ $prov->name }}</option>
@@ -405,7 +406,7 @@
                                                                         <!--end::Label-->
                                                                         <div class="w-100">
                                                                             <!--begin::Select2-->
-                                                                            <select id="kabupaten" class="kabupaten form-select form-select-solid" name="id_kabupaten" data-placeholder="Pilih Kabupaten" data-target="#kecamatan">
+                                                                            <select id="kabupaten" class="kabupaten form-select form-select-solid" name="kabupaten" data-placeholder="Pilih Kabupaten" data-target="#kecamatan">
                                                                                 <option value="" disabled selected>Pilih Kabupaten/Kota</option>
                                                                             </select>
                                                                             <!--end::Select2-->
@@ -569,7 +570,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input type="text" class="form-control form-control-solid" name="nama_ayah" placeholder="" />
+                                                                        <input readonly type="text" class="form-control form-control-solid" name="nama_ayah" value="{{ $mahasiswa['nama_ayah'] }}" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -585,7 +586,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input type="text" class="form-control form-control-solid" name="no_hp_ayah" placeholder="" />
+                                                                        <input readonly type="number" class="form-control form-control-solid" name="no_hp_ayah" value="{{ $mahasiswa['no_hp_ayah'] }}" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -702,7 +703,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input type="text" class="form-control form-control-solid" name="nama_ibu" placeholder="" />
+                                                                        <input readonly type="text" class="form-control form-control-solid" name="nama_ibu" value="{{ $mahasiswa['nama_ibu'] }}" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -718,7 +719,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input type="text" class="form-control form-control-solid" name="no_hp_ibu" placeholder="" />
+                                                                        <input type="number" class="form-control form-control-solid" name="no_hp_ibu" required />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -836,7 +837,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input type="text" class="form-control form-control-solid" name="nama_Wali" placeholder="" />
+                                                                        <input type="text" class="form-control form-control-solid" name="nama_wali" placeholder="" />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -852,7 +853,7 @@
                                                                         </label>
                                                                         <!--end::Label-->
                                                                         <!--begin::Input-->
-                                                                        <input type="text" class="form-control form-control-solid" name="no_hp_wali" placeholder="" />
+                                                                        <input type="number" class="form-control form-control-solid" name="no_hp_wali" required />
                                                                         <!--end::Input-->
                                                                     </div>
                                                                     <!--end::Input group-->
@@ -986,9 +987,12 @@
 
                                                             <div class="row p-2">
                                                             <label for="syarat">Memenuhi Persyaratan :</label>
+                                                            @foreach ($syarat as $s)
                                                                 <label>
-                                                                    <input type="checkbox" name="terms" id="terms" required> Mencapai 100 sks
+                                                                    <input type="checkbox" name="terms" id="terms" required>
+                                                                    <span>{{ $s->nama_persyaratan }}</span>
                                                                 </label>
+                                                            @endforeach
                                                             </div>
 
                                                             <!--begin::Separator-->
@@ -1066,6 +1070,7 @@
     <!--end::Global Javascript Bundle-->
     <!--end::Javascript-->
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $.ajaxSetup({
             headers: {
@@ -1119,6 +1124,57 @@
                 });
             });
         });
+    </script>
+
+    <script>
+    $(document).ready(function () {
+        $('#submit-registrasi').on('submit', function (event) {
+            event.preventDefault();
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Pastikan biodata yang telah Anda masukkan benar. Data yang telah dikirim tidak dapat diubah kembali",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, kirim!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('submit_registrasi') }}", // Gunakan route name di sini
+                        method: "POST",
+                        data: new FormData(this),
+                        contentType: false,
+                        cache: false,
+                        dataType: "json",
+                        processData: false,
+                        success: function (data) {
+                            if (data.status) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Registrasi berhasil!',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    window.location.href = data.redirect_url; // Redirect ke URL yang dikirim dalam response
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: data.message
+                                });
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            swal("Terjadi kesalahan!", "Status: " + textStatus + ", Error: " + errorThrown, "error");
+                        }
+                    });
+                }
+            });
+        });
+    });
     </script>
 
 </body>

@@ -33,8 +33,8 @@
                                             <div class="card-header pt-7 pb-7">
                                                 <!--begin::Title-->
                                                 <h3 class="card-title align-items-start flex-column">
-                                                    <span class="text-gray-500 mt-1 fw-semibold fs-4">Sekarang anda memiliki {{ $jumlah_sks }} SKS</span>
-                                                    <span class="text-gray-500 mt-1 fw-semibold fs-4">Anda belum mendaftar kegiatan KKN. Silahkan mendaftar kegiatan KKN yang sedang dibuka dibawah ini.</span>
+                                                    <span class="text-gray-700 mt-1 fw-semibold fs-4">Sekarang anda memiliki {{ $jumlah_sks }} SKS</span>
+                                                    <span class="text-gray-700 mt-1 fw-semibold fs-4">Anda belum mendaftar kegiatan KKN. Silahkan mendaftar kegiatan KKN yang sedang dibuka dibawah ini.</span>
                                                 </h3>
                                                 <!--end::Title-->
                                             </div>
@@ -73,41 +73,41 @@
                                                                 <th class="text-center min-w-125px">Jenis</th>
                                                                 <th class="text-center min-w-125px">Lokasi</th>
                                                                 <th class="text-center min-w-125px">Masa Pendaftaran</th>
-                                                                <th class="text-center min-w-125px">Status</th>
                                                                 <th class="text-center min-w-125px">Aksi</th>
                                                             </tr>
                                                         </thead>
                                                         <!--end::Table head-->
                                                         <!--begin::Table body-->
                                                         <tbody>
-                                                            @foreach ($kkns as $kkn)
+                                                            @foreach ($periode as $p)
                                                             <tr>
-                                                                <td class="text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->masa_periode }}</td>
-                                                                <td class="text-center text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->jenisKkn->kategori }}</td>
-                                                                @if ($kkn->lokasi != '0')
-                                                                    <td class="text-center text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->lokasi }}</td>
+                                                                @if ($p->nama_kkn != NULL)
+                                                                    <td class="text-center text-gray-700 mt-1 fw-semibold fs-4">{{ $p->nama_kkn }}</td>
                                                                 @else
-                                                                <td class="text-center text-gray-500 mt-1 fw-semibold fs-4">
-                                                                    @php
-                                                                        $count = count($kkn->lokasi_mappings);
-                                                                        $i = 0;
-                                                                    @endphp
-                                                                    @foreach ($kkn->lokasi_mappings as $lokasi)
-                                                                        {{ $lokasi->province ? ucwords(strtolower($lokasi->province->name)) : 'N/A' }} - {{ $lokasi->regency ? ucwords(strtolower($lokasi->regency->name)) : 'N/A' }}
-                                                                        @php $i++; @endphp
-                                                                        @if ($i < $count)
-                                                                            #
-                                                                        @endif
-                                                                    @endforeach
-                                                                </td>
+                                                                    <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $p->masa_periode }}</td>
                                                                 @endif
-                                                                <td class="text-gray-500 mt-1 fw-semibold fs-4">{{ $kkn->ket }}</td>
-                                                                {{-- <td class="mb-0 text-sm">{{ $kkn->status }}</td> --}}
-                                                                @if($kkn->status === 1)
-                                                                    <td class="text-center"><span class="badge badge-primary">Aktif</span></td>
+                                                                <td class="text-center text-gray-700 mt-1 fw-semibold fs-4">{{ $p->jenis_kkn }}</td>
+                                                                <td class="text-center text-gray-700 mt-1 fw-semibold fs-4">{{ $p->lokasi }}</td>
+                                                                @if ($p->ket != NULL)
+                                                                    <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ $p->ket }}</td>
+                                                                @else
+                                                                    <td class="text-gray-700 mt-1 fw-semibold fs-4">{{ strftime('%d %B %Y', strtotime($p->tgl_mulai_daftar)) }} s/d {{ strftime('%d %B %Y', strtotime($p->tgl_akhir_daftar)) }}</td>
                                                                 @endif
                                                                 <td class="text-center">
-                                                                    <a href="{{ route('daftar', $kkn->id) }}" class="btn btn-primary px-3 mb-0">Daftar</a>
+                                                                    <!-- Sedang dalam perbaikan. Silahkan kembali lagi dalam beberapa jam kemudian. -->
+                                                                    @if (!$p->pendaftaran_ongoing)
+                                                                        <span>Masa Pendaftaran Belum Dibuka/Telah Berakhir</span>
+                                                                    @else
+                                                                        @if ($p->status_mhs_periode)
+                                                                            @if ($p->kuota_status)
+                                                                                <a href="{{ route('daftar', $p->id) }}" class="btn btn-primary px-3 mb-0">Daftar</a>
+                                                                            @else
+                                                                                <span>Kuota telah penuh</span>
+                                                                            @endif
+                                                                        @else
+                                                                            <span>Anda telah dinonaktifkan dari periode ini</span>
+                                                                        @endif
+                                                                    @endif
                                                                 </td>
                                                             </tr>
                                                             @endforeach
