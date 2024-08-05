@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-// use Illuminate\Support\Facades\DB;
 use DB;
+use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PanitiaModel extends Model
 {
@@ -341,14 +342,6 @@ class PanitiaModel extends Model
         $query = DB::table('dosen')->where('id', $id_dosen)->first();
         return isset($query->nip) ? ucwords(strtolower($query->nip)) : "";
     }
-
-    // public static function getPeriode($id_periode)
-    // {
-    //     $query = DB::table('periode')->where('id', $id_periode)->first();
-    //     // Tambahkan logika pemrosesan data sesuai kebutuhan
-    //     // Contoh kode pemrosesan data yang kompleks dapat ditambahkan di sini
-    //     return $query;
-    // }
 
     public static function getPeriodeJenisKkn($id_periode)
     {
@@ -702,5 +695,41 @@ class PanitiaModel extends Model
             ->first();
 
         return $query ? $query->status_nilai_mhs : null;
+    }
+
+    public static function cekNip($nip, $id_periode)
+    {
+        $result = DB::table('dbkkn.dosen')
+            ->where('nip', $nip)
+            ->where('id_periode', $id_periode)
+            ->exists();
+
+        return $result ? "exist" : "";
+    }
+
+    public static function connectDbKpa()
+    {
+        try {
+            $connection = DB::connection('kpa');
+            $connection->getPdo(); // Check if connection is established
+            return $connection;
+        } catch (\Exception $e) {
+            dd("Connection failed: " . $e->getMessage());
+        }
+    }
+
+    public static function getDataDosen($nip)
+    {
+        $sql = "SELECT CONCAT(COALESCE(v.gelar_depan, ''),' ',v.nama,' ',COALESCE(v.gelar_blk, '')) as nama, v.tgllahir, v.nip_baru, v.kd_fakultas, p.nama_unit
+                FROM kpa.pegawai as v
+                LEFT JOIN kpa.fakultas as f on v.kd_fakultas = f.kd_fakultas
+                LEFT JOIN kpa.pejabat as p on v.home_base = CONCAT(p.kode_unit,p.pejabat1,p.pejabat2,p.eselon2,p.eselon3,p.eselon4)
+                WHERE v.tenaga = 1 and v.nip_baru = ?";
+
+        // Log::info('SQL Query:', ['query' => $sql, 'nip' => $nip]);
+
+        $result = self::connectDbKpa()->select($sql, [$nip]);
+        // Log::info('Query Result:', ['result' => $result]);
+        return collect($result);
     }
 }

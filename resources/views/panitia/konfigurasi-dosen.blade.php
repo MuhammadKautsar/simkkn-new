@@ -132,7 +132,7 @@
                             </div>
                             <!--end::Header-->
                             <div class="card-body pt-5">
-                                <form class="form" action="/kkn/{{ $kkn->id }}/update" method="POST">
+                                <form method="POST" id="import_form" enctype="multipart/form-data">
                                     @csrf
                                     <!--begin::Input group-->
                                     <div class="fv-row mb-7">
@@ -142,7 +142,8 @@
                                         </label>
                                         <!--end::Label-->
                                         <!--begin::Input-->
-                                        <input type="file" class="form-control form-control-solid" name="poin_persyaratan"
+                                        <input name="id_periode" id="id_periode" style="display: none" value="{{ $kkn->id }}">
+                                        <input type="file" class="form-control form-control-solid" id="customFile" name="file"
                                             placeholder="Upload Daftar Dosen (InputDosen.xlsx)" />
                                         <!--end::Input-->
                                     </div>
@@ -305,6 +306,49 @@
                                     'error'
                                 );
                             }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#import_form').on('submit', function (event) {
+                event.preventDefault();
+                $.ajax({
+                    url: "{{ route('upload.dosen') }}", // Sesuaikan dengan nama route Laravel Anda
+                    method: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    dataType: 'json',
+                    processData: false,
+                    success: function (data) {
+                        if(data.status){
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: data.message,
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                location.reload(); // Reload halaman ketika berhasil
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message,
+                            });
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: "Status: " + textStatus + ", Error: " + errorThrown,
                         });
                     }
                 });

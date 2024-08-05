@@ -105,6 +105,7 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::post('/kkn/tambah-persyaratan', [KknController::class, 'tambahPersyaratan'])->name('kkn.tambahPersyaratan');
     Route::delete('/kkn/hapus-persyaratan/{id}', [KknController::class, 'hapusPersyaratan'])->name('kkn.hapusPersyaratan');
 
+    Route::post('/upload-dosen', [KknController::class, 'uploadDosen'])->name('upload.dosen');
     Route::post('/hapus-dosen', [KknController::class, 'hapusDosen'])->name('hapus.dosen');
     Route::post('/kkn/set_lokasi', [KknController::class, 'setLokasi'])->name('kkn.set_lokasi');
     Route::post('/kkn/set_kecamatan', [KknController::class, 'setKecamatan'])->name('kkn.set_kecamatan');

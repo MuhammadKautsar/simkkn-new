@@ -10,7 +10,10 @@ use App\Models\JenisKkn;
 use App\Models\BatasanWaktu;
 use App\Models\PanitiaModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class KknController extends Controller
 {
@@ -667,5 +670,205 @@ class KknController extends Controller
         $message = PanitiaModel::updateBatasWaktu($data, $id_periode);
 
         return response()->json($message);
+    }
+
+    // public function uploadDosen(Request $request)
+    // {
+    //     if (session('level') === 1) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => "Fitur ini tidak tersedia"
+    //         ]);
+    //     }
+
+    //     $validator = Validator::make($request->all(), [
+    //         'id_periode' => 'required|integer'
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => $validator->errors()->first()
+    //         ]);
+    //     }
+
+    //     $id_periode = $request->input('id_periode');
+    //     $file = $request->file('file');
+    //     $file_mimes = [
+    //         'text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream',
+    //         'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv',
+    //         'application/excel', 'application/vnd.msexcel', 'text/plain',
+    //         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    //     ];
+
+    //     if ($file && in_array($file->getMimeType(), $file_mimes)) {
+    //         $reader = new Xlsx();
+    //         $reader->setReadDataOnly(true);
+    //         $spreadsheet = $reader->load($file->getPathname());
+    //         $worksheet = $spreadsheet->getActiveSheet()->toArray(null, false, true, false);
+    //         $error = false;
+
+    //         foreach ($worksheet as $key => $value) {
+    //             if ($key > 0) {
+    //                 if ($value[0] === null) {
+    //                     continue;
+    //                 }
+    //                 $nip = $value[0];
+    //                 $nama = $value[1];
+    //                 $status = strtolower($value[2]);
+    //                 $no_hp = $value[3];
+
+    //                 Log::info('Processing NIP:', ['nip' => $nip]);
+
+    //                 if ($status !== "dpl" && $status !== "korcam") {
+    //                     $error = true;
+    //                 } elseif (PanitiaModel::cekNip($nip, $id_periode) === "exist") {
+    //                     continue;
+    //                 } else {
+    //                     $data_dosen = PanitiaModel::getDataDosen($nip)->first();
+
+    //                     // Tambahkan log untuk melihat hasil dari getDataDosen
+    //                     Log::info('Data Dosen:', (array) $data_dosen);
+
+    //                     if ($data_dosen) {
+    //                         $kd_fakultas = $data_dosen->kd_fakultas ?? 0;
+    //                         $kd_jurusan = $data_dosen->nama_unit ?? 0;
+    //                         $nama_dosen = $data_dosen->nama ?? trim($nama);
+
+    //                         $data_dosen = [
+    //                             'nip' => $nip,
+    //                             'nama' => $nama_dosen,
+    //                             'nama_unit' => $kd_jurusan,
+    //                             'fakultas' => $kd_fakultas,
+    //                             'status' => $status,
+    //                             'id_periode' => $id_periode,
+    //                             'no_hp' => $no_hp
+    //                         ];
+
+    //                         PanitiaModel::insertData('dbkkn.dosen', $data_dosen);
+    //                     } else {
+    //                         $error = true;
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //         if ($error) {
+    //             return response()->json([
+    //                 'status' => false,
+    //                 'message' => "Terjadi kesalahan"
+    //             ]);
+    //         } else {
+    //             return response()->json([
+    //                 'status' => true,
+    //                 'message' => "Data berhasil dimasukkan",
+    //                 'id_periode' => $id_periode
+    //             ]);
+    //         }
+    //     }
+
+    //     return response()->json([
+    //         'status' => false,
+    //         'message' => "Invalid file type"
+    //     ]);
+    // }
+
+    public function uploadDosen(Request $request)
+    {
+        if (session('level') === 1) {
+            return response()->json([
+                'status' => false,
+                'message' => "Fitur ini tidak tersedia"
+            ]);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'id_periode' => 'required|integer'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => $validator->errors()->first()
+            ]);
+        }
+
+        $id_periode = $request->input('id_periode');
+        $file = $request->file('file');
+        $file_mimes = [
+            'text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream',
+            'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv',
+            'application/excel', 'application/vnd.msexcel', 'text/plain',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        ];
+
+        if ($file && in_array($file->getMimeType(), $file_mimes)) {
+            $reader = new Xlsx();
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($file->getPathname());
+            $worksheet = $spreadsheet->getActiveSheet()->toArray(null, false, true, false);
+            $error = false;
+            $errorMessages = [];
+
+            foreach ($worksheet as $key => $value) {
+                if ($key > 0) {
+                    if ($value[0] === null) {
+                        continue;
+                    }
+                    $nip = $value[0];
+                    $nama = $value[1];
+                    $status = strtolower($value[2]);
+                    $no_hp = $value[3];
+
+                    if ($status !== "dpl" && $status !== "korcam") {
+                        $error = true;
+                        $errorMessages[] = "Status dosen dengan NIP $nip tidak valid.";
+                    } elseif (PanitiaModel::cekNip($nip, $id_periode) === "exist") {
+                        continue;
+                    } else {
+                        $dataDosen = PanitiaModel::getDataDosen($nip);
+                        if ($dataDosen->isEmpty()) {
+                            $error = true;
+                            $errorMessages[] = "Data dosen dengan NIP $nip tidak ditemukan. Mohon periksa NIP lagi.";
+                        } else {
+                            $data_dosen = $dataDosen->first();
+                            $kd_fakultas = $data_dosen->kd_fakultas ?? 0;
+                            $kd_jurusan = $data_dosen->nama_unit ?? 0;
+                            $nama_dosen = $data_dosen->nama ?? trim($nama);
+
+                            $data_dosen = [
+                                'nip' => $nip,
+                                'nama' => $nama_dosen,
+                                'nama_unit' => $kd_jurusan,
+                                'fakultas' => $kd_fakultas,
+                                'status' => $status,
+                                'id_periode' => $id_periode,
+                                'no_hp' => $no_hp
+                            ];
+
+                            PanitiaModel::insertData('dbkkn.dosen', $data_dosen);
+                        }
+                    }
+                }
+            }
+
+            if ($error) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Terjadi kesalahan:\n" . implode("\n", $errorMessages)
+                ]);
+            } else {
+                return response()->json([
+                    'status' => true,
+                    'message' => "Data berhasil dimasukkan",
+                    'id_periode' => $id_periode
+                ]);
+            }
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => "Invalid file type"
+        ]);
     }
 }
