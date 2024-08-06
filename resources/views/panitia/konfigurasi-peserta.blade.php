@@ -335,13 +335,13 @@
                                 <!--begin::Card toolbar-->
                                 <div class="card-toolbar">
                                     <!--begin::Button-->
-                                    <button type="button" class="btn btn-light-primary">
+                                    <a href="{{ route('peserta.export', $kkn->id) }}" type="button" class="btn btn-light-primary">
                                         <i class="ki-duotone ki-cloud-download fs-3">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                             <span class="path3"></span>
                                         </i>Unduh Data Peserta (Excel)
-                                    </button>
+                                    </a>
                                     <!--end::Button-->
                                 </div>
                                 <!--end::Card toolbar-->

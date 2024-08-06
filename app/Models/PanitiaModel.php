@@ -640,7 +640,7 @@ class PanitiaModel extends Model
                     $data->kabupaten_penempatan = $lokasi->kabupaten_penempatan ?? "";
                 }
             }
-            if ($data->status_reg === "0") {
+            if ($data->status_reg === 0) {
                 $data->kd_kelompok = "Nonaktif";
             }
             $data->link_1 = explode("; ", $data->youtube_1);

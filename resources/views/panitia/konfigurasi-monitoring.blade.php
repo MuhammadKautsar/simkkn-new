@@ -140,13 +140,13 @@
                                 <!--begin::Card toolbar-->
                                 <div class="card-toolbar">
                                     <!--begin::Button-->
-                                    <button type="button" class="btn btn-light-primary">
+                                    <a href="{{ route('export.monitoring', ['type' => 'dosen', 'id_periode' => $kkn->id]) }}" type="button" class="btn btn-light-primary">
                                         <i class="ki-duotone ki-cloud-download fs-3">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                             <span class="path3"></span>
                                         </i>Unduh Data Monitoring Berkas Dosen (Excel)
-                                    </button>
+                                    </a>
                                     <!--end::Button-->
                                 </div>
                                 <!--end::Card toolbar-->
@@ -290,12 +290,12 @@
                                     <!--begin::Action buttons-->
                                     <div class="d-flex justify-content-end">
                                         <!--begin::Button-->
-                                        <button class="btn btn-primary">
+                                        <a class="btn btn-primary">
                                             <span class="indicator-label">Unduh Berkas</span>
                                             <span class="indicator-progress">Please wait...
                                                 <span
                                                     class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                        </button>
+                                        </a>
                                         <!--end::Button-->
                                     </div>
                                     <!--end::Action buttons-->
@@ -333,13 +333,13 @@
                                 <!--begin::Card toolbar-->
                                 <div class="card-toolbar">
                                     <!--begin::Button-->
-                                    <button type="button" class="btn btn-light-primary">
+                                    <a href="{{ route('export.monitoring', ['type' => 'peserta', 'id_periode' => $kkn->id]) }}" type="button" class="btn btn-light-primary">
                                         <i class="ki-duotone ki-cloud-download fs-3">
                                             <span class="path1"></span>
                                             <span class="path2"></span>
                                             <span class="path3"></span>
                                         </i>Unduh Data Monitoring Berkas Peserta (Excel)
-                                    </button>
+                                    </a>
                                     <!--end::Button-->
                                 </div>
                                 <!--end::Card toolbar-->
