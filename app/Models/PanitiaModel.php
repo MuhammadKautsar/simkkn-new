@@ -168,15 +168,6 @@ class PanitiaModel extends Model
         return $results;
     }
 
-    public function getStatusGenerator($idPeriode)
-    {
-        $status = DB::table('team_generator')
-            ->where('id_periode', $idPeriode)
-            ->value('status');
-
-        return $status == "1"; // Jika status adalah "1", return true, jika tidak return false.
-    }
-
     public static function updateData($id_periode, $table, $data)
     {
         $result = DB::table($table)->where('id', $id_periode)->update($data);
@@ -731,5 +722,254 @@ class PanitiaModel extends Model
         $result = self::connectDbKpa()->select($sql, [$nip]);
         // Log::info('Query Result:', ['result' => $result]);
         return collect($result);
+    }
+
+    public static function getStatusGenerator($id_periode)
+    {
+        $status = DB::table('team_generator')
+            ->where('id_periode', $id_periode)
+            ->value('status');
+
+        if ($status !== null) {
+            return $status == "1"; // tidak terkunci jika status == "1"
+        } else {
+            return false;
+        }
+    }
+
+    public static function updateData3($column1, $id1, $column2, $id2, $table, $data)
+    {
+        $updated = DB::table($table)
+            ->where($column1, $id1)
+            ->where($column2, $id2)
+            ->update($data);
+
+        return $updated ? "success" : "failed";
+    }
+
+    public static function cekKetuaKelompok($id_periode)
+    {
+        $jumlah = DB::table('master_desa')
+            ->where('periode', $id_periode)
+            ->whereNull('nim_ketua')
+            ->whereNotNull('nama_desa')
+            ->count();
+
+        return $jumlah;
+    }
+
+    public static function cekKdKelompok($kd_kelompok, $periode)
+    {
+        $result = DB::table('master_desa')
+            ->where('kd_kelompok', $kd_kelompok)
+            ->where('periode', $periode)
+            ->first();
+
+        return $result ? $result->id : 0;
+    }
+
+    // Menghitung jumlah data peserta berdasarkan periode dan status_reg
+    public static function getJumlahData($table, $id_periode)
+    {
+        $query = DB::table($table)
+            ->where('periode', $id_periode)
+            ->where('status_reg', 1)
+            ->count();
+
+        return $query;
+    }
+
+    // Menghitung jumlah desa berdasarkan periode dengan nama_desa yang tidak null atau kosong
+    public static function getJumlahDesa($table, $id_periode)
+    {
+        $query = DB::table($table)
+            ->where('periode', $id_periode)
+            ->whereNotNull('nama_desa')
+            ->where('nama_desa', '<>', '')
+            ->count();
+
+        return $query;
+    }
+
+    // Menghitung jumlah data peserta berdasarkan jenis kelamin, periode, dan status_reg
+    public static function getJumlahDataJk($table, $id_periode, $condition)
+    {
+        $query = DB::table($table)
+            ->where('periode', $id_periode)
+            ->where('jenis_kelamin', $condition)
+            ->where('status_reg', 1)
+            ->count();
+
+        return $query;
+    }
+
+    public static function generatePeserta($id_periode, $jumlah_lk, $jumlah_sisa, $jumlah_peserta_per_kelompok)
+    {
+        // Query untuk mendapatkan desa dengan nama desa yang tidak kosong
+        $data_master_desa = DB::table('master_desa')
+            ->where('periode', $id_periode)
+            ->whereNotNull('nama_desa')
+            ->where('nama_desa', '<>', '')
+            ->get();
+
+        // Reset semua kelompok menjadi kosong
+        DB::table('kkn')
+            ->where('status_reg', 1)
+            ->where('periode', $id_periode)
+            ->update(['kelompok' => '']);
+
+        $k = ($jumlah_peserta_per_kelompok < 3) ? $jumlah_peserta_per_kelompok : 3;
+
+        if ($data_master_desa->isNotEmpty()) {
+            $i = 1;
+            $prodi = [];
+
+            foreach ($data_master_desa as $data_kelompok) {
+                $prodi[$data_kelompok->id] = [];
+
+                // Data kode KKN yang akan diupdate di master_desa
+                $data_kode_kkn = [
+                    'nim_ketua' => null,
+                    'proposal_kkn' => null,
+                    'penetapan_kkn' => null,
+                    'laporan_kkn' => null,
+                    'monev' => null,
+                    'laporan_survey' => null,
+                    'tgl_pdf_nilai' => null,
+                    'user_uploadpdfnilai' => null,
+                    'user_uploadlaporan' => null,
+                ];
+
+                // Update data master_desa
+                $result = self::updateData($data_kelompok->id, 'master_desa', $data_kode_kkn);
+                if ($result !== 'failed') {
+                    $data_prodi = [];
+                    $lk = 0;
+                    $count = 0;
+
+                    for ($j = 0; $j < $jumlah_lk; $j++) {
+                        $sql = "SELECT * FROM kkn
+                                WHERE (kelompok IS NULL OR kelompok = '')
+                                AND jenis_kelamin = 'Laki-laki'
+                                AND status_reg = 1
+                                AND periode = ?
+                                AND kd_fjjp7 NOT IN (?)
+                                ORDER BY RAND() LIMIT 1";
+                        $result_query = DB::select($sql, [$id_periode, implode("', '", $prodi[$data_kelompok->id])]);
+
+                        if (empty($result_query)) {
+                            $sql = "SELECT * FROM kkn
+                                    WHERE (kelompok IS NULL OR kelompok = '')
+                                    AND jenis_kelamin = 'Laki-laki'
+                                    AND status_reg = 1
+                                    AND periode = ?
+                                    ORDER BY RAND() LIMIT 1";
+                            $result_query = DB::select($sql, [$id_periode]);
+                        }
+
+                        $lk++;
+                        $data_mhs = $result_query[0];
+                        $data_prodi[$j] = $data_mhs->kd_fjjp7;
+
+                        // Update kelompok mahasiswa
+                        DB::table('kkn')
+                            ->where('nim13', $data_mhs->nim13)
+                            ->where('periode', $data_mhs->periode)
+                            ->update(['kelompok' => $data_kelompok->id]);
+
+                        $count++;
+                    }
+
+                    $i++;
+                    $prodi[$data_kelompok->id] = $data_prodi;
+                    $data_kelompok->jumlah_terisi = $count;
+                }
+            }
+
+            foreach ($data_master_desa as $data_kelompok) {
+                $count = 0;
+                $data_prodi = [];
+
+                for ($j = 0; $j < $jumlah_peserta_per_kelompok - $jumlah_lk; $j++) {
+                    if ($jumlah_lk + $count <= $k) {
+                        $sql = "SELECT * FROM kkn
+                                WHERE (kelompok IS NULL OR kelompok = '')
+                                AND status_reg = 1
+                                AND periode = ?
+                                AND kd_fjjp7 NOT IN (?)
+                                ORDER BY RAND() LIMIT 1";
+                        $result_query = DB::select($sql, [$id_periode, implode("', '", $prodi[$data_kelompok->id])]);
+
+                        if (empty($result_query)) {
+                            $sql = "SELECT * FROM kkn
+                                    WHERE (kelompok IS NULL OR kelompok = '')
+                                    AND status_reg = 1
+                                    AND periode = ?
+                                    ORDER BY RAND() LIMIT 1";
+                            $result_query = DB::select($sql, [$id_periode]);
+                        }
+                    } else {
+                        $sql = "SELECT * FROM kkn
+                                WHERE (kelompok IS NULL OR kelompok = '')
+                                AND status_reg = 1
+                                AND periode = ?
+                                ORDER BY RAND() LIMIT 1";
+                        $result_query = DB::select($sql, [$id_periode]);
+                    }
+
+                    $data_mhs = $result_query[0];
+                    $data_prodi[$j] = $data_mhs->kd_fjjp7;
+
+                    // Update kelompok mahasiswa
+                    DB::table('kkn')
+                        ->where('nim13', $data_mhs->nim13)
+                        ->where('periode', $data_mhs->periode)
+                        ->update(['kelompok' => $data_kelompok->id]);
+
+                    $count++;
+                }
+
+                $prodi[$data_kelompok->id] = $data_prodi;
+                $data_kelompok->jumlah_terisi += $count;
+            }
+
+            $k = 0;
+
+            foreach ($data_master_desa as $data_kelompok) {
+                $jumlah_peserta = ($k < $jumlah_sisa) ? $jumlah_peserta_per_kelompok + 1 : $jumlah_peserta_per_kelompok;
+
+                if ($data_kelompok->jumlah_terisi < $jumlah_peserta) {
+                    $jumlah_kurang = $jumlah_peserta - $data_kelompok->jumlah_terisi;
+                    $sql = "SELECT * FROM kkn
+                            WHERE (kelompok IS NULL OR kelompok = '')
+                            AND status_reg = 1
+                            AND periode = ?
+                            ORDER BY RAND() LIMIT ?";
+                    $result_query = DB::select($sql, [$id_periode, $jumlah_kurang]);
+
+                    if (!empty($result_query)) {
+                        foreach ($result_query as $data) {
+                            DB::table('kkn')
+                                ->where('nim13', $data->nim13)
+                                ->where('periode', $data->periode)
+                                ->update(['kelompok' => $data_kelompok->id]);
+
+                            $data_kelompok->jumlah_terisi++;
+                        }
+                    }
+                }
+
+                $k++;
+                $result = self::updateData($data_kelompok->id, 'master_desa', ['jumlah_terisi' => $data_kelompok->jumlah_terisi]);
+
+                if ($result === 'failed') {
+                    return 'failed';
+                }
+            }
+        } else {
+            return 'failed';
+        }
+
+        return 'Berhasil';
     }
 }

@@ -262,48 +262,47 @@
                                 <!--end::Title-->
                                 <div class="d-flex justify-content-start">
                                     <!--begin::Button-->
-                                    <button type="button" class="btn btn-light-primary"><i class="ki-duotone ki-cloud-download fs-3">
+                                    <a href="{{ url('berkas/FORMAT_DATA_KELOMPOK.xlsx') }}" type="button" class="btn btn-light-primary"><i class="ki-duotone ki-cloud-download fs-3">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                     </i>File Format InputKelompokManual.xlsx
-                                    </button>
+                                    </a>
                                     <!--end::Button-->
                                 </div>
                             </div>
                             <!--end::Header-->
                             <div class="card-body pt-5">
-                                <form class="form" action="/kkn/{{ $kkn->id }}/update" method="POST">
-                                    @csrf
-                                    <!--begin::Input group-->
-                                    <div class="fv-row mb-7">
-                                        <!--begin::Label-->
-                                        <label class="fs-6 fw-semibold form-label mt-3">
-                                            <span>Upload Daftar Kelompok Manual (InputKelompokManual.xlsx)</span>
-                                        </label>
-                                        <!--end::Label-->
-                                        <!--begin::Input-->
-                                        <input type="file" class="form-control form-control-solid" name="poin_persyaratan"
-                                            placeholder="Upload Daftar Dosen (InputDosen.xlsx)" />
-                                        <!--end::Input-->
-                                    </div>
-                                    <!--end::Input group-->
+                                @if (session('level') !== "1" && $data['status'])
+                                    <form method="post" id="upload-kelompok-manual" enctype="multipart/form-data">
+                                        @csrf
+                                        <!--begin::Input group-->
+                                        <div class="fv-row mb-7">
+                                            <input name="id_periode" id="id_periode" type="hidden" value="{{ $kkn->id }}">
+                                            <label class="fs-6 fw-semibold form-label mt-3">
+                                                <span>Upload Daftar Kelompok Manual (InputKelompokManual.xlsx)</span>
+                                            </label>
+                                            <input type="file" class="form-control form-control-solid" name="file" id="customFile"
+                                                placeholder="Upload Daftar Dosen (InputDosen.xlsx)" />
+                                        </div>
+                                        <!--end::Input group-->
 
-                                    <!--begin::Separator-->
-                                    <div class="separator mb-6"></div>
-                                    <!--end::Separator-->
-                                    <!--begin::Action buttons-->
-                                    <div class="d-flex justify-content-start">
-                                        <!--begin::Button-->
-                                        <button type="submit" data-kt-contacts-type="submit" class="btn btn-primary">
-                                            <span class="indicator-label">Submit</span>
-                                            <span class="indicator-progress">Please wait...
-                                                <span
-                                                    class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                        </button>
-                                        <!--end::Button-->
-                                    </div>
-                                    <!--end::Action buttons-->
-                                </form>
+                                        <!--begin::Separator-->
+                                        <div class="separator mb-6"></div>
+                                        <!--end::Separator-->
+                                        <!--begin::Action buttons-->
+                                        <div class="d-flex justify-content-start">
+                                            <!--begin::Button-->
+                                            <button type="submit" data-kt-contacts-type="submit" class="btn btn-primary">
+                                                <span class="indicator-label">Submit</span>
+                                                <span class="indicator-progress">Please wait...
+                                                    <span
+                                                        class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                            </button>
+                                            <!--end::Button-->
+                                        </div>
+                                        <!--end::Action buttons-->
+                                    </form>
+                                @endif
                             </div>
                         </div>
 
@@ -315,6 +314,35 @@
                                     <span class="card-label fw-bold text-gray-800">Daftar Mahasiswa/Mahasiswi</span>
                                 </h3>
                                 <!--end::Title-->
+                            </div>
+                            <div class="card-header mt-0">
+                                <!--begin::Card toolbar-->
+                                <div class="card-toolbar">
+                                    <div class="d-flex justify-content-start" data-kt-customer-table-toolbar="base">
+                                        @if(session('level') !== "1" && $data['status'])
+                                            @if($data['generator_status'])
+                                                <button href="" id="generate_peserta" data-val="{{ $kkn->id }}" data-status='0' class="btn btn-primary me-3">
+                                                    <i class="fas fa-random"></i> Generate Peserta Kelompok
+                                                </button>
+                                                @if(session('level') === 3)
+                                                    <button href="" id="lockGenerator" data-val="{{ $kkn->id }}" data-status='0' class="btn btn-danger">
+                                                        <i class="fas fa-lock"></i> Kunci Generate Peserta
+                                                    </button>
+                                                @endif
+                                            @else
+                                                <button href="" disabled class="btn btn-primary me-3">
+                                                    <i class="fas fa-random"></i> Tombol Generate Peserta Telah Dikunci
+                                                </button>
+                                                @if(session('level') === 3)
+                                                    <button href="" id="lockGenerator" data-val="{{ $kkn->id }}" data-status='1' class="btn btn-success">
+                                                        <i class="fas fa-lock-open"></i> Buka Generate Peserta
+                                                    </button>
+                                                @endif
+                                            @endif
+                                        @endif
+                                    </div>
+                                </div>
+                                <!--end::Card toolbar-->
                             </div>
                             <div class="card-header mt-0">
                                 <!--begin::Card title-->
@@ -562,4 +590,143 @@
         <!--end::Content-->
     </div>
     <!--end::Content wrapper-->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+
+    <script>
+        $('#lockGenerator').on('click', function (event) {
+            event.preventDefault();
+            let id_periode = $(this).data("val");
+            let status = $(this).data("status");
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, lakukan!',
+                cancelButtonText: 'Tidak, batalkan!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('kkn.lock_generator') }}",
+                        method: "POST",
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        data: { id_periode: id_periode, status: status },
+                        cache: false,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data === 'success') {
+                                Swal.fire({
+                                    title: "Berhasil",
+                                    text: "Perubahan berhasil disimpan!",
+                                    icon: "success",
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: "Gagal",
+                                    text: "Terjadi kesalahan",
+                                    icon: "error",
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            Swal.fire("Error", "Status: " + textStatus + ", Error: " + errorThrown, "error");
+                        }
+                    });
+                }
+            });
+        });
+        $('#upload-kelompok-manual').on('submit', function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: "{{ route('kkn.uploadKelompok') }}",
+                method: "POST",
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                dataType: "json",
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (data) {
+                    if (data.status) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: data.message,
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Warning',
+                            text: data.message,
+                        });
+                    }
+                    location.reload();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: "Status: " + textStatus + ", Error: " + errorThrown,
+                    });
+                }
+            });
+        });
+        $('#generate_peserta').on('click', function (event) {
+            event.preventDefault();
+            let id_periode = $(this).data("val");
+
+            $.ajax({
+                url: "{{ route('kkn.generate_peserta') }}", // Ubah ke route name yang sesuai
+                method: "POST",
+                dataType: "json",
+                data: {
+                    id_periode: id_periode,
+                    _token: "{{ csrf_token() }}" // Token CSRF untuk Laravel
+                },
+                cache: false,
+                success: function (data) {
+                    if (data.status) {
+                        Swal.fire({
+                            title: "Berhasil!",
+                            text: data.message,
+                            icon: "success",
+                        }).then((value) => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Gagal",
+                            text: data.message,
+                            icon: "error",
+                        }).then((value) => {
+                            location.reload();
+                        });
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    Swal.fire("Error", "Status: " + textStatus + "\nError: " + errorThrown, "error");
+                }
+            });
+        });
+    </script>
 @endsection

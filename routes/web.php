@@ -114,6 +114,9 @@ Route::middleware(['checkWebServiceSession'])->group(function () {
     Route::post('/hapus-data', [KknController::class, 'hapusData'])->name('hapus_data');
 
     Route::post('/kkn/publish-nilai-mhs', [KknController::class, 'publishNilaiMhs'])->name('kkn.publish_nilai');
+    Route::post('/kkn/lock-generator', [KknController::class, 'lockGenerator'])->name('kkn.lock_generator');
+    Route::post('/kkn/upload-kelompok', [KknController::class, 'uploadKelompok'])->name('kkn.uploadKelompok');
+    Route::post('/kkn/generate-peserta', [KknController::class, 'generatePeserta'])->name('kkn.generate_peserta');
 
     Route::get('/export-dosen/{id}', [KknController::class, 'exportDataDosen'])->name('dosen.export');
     Route::get('/export-lokasi/{type}/{id_periode}', [KknController::class, 'exportLokasi'])->name('export.lokasi');

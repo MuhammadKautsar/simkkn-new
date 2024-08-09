@@ -15,6 +15,7 @@ use App\Exports\LokasiExport;
 use App\Exports\MonitoringExport;
 use App\Exports\NilaiExport;
 use App\Exports\PesertaExport;
+use App\Models\BerandaModel;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -489,12 +490,12 @@ class KknController extends Controller
 
         // Menghitung jumlah peserta laki-laki
         $peserta_laki = Kkn::where('periode', $id)
-        ->where('jenis_kelamin', 'Laki-laki')
+        ->where('jenis_kelamin', 'Laki-laki')->where('status_reg', 1)
         ->count();
 
         // Menghitung jumlah peserta perempuan
         $peserta_perempuan = Kkn::where('periode', $id)
-        ->where('jenis_kelamin', 'Perempuan')
+        ->where('jenis_kelamin', 'Perempuan')->where('status_reg', 1)
         ->count();
 
         // Menghitung jumlah prodi yang mendaftar berdasarkan kolom kd_fjjp7 (unik)
@@ -504,9 +505,10 @@ class KknController extends Controller
 
         // $peserta = Kkn::where('periode', $id)->orderBy('status_reg', 'asc')->paginate(25);
         $peserta = PanitiaModel::getMhs($id);
-        // dd($peserta);
+        $data['generator_status'] = PanitiaModel::getStatusGenerator($id);
+		$data['status'] = PanitiaModel::getStatusPeriode($id);
 
-        return view('panitia.konfigurasi-peserta', compact('kkn', 'peserta', 'jumlah_peserta', 'peserta_laki', 'peserta_perempuan', 'total_prodi'));
+        return view('panitia.konfigurasi-peserta', compact('kkn', 'peserta', 'jumlah_peserta', 'peserta_laki', 'peserta_perempuan', 'total_prodi', 'data'));
     }
 
     public function konfigurasi_bataswaktu($id)
@@ -801,5 +803,147 @@ class KknController extends Controller
     public function exportDataNilai($id)
     {
         return Excel::download(new NilaiExport($id), 'Daftar Nilai Akhir Kegiatan KKN.xlsx');
+    }
+
+    public function lockGenerator(Request $request)
+    {
+        $id_periode = $request->input('id_periode');
+        $status = $request->input('status');
+
+        $result = DB::table('team_generator')
+            ->where('id_periode', $id_periode)
+            ->update(['status' => $status]);
+
+        if ($result) {
+            return response()->json('success');
+        } else {
+            return response()->json('error');
+        }
+    }
+
+    public function uploadKelompok(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx',
+            'id_periode' => 'required|integer',
+        ]);
+
+        $id_periode = $request->input('id_periode');
+        $file = $request->file('file');
+
+        $beranda = new BerandaModel();
+
+        $reader = new Xlsx();
+        $reader->setReadDataOnly(true);
+        $spreadsheet = $reader->load($file->getPathname());
+        $worksheet = $spreadsheet->getActiveSheet()->toArray(null, false, true, false);
+
+        $error_message = "";
+        $failed = 0;
+        $success = 0;
+
+        foreach ($worksheet as $key => $value) {
+            if ($key > 0) { // Skip header row
+                if ($value[0] === null) {
+                    continue;
+                }
+
+                $nim13 = $value[0];
+                $nama = $value[1];
+                $kd_kelompok = trim($value[2]);
+                $status_mahasiswa = $value[3];
+
+                $id_kelompok = PanitiaModel::cekKdKelompok($kd_kelompok, $id_periode);
+
+                if ($id_kelompok !== 0) {
+                    $data_mhs = $beranda->getMhs($nim13);
+                    if ($data_mhs !== 0) {
+                        $data = ["kelompok" => $id_kelompok];
+                        $hasil = PanitiaModel::updateData3("nim13", $nim13, 'periode', $id_periode, 'dbkkn.kkn', $data);
+
+                        if ($hasil === "failed") {
+                            $failed++;
+                            $error_message .= $nim13 . " : gagal menentukan kelompok \n ";
+                        } else {
+                            if (strtolower($status_mahasiswa) === "ketua") {
+                                $hasil = PanitiaModel::updateData2("id", $id_kelompok, 'dbkkn.master_desa', ['nim_ketua' => $nim13]);
+                                if ($hasil === "failed") {
+                                    $failed++;
+                                    $error_message .= $nim13 . " : gagal mengupdate ketua kelompok \n ";
+                                } else {
+                                    $success++;
+                                }
+                            } elseif (strtolower($status_mahasiswa) === "anggota") {
+                                $success++;
+                                continue;
+                            } else {
+                                $failed++;
+                                $error_message .= $nim13 . " : status tidak dikenal \n";
+                            }
+                        }
+                    } else {
+                        $failed++;
+                        $error_message .= $nim13 . " : mahasiswa tidak dikenal \n";
+                    }
+                } else {
+                    $failed++;
+                    $error_message .= $nim13 . " : kode kelompok tidak dikenal \n";
+                }
+            }
+        }
+
+        $kelompok_tanpa_ketua = PanitiaModel::cekKetuaKelompok($id_periode);
+
+        if ($failed > 0) {
+            return response()->json([
+                'status' => false,
+                'message' => "$success Data Berhasil diupload. $failed gagal! \n$error_message\n$kelompok_tanpa_ketua Kelompok belum ada ketua"
+            ]);
+        } else {
+            return response()->json([
+                'status' => true,
+                'message' => "Data berhasil diupload \n$kelompok_tanpa_ketua kelompok belum ada ketua"
+            ]);
+        }
+    }
+
+    public function generatePeserta(Request $request)
+    {
+        $id_periode = $request->input('id_periode');
+
+        $generator_status = PanitiaModel::getStatusGenerator($id_periode); // Menggunakan model PanitiaModel
+        if ($generator_status) {
+            $jumlah_peserta = PanitiaModel::getJumlahData("kkn", $id_periode);
+            $jumlah_kelompok = PanitiaModel::getJumlahDesa("master_desa", $id_periode);
+
+            if ($jumlah_kelompok === 0 || $jumlah_peserta < $jumlah_kelompok) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Jumlah kelompok dan peserta tidak sesuai'
+                ]);
+            } else {
+                $jumlah_peserta_per_kelompok = floor($jumlah_peserta / $jumlah_kelompok);
+                $jumlah_lk = floor(PanitiaModel::getJumlahDataJk("kkn", $id_periode, "laki-laki") / $jumlah_kelompok);
+                $jumlah_sisa = $jumlah_peserta - ($jumlah_peserta_per_kelompok * $jumlah_kelompok);
+
+                $result = PanitiaModel::generatePeserta($id_periode, $jumlah_lk, $jumlah_sisa, $jumlah_peserta_per_kelompok);
+                if ($result === "Berhasil") {
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Kelompok berhasil digenerate'
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Terjadi Kesalahan'
+                    ]);
+                }
+            }
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Tombol Generate Peserta telah Dikunci'
+            ]);
+        }
     }
 }
